@@ -87,7 +87,8 @@ a, h5 a, table a, footer a, .navbar a {
 }
 
 /* specificity : 0.1.1*/
-.thead-dark a {
+.thead-dark tr {
+    background: #343A40FF;
     color: #ffffff;
 }
 

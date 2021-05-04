@@ -143,12 +143,12 @@ class OrderItem
     private $archived;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
      */
     private $shippingAddress;
 
     /**
-     * @ORM\Column(type="blob", nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $buyerExtra;
 
