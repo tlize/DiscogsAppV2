@@ -1,16 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="container-fluid">
-        <h2>{{ item.artist }} : {{ item.title }} ({{ item.format }})</h2>
-        <h3>{{ item.label }} - {{ item.catno }}</h3>
-        {% if item.comments != null  %}
-            <p>{{ item.comments }}</p>
-        {% endif %}
-        <p>discogsId : {{ item.listingId }}</p>
-        <p>status : {{ item.status }}</p><p>€{{ item.price | number_format}}</p>
-    </div>
-
+    <h2>{{ item.artist }} : {{ item.title }} ({{ item.format }})</h2>
+    <h3>{{ item.label }} - {{ item.catno }}</h3>
+    {% if item.comments != null  %}
+        <p>{{ item.comments }}</p>
+    {% endif %}
+    <p>discogsId : {{ item.listingId }}</p>
+    <p>status : {{ item.status }}</p><p>€{{ item.price | number_format}}</p>
 {% endblock %}
 
 {% block title %}

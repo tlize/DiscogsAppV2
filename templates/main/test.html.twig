@@ -3,9 +3,9 @@
 {% block title %}{{ parent() }} | Test{% endblock %}
 
 {% block body %}
-    <div class="container-fluid">
-        <p>ça va tu t'amuses bien ?</p>
-    </div>
+    <h4>ça va tu t'amuses bien ?</h4>
+    <p>essaye <a class="emLink" href="{{path('item_add') }}">ce lien</a> pour créer un nouvel item (+ update et suppr)</p>
+    <p>( et n'oublie pas d'enlever ce dump($request) )</p>
 {% endblock %}
 
 

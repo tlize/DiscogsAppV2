@@ -3,11 +3,18 @@
 {% block title %}{{ parent() }} | Home{% endblock %}
 
 {% block body %}
-        <div class="container-fluid">
-            <h2>my Discogs App - V2</h2>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab at doloremque ea eum illo modi nam necessitatibus nesciunt nostrum nulla numquam, perspiciatis quod, reiciendis sapiente tempora tempore tenetur ut, voluptate.
-            </p>
-        </div>
+    <h2>my Discogs App - V2</h2>
+    <br><h4>Latest Orders</h4>
+    {% for order in orders %}
+        <p>{{ order.orderNum }} by {{ order.buyer }} on {{ order.orderDate | date("d-m-Y") }}</p>
+    {% endfor %}
+    <br><h5>Most Expensive Sold Items</h5>
+    {% for item in items %}
+        <p>{{ item.title }}, {{ item.artist }} ({{ item.format }} - {{ item.label }}) : €{{ item.price| number_format }}</p>
+    {% endfor %}
+    <br><h5>Draft or Violation</h5>
+    {% for draft in drafted %}
+        <p>{{ draft.title }}, {{ draft.artist }} ({{ draft.format }} - {{ draft.label }}) : {{ draft.status }}</p>
+    {% endfor %}or }}
 {% endblock %}
 
