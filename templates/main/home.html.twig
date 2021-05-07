@@ -3,19 +3,40 @@
 {% block title %}{{ parent() }} | Home{% endblock %}
 
 {% block body %}
-    <h2>my Discogs App - V2</h2>
-    <br><h4>Latest Orders</h4>
+    <br>
+    <h4>Latest Orders</h4>
     {% for order in orders %}
-        <p>{{ order.orderNum }} by {{ order.buyer }} on {{ order.orderDate | date("d-m-Y") }}</p>
+    <h5>{{ order.orderNum }} by {{ order.buyer }} (country) on {{ order.orderDate | date("d-m-Y") }} : x item(s), €xx</h5>
     {% endfor %}
-    <br><h5>Most Expensive Sold Items</h5>
-    {% for item in items %}
-        <p>{{ item.title }}, {{ item.artist }} ({{ item.format }} - {{ item.label }}) : €{{ item.price| number_format }}</p>
-    {% endfor %}
+    <br>
+    <h4>Most Expensive Sold Items</h4>
+    <table class="table table-sm table-hover table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Title</th>
+                <th>Band / Artist</th>
+                <th>Format</th>
+                <th>Label</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+                <tr>
+                    <td>{{ item.title }}</td>
+                    <td>{{ item.artist }}</td>
+                    <td>{{ item.format }}</td>
+                    <td>{{ item.label }}</td>
+                    <td>€{{ item.price| number_format }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     {% if drafted %}
-        <br><h5>Draft or Violation</h5>
-            <table class="table table-sm table-hover table-striped">
-                <thead class="thead-dark">
+        <br>
+        <h4>Draft or Violation</h4>
+        <table class="table table-sm table-hover table-striped">
+            <thead class="thead-dark">
                 <tr>
                     <th>Discogs Id</th>
                     <th>Catalog #</th>
@@ -26,8 +47,8 @@
                     <th>Price</th>
                     <th>Status</th>
                 </tr>
-                </thead>
-                <tbody>
+            </thead>
+            <tbody>
                 {% for draft in drafted %}
                     <tr>
                         <td>{{ draft.listingId }}</td>
@@ -40,8 +61,8 @@
                         <td>{{ draft.status }}</td>
                     </tr>
                 {% endfor %}
-                </tbody>
-            </table>
+            </tbody>
+        </table>
     {% endif %}
 {% endblock %}
 

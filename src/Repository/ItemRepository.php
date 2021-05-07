@@ -49,7 +49,7 @@ class ItemRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('i')
             ->andWhere('i.status = :status')
             ->setParameter('status', 'Sold')
-            ->setMaxResults(5)
+            ->andWhere('i.price > 50')
             ->orderBy('i.price', 'DESC')
             ->getQuery()
             ->getResult();
@@ -62,7 +62,7 @@ class ItemRepository extends ServiceEntityRepository
             ->setParameter('sold', 'Sold')
             ->andWhere('i.status != :forSale')
             ->setParameter('forSale', 'for Sale')
-            ->orderBy('i.artist', 'ASC')
+           ->orderBy('i.artist', 'ASC')
             ->getQuery()
             ->getResult()
             ;

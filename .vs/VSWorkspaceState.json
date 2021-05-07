@@ -4,9 +4,11 @@
     "\\public",
     "\\src",
     "\\src\\Controller",
+    "\\src\\Controller\\Item",
     "\\src\\Entity",
-    "\\templates"
+    "\\templates",
+    "\\templates\\main"
   ],
-  "SelectedNode": "\\src\\Kernel.php",
+  "SelectedNode": "\\src\\Entity\\OrderItem.php",
   "PreviewInSolutionExplorer": false
 }
