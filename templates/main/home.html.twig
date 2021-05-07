@@ -12,9 +12,36 @@
     {% for item in items %}
         <p>{{ item.title }}, {{ item.artist }} ({{ item.format }} - {{ item.label }}) : €{{ item.price| number_format }}</p>
     {% endfor %}
-    <br><h5>Draft or Violation</h5>
-    {% for draft in drafted %}
-        <p>{{ draft.title }}, {{ draft.artist }} ({{ draft.format }} - {{ draft.label }}) : {{ draft.status }}</p>
-    {% endfor %}or }}
+    {% if drafted %}
+        <br><h5>Draft or Violation</h5>
+            <table class="table table-sm table-hover table-striped">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Discogs Id</th>
+                    <th>Catalog #</th>
+                    <th>Band / Artist</th>
+                    <th>Title</th>
+                    <th>Label</th>
+                    <th>Format</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for draft in drafted %}
+                    <tr>
+                        <td>{{ draft.listingId }}</td>
+                        <td>{{ draft.catno }}</td>
+                        <td>{{ draft.artist }}</td>
+                        <td>{{ draft.title }}</td>
+                        <td>{{ draft.label }}</td>
+                        <td>{{ draft.format }}</td>
+                        <td>€{{ draft.price | number_format }}</td>
+                        <td>{{ draft.status }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+    {% endif %}
 {% endblock %}
 

@@ -33,17 +33,16 @@ class ItemRepository extends ServiceEntityRepository
             ;
     }
 
-    /*
-    public function findOneBySomeField($value): ?Item
+    public function findItemsForSale()
     {
         return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('i.status = :forsale')
+            ->setParameter('forsale', 'For Sale')
+            ->orderBy('i.artist', 'ASC')
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getResult()
+            ;
     }
-    */
 
     public function findExpensiveSoldItems()
     {

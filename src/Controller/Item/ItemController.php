@@ -4,7 +4,6 @@
 namespace App\Controller\Item;
 
 use App\Entity\Item;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,7 +57,7 @@ class ItemController extends AbstractController
         $item->setReleaseId(666);
         $item->setStatus('For Sale');
         $item->setPrice(20);
-        $item->setListed(new DateTime());
+        $item->setListed(new \DateTime());
         $item->setMediaCondition('VG+');
 
         $em->persist($item);
@@ -83,9 +82,18 @@ class ItemController extends AbstractController
     public function soldItems(): Response
     {
         $itemRepo = $this->getDoctrine()->getRepository(Item::class);
-//        $items = $itemRepo->findExpensiveSoldItems();
         $items = $itemRepo->findSoldItems();
         return $this->render("item/sold.html.twig", ["items" => $items]);
     }
 
+    /**
+     * tous les items en vente
+     * @Route("/item/forsale", name = "item_for_sale")
+     */
+    public function itemsForSale(): Response
+    {
+        $itemRepo = $this->getDoctrine()->getRepository(Item::class);
+        $items = $itemRepo->findItemsForSale();
+        return $this->render("item/forsale.html.twig", ["items" => $items]);
+    }
 }
