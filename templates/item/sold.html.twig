@@ -3,7 +3,7 @@
 {% block title %}{{ parent() }} | Sold Items{% endblock %}
 
 {% block body %}
-    <h4>Sold items</h4>
+    <h4><a href="{{ path('item_list') }}">All Items</a> / <a href="{{ path('item_for_sale') }}">Items For Sale</a> / Sold items</h4>
     <table class="table table-hover table-striped">
         <thead class="thead-dark">
             <tr>

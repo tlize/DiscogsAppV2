@@ -1,13 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h2>{{ item.artist }} : {{ item.title }} ({{ item.format }})</h2>
-    <h3>{{ item.label }} - {{ item.catno }}</h3>
+    <h4><a href="{{ path('artist_detail', {'artist': item.artist}) }}">{{ item.artist }}</a> - {{ item.title }}</h4>
+    <h5>
+        {{ item.format }} - <a href="{{ path('label_detail', {'label': item.label}) }}">{{ item.label }}</a> - {{ item.catno }}</h5>
     {% if item.comments != null  %}
-        <p>{{ item.comments }}</p>
+        <p>( {{ item.comments }} )</p>
     {% endif %}
-    <p>discogsId : {{ item.listingId }}</p>
-    <p>status : {{ item.status }}</p><p>€{{ item.price | number_format}}</p>
+    <p>release Id : {{ item.releaseId }}</p>
+    <p>listing Id : {{ item.listingId }}</p>
+    <p>status : {{ item.status }} ( €{{ item.price | number_format}} )</p>
 {% endblock %}
 
 {% block title %}

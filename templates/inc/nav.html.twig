@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand navbar-dark bg-dark row">
+<nav class="navbar sticky-top navbar-expand navbar-dark bg-dark row">
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
@@ -7,17 +7,12 @@
             <li class="nav-item">
                 <a class="nav-link active" href="{{path('item_list') }}">Inventory</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{ path('test') }}">test</a>
-            </li>
             <li class="nav-item dropdown">
                 <a class="nav-link active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Menu
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="{{ path('item_for_sale') }}">Items For Sale</a>
-                    <a class="dropdown-item" href="{{ path('item_sold') }}">Sold items</a>
-                    <a class="dropdown-item" href="">All items</a>
+                    <a class="dropdown-item" href="">New order</a>
                     <a class="dropdown-item" href="{{path('item_add') }}">New item</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="">Best orders</a>
@@ -32,8 +27,8 @@
             </li>
         </ul>
         <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
+            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-primary" type="submit">Search</button>
         </form>
     </div>
 </nav>

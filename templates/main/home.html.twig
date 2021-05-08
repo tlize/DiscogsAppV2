@@ -3,7 +3,6 @@
 {% block title %}{{ parent() }} | Home{% endblock %}
 
 {% block body %}
-    <br>
     <h4>Latest Orders</h4>
     {% for order in orders %}
     <h5>{{ order.orderNum }} by {{ order.buyer }} (country) on {{ order.orderDate | date("d-m-Y") }} : x item(s), €xx</h5>
