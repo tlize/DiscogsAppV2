@@ -1,77 +1,107 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h4>New Item</h4>
+    <h4>Add an Item in my Shop</h4>
         {{ form_start(itemForm) }}
-            <div class="row">
-                <div class="col-lg-1">
-                    {{ form_label(itemForm.listingId) }}
-                    {{ form_errors(itemForm.listingId) }}
-                    {{ form_widget(itemForm.listingId) }}
+        <br>
+        <div class="row">
+            <div class="col-lg-4">
+
+                <div class="row">
+                    <div class="col-lg-4">
+                        {{ form_label(itemForm.listingId) }}
+                        {{ form_errors(itemForm.listingId) }}
+                    </div>
+                    <div class="col-lg-8">
+                        {{ form_widget(itemForm.listingId) }}
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-4">
+                        {{ form_label(itemForm.artist) }}
+                        {{ form_errors(itemForm.artist) }}
+                    </div>
+                    <div class="col-lg-8">
+                        {{ form_widget(itemForm.artist) }}
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-4">
+                        {{ form_label(itemForm.title) }}
+                        {{ form_errors(itemForm.title) }}
+                    </div>
+                    <div class="col-lg-8">
+                        {{ form_widget(itemForm.title) }}
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-4">
+                        {{ form_label(itemForm.label) }}
+                        {{ form_errors(itemForm.label) }}
+                    </div>
+                    <div class="col-lg-8">
+                        {{ form_widget(itemForm.label) }}
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-4">
+                        {{ form_label(itemForm.catno) }}
+                        {{ form_errors(itemForm.catno) }}
+                    </div>
+                    <div class="col-lg-8">
+                        {{ form_widget(itemForm.catno) }}
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-4">
+                        {{ form_label(itemForm.format) }}
+                        {{ form_errors(itemForm.format) }}
+                    </div>
+                    <div class="col-lg-8">
+                        {{ form_widget(itemForm.format) }}
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-4">
+                        {{ form_label(itemForm.releaseId) }}
+                        {{ form_errors(itemForm.releaseId) }}
+                    </div>
+                    <div class="col-lg-8">
+                        {{ form_widget(itemForm.releaseId) }}
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-4">
+                        {{ form_label(itemForm.price) }}
+                        {{ form_errors(itemForm.price) }}
+                    </div>
+                    <div class="col-lg-8">
+                        {{ form_widget(itemForm.price) }}
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-lg-4">
+                        {{ form_label(itemForm.mediaCondition) }}
+                        {{ form_errors(itemForm.mediaCondition) }}
+                    </div>
+                    <div class="col-lg-8">
+                        {{ form_widget(itemForm.mediaCondition) }}
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <button class="btn btn-lg btn-primary" type="submit">Go !</button>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-1">
-                    {{ form_label(itemForm.artist) }}
-                    {{ form_errors(itemForm.artist) }}
-                    {{ form_widget(itemForm.artist) }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-1">
-                    {{ form_label(itemForm.title) }}
-                    {{ form_errors(itemForm.title) }}
-                    {{ form_widget(itemForm.title) }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-1">
-                    {{ form_label(itemForm.label) }}
-                    {{ form_errors(itemForm.label) }}
-                    {{ form_widget(itemForm.label) }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-1">
-                    {{ form_label(itemForm.catno) }}
-                    {{ form_errors(itemForm.catno) }}
-                    {{ form_widget(itemForm.catno) }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-1">
-                    {{ form_label(itemForm.format) }}
-                    {{ form_errors(itemForm.format) }}
-                    {{ form_widget(itemForm.format) }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-1">
-                    {{ form_label(itemForm.releaseId) }}
-                    {{ form_errors(itemForm.releaseId) }}
-                    {{ form_widget(itemForm.releaseId) }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-1">
-                    {{ form_label(itemForm.price) }}
-                    {{ form_errors(itemForm.price) }}
-                    {{ form_widget(itemForm.price) }}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-1">
-                    {{ form_label(itemForm.mediaCondition) }}
-                    {{ form_errors(itemForm.mediaCondition) }}
-                    {{ form_widget(itemForm.mediaCondition) }}
-                </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-lg-1">
-                    <button type="submit">Go !</button>
-                </div>
-            </div>
+        </div>
         {{ form_end(itemForm) }}
 {% endblock %}
 {% block title %}{{ parent() }} | Add an Item{% endblock %}
