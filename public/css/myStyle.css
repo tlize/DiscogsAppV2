@@ -36,6 +36,28 @@ input, footer input {
 
 
 /* specificity : 0.1.0*/
+.flash
+{
+    padding: 20px;
+    display: block;
+    font-size: 24px;
+    font-weight: bold;
+    color: #FFF;
+}
+
+/* specificity : 0.1.0*/
+.flash-success
+{
+    background-color: #6b9311;
+}
+
+/* specificity : 0.1.0*/
+.flash-error
+{
+    background-color: #AA3333;
+}
+
+/* specificity : 0.1.0*/
 .navbar-dark {
     color: #ffffff;
 }

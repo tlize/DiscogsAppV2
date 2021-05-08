@@ -4,6 +4,8 @@
 namespace App\Controller\Item;
 
 use App\Entity\Item;
+use App\Form\ItemType;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,37 +44,30 @@ class ItemController extends AbstractController
 
     /**
      * @Route("/item/add", name="item_add")
+     * @param $request
+     * @return Response
      */
-    public function add(EntityManagerInterface $em): Response
+    public function add(EntityManagerInterface $em, Request $request): Response
     {
 
-        //TODO formulaire coming soon
         $item = new Item();
-        $item->setListingId(123);
-        $item->setArtist('great band');
-        $item->setTitle('great title');
-        $item->setLabel('great label');
-        $item->setCatno('XXX666');
-        $item->setFormat('LP');
-        $item->setReleaseId(666);
-        $item->setStatus('For Sale');
-        $item->setPrice(20);
-        $item->setListed(new \DateTime());
-        $item->setMediaCondition('VG+');
+        $item->setStatus('For sale');
+        $item->setListed(new DateTime());
 
-        $em->persist($item);
-        $em->flush();
-        $item->setPrice(40);
+        $itemForm = $this->createForm(ItemType::class, $item);
 
-        $em->persist($item);
-        $em->flush();
+        $itemForm->handleRequest($request);
+        if ($itemForm->isSubmitted()) {
+            $em->persist($item);
+            $em->flush();
 
-        $em->remove($item);
-        $em->flush();
+            $this->addFlash('success', 'One more item !');
+            return  $this->redirectToRoute('item_detail', ['id'=>$item->getId()]);
+        }
 
-        dump($item);
-
-        return $this->render('item/add.html.twig');
+        return $this->render('item/add.html.twig', [
+            'itemForm'=> $itemForm->createView()
+        ]);
     }
 
     /**

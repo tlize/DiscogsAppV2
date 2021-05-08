@@ -4,8 +4,13 @@
 
 {% block body %}
     <h4>ça va tu t'amuses bien ?</h4>
-    <p>essaye <a class="emLink" href="{{path('item_add') }}">ce lien</a> pour créer un nouvel item (+ update et suppr)</p>
-    <p>( et n'oublie pas d'enlever ce dump($request) )</p>
+    <p>n'oublie pas d'enlever les dump</p>
+    <ul>
+        <li>$request sur cette page</li>
+        <li>$drafted sur la page d'accueil</li>
+    </ul>
+    <h5>TODO :</h5>
+    <p>dans Inventory, tri par status</p>
 {% endblock %}
 
 
