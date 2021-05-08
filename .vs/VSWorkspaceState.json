@@ -7,8 +7,9 @@
     "\\src\\Controller\\Item",
     "\\src\\Entity",
     "\\templates",
+    "\\templates\\item",
     "\\templates\\main"
   ],
-  "SelectedNode": "\\src\\Entity\\OrderItem.php",
+  "SelectedNode": "\\templates\\item\\add.html.twig",
   "PreviewInSolutionExplorer": false
 }

@@ -62,9 +62,29 @@ class ItemRepository extends ServiceEntityRepository
             ->setParameter('sold', 'Sold')
             ->andWhere('i.status != :forSale')
             ->setParameter('forSale', 'for Sale')
-           ->orderBy('i.artist', 'ASC')
+            ->orderBy('i.artist', 'ASC')
             ->getQuery()
             ->getResult()
             ;
+    }
+
+    public function findArtistDetail($artist)
+    {
+        return $this->createQueryBuilder('i')
+        ->andWhere('i.artist LIKE :artist')
+        ->setParameter('artist', $artist)
+        ->orderBy('i.title', 'ASC')
+        ->getQuery()
+        ->getResult();
+    }
+
+    public function findLabelDetail($label)
+    {
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.label LIKE :label')
+            ->setParameter('label', $label)
+            ->orderBy('i.title', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 }
