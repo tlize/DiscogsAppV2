@@ -20,7 +20,7 @@
                 <tr>
                     <td>{{ item.artist }}</td>
                     <td><a href="{{ path('item_detail', {'id': item.id}) }}">{{ item.title }}</a></td>
-                    <td>{{ item.label }}</td>
+                    <td><a href="{{ path('label_detail', {'label': item.label}) }}">{{ item.label }}</a></td>
                     <td>{{ item.format }}</td>
                     <td>{{ item.status }}</td>
                     <td>€ {{ item.price | number_format}}</td>

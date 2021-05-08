@@ -43,6 +43,7 @@ class ItemController extends AbstractController
     }
 
     /**
+     * ajout d'un item
      * @Route("/item/add", name="item_add")
      * @param $request
      * @return Response
