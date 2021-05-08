@@ -111,25 +111,32 @@ th textarea:hover {
 }
 
 
+/*!* specificity : 0.1.3*!*/
+/*form div.col-lg-4 input {*/
+/*    border-radius: 5px;*/
+/*}*/
+
+
 /* specificity : 0.2.0*/
+
 .dropdown-menu.show {
     background-color: #343a40;
     color: #ffffff;
 }
-
 /* specificity : 0.2.0, 0.2.0*/
+
+
 .btn-info:focus, .btn:focus {
     box-shadow: none;
 }
-
-
 /* specificity : 0.1.1, 0.1.2, 0.1.2, 0.1.2, 0.2.1*/
+
 a:hover, h5 a:hover, table a:hover, footer a:hover, .navbar a:hover {
     text-decoration: underline;
     color: inherit;
 }
-
 /* specificity : 0.2.1*/
+
 input[type=submit]:hover {
     background-color: #0056b3;
 }
