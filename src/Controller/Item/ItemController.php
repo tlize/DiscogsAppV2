@@ -45,7 +45,8 @@ class ItemController extends AbstractController
     /**
      * ajout d'un item
      * @Route("/item/add", name="item_add")
-     * @param $request
+     * @param EntityManagerInterface $em
+     * @param Request $request
      * @return Response
      */
     public function add(EntityManagerInterface $em, Request $request): Response

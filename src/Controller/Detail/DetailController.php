@@ -13,8 +13,8 @@ class DetailController extends AbstractController
     /**
      * détails d'un band/artist
      * @Route("artist/{artist}", name = "artist_detail",
-     * requirements={"artist" : ".*"},
-     * methods={"GET"})
+     *  requirements={"artist" : ".*"},
+     *  methods={"GET"})
      */
     public function artistDetail($artist): Response
     {
@@ -26,8 +26,8 @@ class DetailController extends AbstractController
     /**
      * détails d'un label
      * @Route("label/{label}", name = "label_detail",
-     * requirements={"label" : ".*"},
-     * methods={"GET"})
+     *  requirements={"label" : ".*"},
+     *  methods={"GET"})
      */
     public function labelDetail($label): Response
     {
