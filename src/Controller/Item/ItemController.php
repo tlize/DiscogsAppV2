@@ -59,7 +59,7 @@ class ItemController extends AbstractController
         $itemForm = $this->createForm(ItemType::class, $item);
 
         $itemForm->handleRequest($request);
-        if ($itemForm->isSubmitted()) {
+        if ($itemForm->isSubmitted() && $itemForm->isValid()) {
             $em->persist($item);
             $em->flush();
 

@@ -4,8 +4,11 @@ namespace App\Entity;
 
 use App\Repository\ItemRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @UniqueEntity(fields={"listingId"})
  * @ORM\Entity(repositoryClass=ItemRepository::class)
  */
 class Item
@@ -18,36 +21,44 @@ class Item
     private $id;
 
     /**
+     *
+     * @Assert\NotBlank(message="Listing id is mandatory !"))
      * @ORM\Column(type="integer")
      */
     private $listingId;
 
     /**
+     * @Assert\Length(max=255, maxMessage="No more than 255 characters !")
      * @ORM\Column(type="string", length=255)
      */
     private $artist;
 
     /**
+     * @Assert\Length(max=255, maxMessage="No more than 255 characters !")
      * @ORM\Column(type="string", length=255)
      */
     private $title;
 
     /**
+     * @Assert\Length(max=255, maxMessage="No more than 255 characters !")
      * @ORM\Column(type="string", length=255)
      */
     private $label;
 
     /**
+     * @Assert\Length(max=255, maxMessage="No more than 50 characters !")
      * @ORM\Column(type="string", length=50)
      */
     private $catno;
 
     /**
+     * @Assert\Length(max=255, maxMessage="No more than 100 characters !")
      * @ORM\Column(type="string", length=100)
      */
     private $format;
 
     /**
+     * @Assert\PositiveOrZero(message="Can't be negative !")
      * @ORM\Column(type="integer")
      */
     private $releaseId;
@@ -58,6 +69,7 @@ class Item
     private $status;
 
     /**
+     * @Assert\PositiveOrZero(message="Can't be negative !")
      * @ORM\Column(type="decimal", precision=6, scale=2)
      */
     private $price;
