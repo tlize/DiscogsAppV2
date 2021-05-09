@@ -5,7 +5,7 @@
 {% block body %}
     <h4>Latest Orders</h4>
     {% for order in orders %}
-    <h5>{{ order.orderNum }} by {{ order.buyer }} (country) on {{ order.orderDate | date("d-m-Y") }} : x item(s), €xx</h5>
+    <h5>{{ order.orderNum }} by {{ order.buyer }} ({{ order.country }}) on {{ order.orderDate | date("d-m-Y") }} : x item(s), €{{ order.total | number_format }}</h5>
     {% endfor %}
     <br>
     <h4>Most Expensive Sold Items</h4>

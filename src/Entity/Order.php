@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\OrderRepository;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -134,7 +135,7 @@ class Order
     private $currency;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $fromOffer;
 
@@ -147,6 +148,11 @@ class Order
      * @ORM\Column(type="string", length=20, nullable=true)
      */
     private $shippingMethod;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $Country;
 
     public function getId(): ?int
     {
@@ -177,12 +183,12 @@ class Order
         return $this;
     }
 
-    public function getOrderDate(): ?\DateTimeInterface
+    public function getOrderDate(): ?DateTimeInterface
     {
         return $this->orderDate;
     }
 
-    public function setOrderDate(\DateTimeInterface $orderDate): self
+    public function setOrderDate(DateTimeInterface $orderDate): self
     {
         $this->orderDate = $orderDate;
 
@@ -321,24 +327,24 @@ class Order
         return $this;
     }
 
-    public function getRatingOfBuyerDate(): ?\DateTimeInterface
+    public function getRatingOfBuyerDate(): ?DateTimeInterface
     {
         return $this->ratingOfBuyerDate;
     }
 
-    public function setRatingOfBuyerDate(?\DateTimeInterface $ratingOfBuyerDate): self
+    public function setRatingOfBuyerDate(?DateTimeInterface $ratingOfBuyerDate): self
     {
         $this->ratingOfBuyerDate = $ratingOfBuyerDate;
 
         return $this;
     }
 
-    public function getRatingOfSellerDate(): ?\DateTimeInterface
+    public function getRatingOfSellerDate(): ?DateTimeInterface
     {
         return $this->ratingOfSellerDate;
     }
 
-    public function setRatingOfSellerDate(?\DateTimeInterface $ratingOfSellerDate): self
+    public function setRatingOfSellerDate(?DateTimeInterface $ratingOfSellerDate): self
     {
         $this->ratingOfSellerDate = $ratingOfSellerDate;
 
@@ -405,12 +411,12 @@ class Order
         return $this;
     }
 
-    public function getLastActivity(): ?\DateTimeInterface
+    public function getLastActivity(): ?DateTimeInterface
     {
         return $this->lastActivity;
     }
 
-    public function setLastActivity(?\DateTimeInterface $lastActivity): self
+    public function setLastActivity(?DateTimeInterface $lastActivity): self
     {
         $this->lastActivity = $lastActivity;
 
@@ -461,6 +467,18 @@ class Order
     public function setShippingMethod(?string $shippingMethod): self
     {
         $this->shippingMethod = $shippingMethod;
+
+        return $this;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->Country;
+    }
+
+    public function setCountry(string $Country): self
+    {
+        $this->Country = $Country;
 
         return $this;
     }

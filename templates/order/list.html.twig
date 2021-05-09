@@ -1,0 +1,32 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ parent() }} | Orders{% endblock %}
+
+{% block body %}
+    <h4>All Orders</h4>
+    <table class="table table-hover table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Order #</th>
+            <th>Buyer</th>
+            <th>Address</th>
+            <th>Country</th>
+            <th>Date</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for order in orders %}
+            <tr>
+                <td>{{ order.orderNum }}</td>
+                <td><a href="">{{ order.buyer }}</a></td>
+                <td>{{ order.shippingAddress }}</td>
+                <td><a href="">{{ order.country }}</a></td>
+                <td>{{ order.orderDate | date("d-m-Y") }}</td>
+                <td>{{ order.total | number_format }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+

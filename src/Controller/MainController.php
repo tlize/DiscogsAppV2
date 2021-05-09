@@ -3,8 +3,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Country;
 use App\Entity\Item;
 use App\Entity\Order;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,7 +26,38 @@ class MainController extends AbstractController
         $itemRepo = $this->getDoctrine()->getRepository(Item::class);
         $items = $itemRepo->findExpensiveSoldItems();
         $drafted = $itemRepo->findOutOfShop();
+        dump($drafted, $items);
         return $this->render("main/home.html.twig", ["orders" => $orders, "items" => $items, "drafted" => $drafted]);
     }
+
+//    /**
+//     * pour définir le pays d'après l'adresse
+//     * utilise la table Country
+//     * @Route("/setcountry", name = "setcountry")
+//     */
+//    public function setBuyerCountry(EntityManagerInterface $em)
+//    {
+//        $countryRepo = $this->getDoctrine()->getRepository(Country::class);
+//        $countries = $countryRepo->findAll();
+//
+//        $orderRepo = $this->getDoctrine()->getRepository(Order::class);
+//        $orders = $orderRepo->findAll();
+//
+//        foreach ($orders as $order) {
+//
+//            $address = $order->getShippingAddress();
+//            foreach ($countries as $country) {
+//                if (strpos($address, $country->getName()) != false) {
+//                    $buyerCountry = $country->getName();
+//                    $order->setCountry($buyerCountry);
+//                }
+//            }
+//
+//            $em->persist($order);
+//            $em->flush();
+//        }
+//
+//        return $this->render('main/test.html.twig', ["countries"=>$countries, "order"=>$order]);
+//    }
 
 }
