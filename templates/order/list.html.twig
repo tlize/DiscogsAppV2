@@ -9,9 +9,9 @@
         <tr>
             <th>Order #</th>
             <th>Buyer</th>
-            <th>Address</th>
             <th>Country</th>
             <th>Date</th>
+            <th>Nb of Items</th>
             <th>Total</th>
         </tr>
         </thead>
@@ -20,10 +20,11 @@
             <tr>
                 <td>{{ order.orderNum }}</td>
                 <td><a href="">{{ order.buyer }}</a></td>
-                <td>{{ order.shippingAddress }}</td>
                 <td><a href="">{{ order.country }}</a></td>
                 <td>{{ order.orderDate | date("d-m-Y") }}</td>
-                <td>{{ order.total | number_format }}</td>
+                <td>nb d'items...</td>
+{#                <td>{{ order.orderItems | length }}</td>#}
+                <td>€{{ order.total | number_format }}</td>
             </tr>
         {% endfor %}
         </tbody>

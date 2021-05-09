@@ -154,6 +154,27 @@ class Order
      */
     private $Country;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\OrderItem", mappedBy="order")
+     */
+    private $orderItems;
+
+    /**
+     * @return mixed
+     */
+    public function getOrderItems()
+    {
+        return $this->orderItems;
+    }
+
+    /**
+     * @param mixed $orderItems
+     */
+    public function setOrderItems($orderItems): void
+    {
+        $this->orderItems = $orderItems;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
