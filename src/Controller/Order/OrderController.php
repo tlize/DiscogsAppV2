@@ -16,15 +16,32 @@ class OrderController extends AbstractController
 {
 
     /**
-     * toutes les commandes
+     * all orders
      * @Route("/order", name = "order_list")
      */
     public function list(): Response
     {
         $orderRepo = $this->getDoctrine()->getRepository(Order::class);
-        $orders = $orderRepo->findBy([], ["orderDate" => "DESC"]);
-        return $this->render("order/list.html.twig", ["orders" => $orders]);
+        $orders = $orderRepo->findAllWithDetails();
+        return $this->render('order/list.html.twig', ['orders' => $orders]);
     }
 
+    /**
+     * order details
+     * @Route("/order/{id}", name = "order_detail",
+     *     requirements={"id" : "\d+"},
+     *     methods={"GET"})
+     */
+    public function detail($id, Request $request)
+    {
+        $orderRepo = $this->getDoctrine()->getRepository(Order::class);
+        $order = $orderRepo->find($id);
+
+        if (empty($order)) {
+            throw $this->createNotFoundException("Order not found !");
+        }
+
+        return $this->render('order/detail.html.twig', ['order'=>$order]);
+    }
 
 }

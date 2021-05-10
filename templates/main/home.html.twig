@@ -5,7 +5,8 @@
 {% block body %}
     <h4>Latest Orders</h4>
     {% for order in orders %}
-        <h5>{{ order.orderNum }} by {{ order.buyer }} ({{ order.country }}) on {{ order.orderDate | date("d-m-Y") }} :
+        <h5><a href="{{ path('order_detail', {'id' : order.id}) }}">{{ order.orderNum }}</a>  by {{ order.buyer }}
+            ({{ order.country }}) on {{ order.orderDate | date("d/m/Y") }} :
             {% if order.orderItems | length == 1 %}
                 1 item
             {% else %}

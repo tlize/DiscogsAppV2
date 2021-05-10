@@ -18,12 +18,11 @@
         <tbody>
         {% for order in orders %}
             <tr>
-                <td>{{ order.orderNum }}</td>
-                <td><a href="">{{ order.buyer }}</a></td>
+                <td><a href="{{ path('order_detail', {'id' : order.id}) }}">{{ order.orderNum }}</a></td>
+                <td>{{ order.buyer }}</td>
                 <td><a href="">{{ order.country }}</a></td>
                 <td>{{ order.orderDate | date("d-m-Y") }}</td>
-                <td>nb d'items...</td>
-{#                <td>{{ order.orderItems | length }}</td>#}
+                <td>{{ order.orderItems | length }}</td>
                 <td>€{{ order.total | number_format }}</td>
             </tr>
         {% endfor %}

@@ -19,9 +19,6 @@ class ItemRepository extends ServiceEntityRepository
         parent::__construct($registry, Item::class);
     }
 
-    // /**
-    //  * @return Item[] Returns an array of Item objects
-    //  */
     public function findSoldItems()
     {
         return $this->createQueryBuilder('i')
@@ -87,4 +84,5 @@ class ItemRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
 }

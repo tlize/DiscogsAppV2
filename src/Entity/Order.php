@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\OrderRepository;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -152,12 +153,17 @@ class Order
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Country;
+    private $country;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\OrderItem", mappedBy="order")
+     * @ORM\OneToMany(targetEntity="App\Entity\OrderItem", mappedBy="order", cascade="remove")
      */
     private $orderItems;
+
+    public function __construct()
+    {
+        $this->orderItems = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -494,12 +500,12 @@ class Order
 
     public function getCountry(): ?string
     {
-        return $this->Country;
+        return $this->country;
     }
 
     public function setCountry(string $Country): self
     {
-        $this->Country = $Country;
+        $this->country = $Country;
 
         return $this;
     }

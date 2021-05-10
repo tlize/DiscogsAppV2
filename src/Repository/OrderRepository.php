@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Order;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,7 +20,6 @@ class OrderRepository extends ServiceEntityRepository
         parent::__construct($registry, Order::class);
     }
 
-
     public function getLatestOrders()
     {
         return $this->createQueryBuilder('o')
@@ -28,6 +28,16 @@ class OrderRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+    public function findAllWithDetails()
+    {
+        $query = $this->createQueryBuilder('o')
+            ->orderBy('o.orderDate', 'DESC')
+            ->join('o.orderItems', 'oi')
+            ->addSelect('oi')
+            ->getQuery();
+            return new Paginator($query);
     }
 
 }

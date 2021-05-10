@@ -14,40 +14,29 @@ class ItemType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('listingId', IntegerType::class, [
+            ->add('listingId',
+                IntegerType::class, [
                 'label' => 'Listing Id'
             ])
-            ->add('artist', TextType::class, [
+            ->add('artist',
+                TextType::class, [
                 'label' => 'Band or Artist'
             ])
             ->add('title')
             ->add('label')
             ->add('catno')
             ->add('format')
-            ->add('releaseId', IntegerType::class, [
+            ->add('releaseId',
+                IntegerType::class, [
                 'label' => 'Release Id'
             ])
-//            ->add('status')
             ->add('price'
                 , IntegerType::class
-//                , [
-//                'attr' => [
-//                    'placeholder' => 666
-//                ]
-//            ]
             )
-//            ->add('listed')
-//            ->add('comments')
-            ->add('mediaCondition', TextType::class, [
+            ->add('mediaCondition',
+                TextType::class, [
                 'label' => 'Media Condition'
             ])
-//            ->add('sleeveCondition')
-//            ->add('acceptOffer')
-//            ->add('externalId')
-//            ->add('weight')
-//            ->add('formatQuantity')
-//            ->add('flatShipping')
-//            ->add('location')
         ;
     }
 

@@ -16,19 +16,18 @@ class ItemController extends AbstractController
 {
 
     /**
-     * tous les items
+     * all items
      * @Route("/item", name = "item_list")
      */
     public function list(): Response
     {
         $itemRepo = $this->getDoctrine()->getRepository(Item::class);
-//        $items = $itemRepo->findExpensiveSoldItems();
         $items = $itemRepo->findBy([], ["artist" => "ASC"]);
         return $this->render("item/list.html.twig", ["items" => $items]);
     }
 
     /**
-     * détails d'un item
+     * item details
      * @Route("/item/{id}", name = "item_detail",
      *     requirements={"id" : "\d+"},
      *     methods={"GET"})
@@ -38,12 +37,11 @@ class ItemController extends AbstractController
         $itemRepo = $this->getDoctrine()->getRepository(Item::class);
         $item = $itemRepo->find($id);
 
-
         return $this->render("item/detail.html.twig", ["item" => $item]);
     }
 
     /**
-     * ajout d'un item
+     * add an item
      * @Route("/item/add", name="item_add")
      * @param EntityManagerInterface $em
      * @param Request $request
@@ -51,7 +49,6 @@ class ItemController extends AbstractController
      */
     public function add(EntityManagerInterface $em, Request $request): Response
     {
-
         $item = new Item();
         $item->setStatus('For sale');
         $item->setListed(new DateTime());
@@ -73,7 +70,7 @@ class ItemController extends AbstractController
     }
 
     /**
-     * tous les items vendus
+     * all sold items
      * @Route("/item/sold", name = "item_sold")
      */
     public function soldItems(): Response
@@ -84,7 +81,7 @@ class ItemController extends AbstractController
     }
 
     /**
-     * tous les items en vente
+     * all items for sale
      * @Route("/item/forsale", name = "item_for_sale")
      */
     public function itemsForSale(): Response

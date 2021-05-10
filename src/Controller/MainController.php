@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 class MainController extends AbstractController
 {
     /**
-     * page d'accueil
+     * homepage
      * @Route("/", name = "home")
      */
     public function home(): Response
@@ -32,8 +32,8 @@ class MainController extends AbstractController
     }
 
 //    /**
-//     * pour définir le pays d'après l'adresse
-//     * utilise la table Country
+//     * for setting country from shipping address
+//     * using Country table
 //     * @Route("/setcountry", name = "setcountry")
 //     */
 //    public function setBuyerCountry(EntityManagerInterface $em)

@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class DetailController extends AbstractController
 {
     /**
-     * détails d'un band/artist
+     * band/artist details
      * @Route("artist/{artist}", name = "artist_detail",
      *  requirements={"artist" : ".*"},
      *  methods={"GET"})
@@ -24,7 +24,7 @@ class DetailController extends AbstractController
     }
 
     /**
-     * détails d'un label
+     * label details
      * @Route("label/{label}", name = "label_detail",
      *  requirements={"label" : ".*"},
      *  methods={"GET"})
