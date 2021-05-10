@@ -20,6 +20,7 @@ class OrderRepository extends ServiceEntityRepository
         parent::__construct($registry, Order::class);
     }
 
+
     public function getLatestOrders()
     {
         return $this->createQueryBuilder('o')
@@ -37,7 +38,7 @@ class OrderRepository extends ServiceEntityRepository
             ->join('o.orderItems', 'oi')
             ->addSelect('oi')
             ->getQuery();
-            return new Paginator($query);
+        return new Paginator($query);
     }
 
 }

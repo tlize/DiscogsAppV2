@@ -1,6 +1,6 @@
 {% extends "base.html.twig" %}
 
-{% block title %}{{ parent() }} | Sold Items{% endblock %}
+{% block title %}{{ parent() }} | Sold{% endblock %}
 
 {% block body %}
     <h4><a href="{{ path('item_list') }}">All Items</a> / <a href="{{ path('item_for_sale') }}">Items For Sale</a> / Sold items</h4>
@@ -17,9 +17,9 @@
         <tbody>
             {% for item in items %}
                 <tr>
-                    <td>{{ item.artist }}</td>
+                    <td><a href="{{ path('artist_detail', {'artist': item.artist}) }}">{{ item.artist }}</a></td>
                     <td><a href="{{ path('item_detail', {'id': item.id}) }}">{{ item.title }}</a></td>
-                    <td>{{ item.label }}</td>
+                    <td><a href="{{ path('label_detail', {'label': item.label}) }}">{{ item.label }}</a></td>
                     <td>{{ item.format }}</td>
                     <td>€ {{ item.price | number_format}}</td>
                 </tr>

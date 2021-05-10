@@ -30,9 +30,9 @@
             {% for item in items %}
                 <tr>
                     <td>{{ item.title }}</td>
-                    <td>{{ item.artist }}</td>
+                    <td><a href="{{ path('artist_detail', {'artist': item.artist}) }}">{{ item.artist }}</a></td>
                     <td>{{ item.format }}</td>
-                    <td>{{ item.label }}</td>
+                    <td><a href="{{ path('label_detail', {'label': item.label}) }}">{{ item.label }}</a></td>
                     <td>€{{ item.price| number_format }}</td>
                 </tr>
             {% endfor %}
@@ -59,9 +59,9 @@
                     <tr>
                         <td>{{ draft.listingId }}</td>
                         <td>{{ draft.catno }}</td>
-                        <td>{{ draft.artist }}</td>
+                        <td><a href="{{ path('artist_detail', {'artist': draft.artist}) }}">{{ draft.artist }}</a></td>
                         <td>{{ draft.title }}</td>
-                        <td>{{ draft.label }}</td>
+                        <td><a href="{{ path('label_detail', {'label': draft.label}) }}">{{ draft.label }}</a></td>
                         <td>{{ draft.format }}</td>
                         <td>€{{ draft.price | number_format }}</td>
                         <td>{{ draft.status }}</td>
