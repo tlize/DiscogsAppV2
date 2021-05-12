@@ -4,16 +4,22 @@
 
     <h4>Order # {{ order.orderNum }}</h4>
     {% if order.orderItems | length == 1 %}
-        <h5>{{ order.orderItems[0].description }} : €{{ order.orderItems[0].itemPrice | number_format }}</h5>
+        <h5>
+            {{ order.orderItems[0].description }} : €{{ order.orderItems[0].itemPrice | number_format }}
+        </h5>
     {% else %}
         <ul>
             {% for orderItem in order.orderItems %}
                 <li>
-                    <h5>{{ orderItem.description }} : €{{ orderItem.itemPrice | number_format }}</h5>
+                    <h5>
+                        {{ orderItem.description }} : €{{ orderItem.itemPrice | number_format }}
+                    </h5>
                 </li>
             {% endfor %}
         </ul>
-        <h5>Total : €{{ order.total | number_format }}</h5>
+        <h5>
+            Total : €{{ order.total | number_format }}
+        </h5>
     {% endif %}
 
 {% endblock %}

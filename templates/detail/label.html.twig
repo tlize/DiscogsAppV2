@@ -17,8 +17,16 @@
         <tbody>
             {% for item in items %}
                 <tr>
-                    <td><a href="{{ path('artist_detail', {'artist': item.artist}) }}">{{ item.artist }}</a></td>
-                    <td><a href="{{ path('item_detail', {'id': item.id}) }}">{{ item.title }}</a></td>
+                    <td>
+                        <a href="{{ path('artist_detail', {'artist': item.artist}) }}">
+                            {{ item.artist }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ path('item_detail', {'id': item.id}) }}">
+                            {{ item.title }}
+                        </a>
+                    </td>
                     <td>{{ item.format }}</td>
                     <td>{{ item.status }}</td>
                     <td>€ {{ item.price | number_format}}</td>
