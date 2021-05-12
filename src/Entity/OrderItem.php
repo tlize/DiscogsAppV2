@@ -182,10 +182,12 @@ class OrderItem
      */
     private $location;
 
+
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Order", inversedBy="orderItems")
      */
     private $order;
+
 
     /**
      * @return mixed
@@ -202,6 +204,7 @@ class OrderItem
     {
         $this->order = $order;
     }
+
 
     public function getId(): ?int
     {

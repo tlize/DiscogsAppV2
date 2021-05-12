@@ -1,18 +1,24 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
     <h4>Order # {{ order.orderNum }}</h4>
-    <ul>
-        {% for orderItem in order.orderItems %}
-            <li>
-                <h5>{{ orderItem.description }} : €{{ orderItem.itemPrice | number_format }}</h5>
-            </li>
-        {% endfor %}
-    </ul>
-    <h5>Total : €{{ order.total | number_format }}</h5>
+    {% if order.orderItems | length == 1 %}
+        <h5>{{ order.orderItems[0].description }} : €{{ order.orderItems[0].itemPrice | number_format }}</h5>
+    {% else %}
+        <ul>
+            {% for orderItem in order.orderItems %}
+                <li>
+                    <h5>{{ orderItem.description }} : €{{ orderItem.itemPrice | number_format }}</h5>
+                </li>
+            {% endfor %}
+        </ul>
+        <h5>Total : €{{ order.total | number_format }}</h5>
+    {% endif %}
+
 {% endblock %}
 
 {% block title %}
-    {{ parent() }} | Order # {{ order.orderNum }}
+    {{ parent() }} | Order {{ order.orderNum }}
 {% endblock %}
 

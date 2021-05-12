@@ -58,6 +58,8 @@ class MainController extends AbstractController
 //            $em->flush();
 //        }
 //
+//        $this->addFlash('success', 'cool, all countries are set !');
+//
 //        return $this->render('main/test.html.twig', ["countries"=>$countries, "order"=>$order]);
 //    }
 

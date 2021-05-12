@@ -155,6 +155,7 @@ class Order
      */
     private $country;
 
+
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\OrderItem", mappedBy="order", cascade="remove")
      */
@@ -180,6 +181,7 @@ class Order
     {
         $this->orderItems = $orderItems;
     }
+
 
     public function getId(): ?int
     {
