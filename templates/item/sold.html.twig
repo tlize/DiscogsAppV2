@@ -11,25 +11,25 @@
         <a href="{{ path('item_for_sale') }}">
             Items For Sale
         </a>
-        / Sold items
+        / <span>Sold items</span>
     </h4>
     <table class="table table-hover table-striped">
         <thead class="thead-dark">
             <tr>
                 <th>
-                    Band / Artist
+                    {{ knp_pagination_sortable(items, 'Band / Artist', 'i.artist') }}
                 </th>
                 <th>
-                    Title
+                    {{ knp_pagination_sortable(items, 'Title', 'i.title') }}
                 </th>
                 <th>
-                    Label
+                    {{ knp_pagination_sortable(items, 'Label', 'i.label') }}
                 </th>
                 <th>
-                    Format
+                    {{ knp_pagination_sortable(items, 'Format', 'i.format') }}
                 </th>
                 <th>
-                    Price
+                    {{ knp_pagination_sortable(items, 'Price', 'i.price') }}
                 </th>
             </tr>
         </thead>
@@ -54,9 +54,12 @@
                     <td>
                         {{ item.format }}</td>
                     <td>
-                        € {{ item.price | number_format}}</td>
+                        €{{ item.price | number_format}}</td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+    <div class="pagination">
+        {{ knp_pagination_render(items) }}
+    </div>
 {% endblock %}

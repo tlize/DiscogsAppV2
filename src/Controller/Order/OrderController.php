@@ -7,6 +7,7 @@ use App\Entity\Order;
 //use App\Form\OrderType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,10 +20,16 @@ class OrderController extends AbstractController
      * all orders
      * @Route("/order", name = "order_list")
      */
-    public function list(): Response
+    public function list(PaginatorInterface $paginator,Request $request): Response
     {
         $orderRepo = $this->getDoctrine()->getRepository(Order::class);
-        $orders = $orderRepo->findAllWithDetails();
+        $query = $orderRepo->paginateAllWithDetails();
+
+        $orders = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            100
+        );
         return $this->render('order/list.html.twig', ['orders' => $orders]);
     }
 
@@ -32,7 +39,7 @@ class OrderController extends AbstractController
      *     requirements={"id" : "\d+"},
      *     methods={"GET"})
      */
-    public function detail($id, Request $request)
+    public function detail($id): Response
     {
         $orderRepo = $this->getDoctrine()->getRepository(Order::class);
         $order = $orderRepo->find($id);

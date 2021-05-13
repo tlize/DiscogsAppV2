@@ -7,6 +7,7 @@ use App\Entity\Item;
 use App\Form\ItemType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,17 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ItemController extends AbstractController
 {
-
-    /**
-     * all items
-     * @Route("/item", name = "item_list")
-     */
-    public function list(): Response
-    {
-        $itemRepo = $this->getDoctrine()->getRepository(Item::class);
-        $items = $itemRepo->findBy([], ["artist" => "ASC"]);
-        return $this->render("item/list.html.twig", ["items" => $items]);
-    }
 
     /**
      * item details
@@ -73,10 +63,16 @@ class ItemController extends AbstractController
      * all sold items
      * @Route("/item/sold", name = "item_sold")
      */
-    public function soldItems(): Response
+    public function soldItems(PaginatorInterface $paginator,Request $request): Response
     {
         $itemRepo = $this->getDoctrine()->getRepository(Item::class);
-        $items = $itemRepo->findSoldItems();
+        $query = $itemRepo->paginateSoldItems();
+
+        $items = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            100
+        );
         return $this->render("item/sold.html.twig", ["items" => $items]);
     }
 
@@ -84,10 +80,33 @@ class ItemController extends AbstractController
      * all items for sale
      * @Route("/item/forsale", name = "item_for_sale")
      */
-    public function itemsForSale(): Response
+    public function itemsForSale(PaginatorInterface $paginator,Request $request): Response
     {
         $itemRepo = $this->getDoctrine()->getRepository(Item::class);
-        $items = $itemRepo->findItemsForSale();
+        $query = $itemRepo->paginateItemsForSale();
+
+        $items = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            100
+        );
         return $this->render("item/forsale.html.twig", ["items" => $items]);
+    }
+
+    /**
+     * all items
+     * @Route("/item", name = "item_list")
+     */
+    public function itemList(PaginatorInterface $paginator,Request $request): Response
+    {
+        $itemRepo = $this->getDoctrine()->getRepository(Item::class);
+        $query = $itemRepo->paginateItems();
+
+        $items = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            100
+        );
+        return $this->render('item/list.html.twig', ['items'=>$items]);
     }
 }

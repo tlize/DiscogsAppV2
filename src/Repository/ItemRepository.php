@@ -4,7 +4,11 @@ namespace App\Repository;
 
 use App\Entity\Item;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @method Item|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,39 +23,6 @@ class ItemRepository extends ServiceEntityRepository
         parent::__construct($registry, Item::class);
     }
 
-    public function findSoldItems()
-    {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.status = :sold')
-            ->setParameter('sold', 'Sold')
-            ->orderBy('i.artist', 'ASC')
-            ->getQuery()
-            ->getResult()
-            ;
-    }
-
-    public function findItemsForSale()
-    {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.status = :forsale')
-            ->setParameter('forsale', 'For Sale')
-            ->orderBy('i.artist', 'ASC')
-            ->getQuery()
-            ->getResult()
-            ;
-    }
-
-    public function findExpensiveSoldItems()
-    {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.status = :status')
-            ->setParameter('status', 'Sold')
-            ->orderBy('i.price', 'DESC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult();
-    }
-
     public function findOutOfShop()
     {
         return $this->createQueryBuilder('i')
@@ -64,6 +35,7 @@ class ItemRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+
 
     public function findArtistDetail($artist)
     {
@@ -85,4 +57,25 @@ class ItemRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function  paginateItems(): QueryBuilder
+    {
+        return $this->createQueryBuilder('i')
+            ->orderBy('i.artist', 'ASC');
+    }
+
+    public function paginateSoldItems()
+    {
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.status = :sold')
+            ->setParameter('sold', 'Sold')
+            ->orderBy('i.artist', 'ASC');
+    }
+
+    public function paginateItemsForSale()
+    {
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.status = :forsale')
+            ->setParameter('forsale', 'For Sale')
+            ->orderBy('i.artist', 'ASC');
+    }
 }

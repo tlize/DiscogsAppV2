@@ -25,10 +25,9 @@ class MainController extends AbstractController
         $orders = $orderRepo->getLatestOrders();
 
         $itemRepo = $this->getDoctrine()->getRepository(Item::class);
-        $items = $itemRepo->findExpensiveSoldItems();
         $drafted = $itemRepo->findOutOfShop();
 
-        return $this->render("main/home.html.twig", ["orders" => $orders, "items" => $items, "drafted" => $drafted]);
+        return $this->render("main/home.html.twig", ["orders" => $orders, "drafted" => $drafted]);
     }
 
 //    /**

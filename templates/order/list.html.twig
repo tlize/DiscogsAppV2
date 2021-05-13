@@ -10,22 +10,22 @@
         <thead class="thead-dark">
         <tr>
             <th>
-                Order #
+                {{ knp_pagination_sortable(orders, 'Order #', 'o.orderNum') }}
             </th>
             <th>
-                Buyer
+                {{ knp_pagination_sortable(orders, 'Buyer', 'o.buyer') }}
             </th>
             <th>
-                Country
+                {{ knp_pagination_sortable(orders, 'Country', 'o.country') }}
             </th>
             <th>
-                Date
+                {{ knp_pagination_sortable(orders, 'Date Created', 'o.orderDate') }}
             </th>
             <th>
                 Nb of Items
             </th>
             <th>
-                Total
+                {{ knp_pagination_sortable(orders, 'Total', 'o.total') }}
             </th>
         </tr>
         </thead>
@@ -58,5 +58,7 @@
         {% endfor %}
         </tbody>
     </table>
+    <div class="pagination">
+        {{ knp_pagination_render(orders) }}
+    </div>
 {% endblock %}
-

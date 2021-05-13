@@ -31,14 +31,13 @@ class OrderRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findAllWithDetails()
+    public function paginateAllWithDetails()
     {
-        $query = $this->createQueryBuilder('o')
+        return $this->createQueryBuilder('o')
             ->orderBy('o.orderDate', 'DESC')
             ->join('o.orderItems', 'oi')
             ->addSelect('oi')
-            ->getQuery();
-        return new Paginator($query);
+            ;
     }
 
 }

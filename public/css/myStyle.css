@@ -23,8 +23,7 @@ footer {
     left: 0;
     bottom: 0;
     width: 100%;
-    background-color: #343a40;
-    color: #ffffff;
+    background-color: rgba(0, 0, 0, 0.05);
     text-align: center;
 }
 
@@ -188,8 +187,8 @@ a.dropdown-item:hover {
 }
 
 
-/* specificity : 1.0.2*/
-#allUsers p span {
+/* specificity : 0.0.2, 1.0.2*/
+h4 span, #allUsers p span {
     font-weight: bold;
 }
 
