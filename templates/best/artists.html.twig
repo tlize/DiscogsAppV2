@@ -1,0 +1,27 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ parent() }} | Most Valuable Artists{% endblock %}
+
+{% block body %}
+
+        <h4>Best Selling Bands/ Artists</h4>
+
+    {% for bestArtist in bestArtists %}
+        <p>
+            <span>
+                <a href="{{ path('artist_detail', {'artist': bestArtist.artist}) }}">
+                    {{ bestArtist.artist }}
+                </a>
+            </span>
+            :
+            {% if bestArtist.nbItems == 1 %}
+                1 item
+            {% else %}
+                {{ bestArtist.nbItems }} items
+            {% endif %}
+            , €{{ bestArtist.total | number_format }}
+        </p>
+    {% endfor %}
+
+{% endblock %}
+

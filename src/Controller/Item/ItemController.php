@@ -109,4 +109,28 @@ class ItemController extends AbstractController
         );
         return $this->render('item/list.html.twig', ['items'=>$items]);
     }
+
+    /**
+     * best selling artists
+     * @Route("/artists", name = "best_artists_list")
+     */
+    public function bestArtists(): Response
+    {
+        $itemRepo = $this->getDoctrine()->getRepository(Item::class);
+        $bestArtists = $itemRepo->findBestArtists();
+
+        return $this->render('best/artists.html.twig', ['bestArtists'=>$bestArtists]);
+    }
+
+    /**
+     * best selling labels
+     * @Route("/labels", name = "best_labels_list")
+     */
+    public function bestLabels(): Response
+    {
+        $itemRepo = $this->getDoctrine()->getRepository(Item::class);
+        $bestLabels = $itemRepo->findBestLabels();
+
+        return $this->render('best/labels.html.twig', ['bestLabels'=>$bestLabels]);
+    }
 }

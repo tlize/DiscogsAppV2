@@ -25,15 +25,19 @@ footer {
     width: 100%;
     background-color: rgba(0, 0, 0, 0.05);
     text-align: center;
+    opacity: .5;
 }
 
+
+/* specificity : 0.0.2, 0.0.2*/
+h4 span, p span {
+    font-weight: bold;
+}
 
 /* specificity : 0.0.1, 0.0.2*/
 input, footer input {
     font-size: large;
 }
-
-
 /* specificity : 0.1.0*/
 .flash
 {
@@ -43,29 +47,24 @@ input, footer input {
     font-weight: bold;
     color: #FFF;
 }
-
 /* specificity : 0.1.0*/
 .flash-success
 {
     background-color: #6b9311;
 }
-
 /* specificity : 0.1.0*/
 .flash-error
 {
     background-color: #AA3333;
 }
-
 /* specificity : 0.1.0*/
 .navbar-dark {
     color: #ffffff;
 }
-
 /* specificity : 0.1.0*/
 .emLink {
     color: #0056b3;
 }
-
 /* specificity : 0.1.0*/
 .background {
     background-image: url("../img/records.jpg");
@@ -78,20 +77,16 @@ input, footer input {
     opacity: .5;
     z-index: -1;
 }
-
-
 /* specificity : 0.0.1, 0.0.2, 0.0.2, 0.0.2, 0.1.1*/
 a, h5 a, table a, footer a, .navbar a {
     text-decoration: none;
     color: inherit;
 }
-
 /* specificity : 0.1.1*/
 .thead-dark tr {
     background: #343A40FF;
     color: #ffffff;
 }
-
 /* specificity : 0.1.1*/
 input[type=submit] {
     width: 100%;
@@ -101,43 +96,32 @@ input[type=submit] {
     border-radius: 4px;
     cursor: pointer;
 }
-
-
 /* specificity : 0.1.2*/
 th textarea:hover {
     cursor: pointer;
 }
-
-
 /* specificity : 0.2.0*/
 .dropdown-menu.show {
     background-color: #343a40;
     color: #ffffff;
 }
-
 /* specificity : 0.2.0, 0.2.0*/
 .btn-info:focus, .btn:focus {
     box-shadow: none;
 }
-
-
 /* specificity : 0.1.1, 0.1.2, 0.1.2, 0.1.2, 0.2.1*/
 a:hover, h5 a:hover, table a:hover, footer a:hover, .navbar a:hover {
     text-decoration: underline;
     color: inherit;
 }
-
 /* specificity : 0.2.1*/
 input[type=submit]:hover {
     background-color: #0056b3;
 }
-
 /* specificity : 0.2.1*/
 a.dropdown-item:hover {
     background-color: #343a40;
 }
-
-
 /* specificity : 0.2.2*/
 .table-hover tr:hover td {
     background-color: #c8c7c7;
@@ -184,12 +168,6 @@ a.dropdown-item:hover {
 /* specificity : 1.0.1, 1.0.1*/
 #setSold table, #newItem input {
     margin-bottom: 3.5em;
-}
-
-
-/* specificity : 0.0.2, 1.0.2*/
-h4 span, #allUsers p span {
-    font-weight: bold;
 }
 
 

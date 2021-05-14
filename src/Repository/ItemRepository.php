@@ -4,11 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Item;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @method Item|null find($id, $lockMode = null, $lockVersion = null)
@@ -77,5 +74,35 @@ class ItemRepository extends ServiceEntityRepository
             ->andWhere('i.status = :forsale')
             ->setParameter('forsale', 'For Sale')
             ->orderBy('i.artist', 'ASC');
+    }
+
+    public function findBestArtists()
+    {
+        $em = $this->getEntityManager();
+        $dql = "
+            SELECT i.artist, COUNT(i.listingId) AS nbItems, SUM(i.price) AS total
+                FROM App\Entity\Item i 
+                WHERE i.status = 'Sold' 
+                GROUP BY i.artist
+                ORDER BY total DESC 
+        ";
+        $query = $em->createQuery($dql);
+        $bestArtists = $query->getResult();
+        return $bestArtists;
+    }
+
+    public function findBestLabels()
+    {
+        $em = $this->getEntityManager();
+        $dql = "
+            SELECT i.label, COUNT(i.listingId) AS nbItems, SUM(i.price) AS total
+                FROM App\Entity\Item i 
+                WHERE i.status = 'Sold' 
+                GROUP BY i.label
+                ORDER BY total DESC 
+        ";
+        $query = $em->createQuery($dql);
+        $bestLabels = $query->getResult();
+        return $bestLabels;
     }
 }

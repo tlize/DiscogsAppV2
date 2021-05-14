@@ -4,9 +4,6 @@
 namespace App\Controller\Order;
 
 use App\Entity\Order;
-//use App\Form\OrderType;
-use DateTime;
-use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +25,7 @@ class OrderController extends AbstractController
         $orders = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
-            100
+            20
         );
         return $this->render('order/list.html.twig', ['orders' => $orders]);
     }
