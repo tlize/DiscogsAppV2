@@ -1,7 +1,55 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {{ form(orderForm) }}
+    <h4>Items in new order :</h4>
+    <ul>
+        {% for orderItem in orderItems %}
+            <li>
+                <h4>{{ orderItem.description }} : €{{ orderItem.itemPrice }}</h4>
+            </li>
+        {% endfor %}
+    </ul>
+    <h4>Total : €{{ total }}</h4>
+
+    {{ form_start(orderForm) }}
+    <br>
+    <div class="row">
+        <div class="col-lg-8 container-fluid">
+            <div class="row">
+                <div class="col-lg-2">
+                    {{ form_label(orderForm.buyer) }}
+                </div>
+                <div class="col-lg-10">
+                    {{ form_widget(orderForm.buyer) }}
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-lg-2">
+                    {{ form_label(orderForm.orderNum) }}
+                </div>
+                <div class="col-lg-10">
+                    {{ form_widget(orderForm.orderNum) }}
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-lg-2">
+                    {{ form_label(orderForm.shippingAddress) }}
+                </div>
+                <div class="col-lg-10">
+                    {{ form_widget(orderForm.shippingAddress) }}
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <button class="btn btn-lg btn-primary" type="submit">Update !</button>
+            </div>
+            <br>
+        </div>
+    </div>
+    {{ form_end(orderForm) }}
+
 {% endblock %}
 
 {% block title %}

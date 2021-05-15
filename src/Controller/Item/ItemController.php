@@ -133,4 +133,16 @@ class ItemController extends AbstractController
 
         return $this->render('best/labels.html.twig', ['bestLabels'=>$bestLabels]);
     }
+
+    /**
+     * items to pick for new order
+     * @Route("/item/neworder", name = "items_new_order")
+     */
+    public function itemsInOrder(): Response
+    {
+        $itemRepo = $this->getDoctrine()->getRepository(Item::class);
+        $items = $itemRepo->findItemsForNewOrder();
+
+        return $this->render("item/neworder.html.twig", ["items" => $items]);
+    }
 }

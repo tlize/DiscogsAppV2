@@ -3,8 +3,13 @@
 
 namespace App\Controller\Order;
 
+use App\Entity\Country;
+use App\Entity\Item;
 use App\Entity\Order;
+use App\Entity\OrderItem;
 use App\Form\OrderType;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,7 +32,7 @@ class OrderController extends AbstractController
         $orders = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
-            20
+            500
         );
         return $this->render('order/list.html.twig', ['orders' => $orders]);
     }
@@ -71,22 +76,82 @@ class OrderController extends AbstractController
      */
     public function add(EntityManagerInterface $em, Request $request): Response
     {
+
+        $orderItems = new ArrayCollection();
+        $total = 0;
+
+        if(isset($_POST['id']))
+        {
+            foreach ($_POST['id'] as $id)
+            {
+                $item = $em->getRepository(Item::class)->find($id);
+
+                $description = $item->getArtist() . " - " . $item->getTitle() . " (" . $item->getFormat() . ")";
+
+                $orderItem = new OrderItem();
+
+                $orderItem->setStatus('');
+                $orderItem->setOrderTotal(0);
+                $orderItem->setItemId($item->getListingId());
+                $orderItem->setItemPrice($item->getPrice());
+                $orderItem->setItemFee(0);
+                $orderItem->setDescription($description);
+                $orderItem->setReleaseId($item->getReleaseId());
+                $orderItem->setMediaCondition($item->getMediaCondition());
+                $orderItems->add($orderItem);
+
+                $total += $item->getPrice();
+            }
+        }
+
+
+
         $order = new Order();
-//        $item->setStatus('For sale');
-//        $item->setListed(new DateTime());
+        $order->setOrderDate(new DateTime());
+        $order->setOrderItems($orderItems);
+        $order->setTotal($total);
+
 
         $orderForm = $this->createForm(OrderType::class, $order);
 
         $orderForm->handleRequest($request);
-        if ($orderForm->isSubmitted() && $orderForm->isValid()) {
+        if ($orderForm->isSubmitted() && $orderForm->isValid())
+        {
+//            $em->persist($order);
+
+            $countryRepo = $this->getDoctrine()->getRepository(Country::class);
+            $countries = $countryRepo->findAll();
+
+            $address = $order->getShippingAddress();
+            foreach ($countries as $country)
+            {
+                if (strpos($address, $country->getName()) != false)
+                {
+                    $buyerCountry = $country->getName();
+                    $order->setCountry($buyerCountry);
+                }
+            }
+
             $em->persist($order);
             $em->flush();
 
-            $this->addFlash('success', 'Updated !');
+
+
+
+
+
+
+
+//            $em->flush();
+
+            $this->addFlash('success', 'One more order !');
+            return  $this->redirectToRoute('order_detail', ['id'=>$order->getId()]);
         }
 
         return $this->render('order/new.html.twig', [
-            'orderForm'=> $orderForm->createView()
+            'orderForm'=> $orderForm->createView(),
+            'orderItems'=>$orderItems,
+            'total'=>$total
         ]);
     }
 }

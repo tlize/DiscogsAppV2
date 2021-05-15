@@ -4,6 +4,9 @@ namespace App\Form;
 
 use App\Entity\Order;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -12,33 +15,25 @@ class OrderType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('buyer')
-            ->add('orderNum')
-            ->add('orderDate')
-            ->add('status')
-            ->add('total')
-            ->add('shipping')
-            ->add('fee')
-            ->add('tax')
-            ->add('taxedAmount')
-            ->add('taxJurisdiction')
-            ->add('taxResponsibleParty')
-            ->add('invoice')
-            ->add('ratingOfBuyer')
-            ->add('ratingOfSeller')
-            ->add('ratingOfBuyerDate')
-            ->add('ratingOfSellerDate')
-            ->add('commentAboutBuyer')
-            ->add('commentAboutSeller')
-            ->add('archived')
-            ->add('shippingAddress')
-            ->add('buyerExtra')
-            ->add('lastActivity')
-            ->add('currency')
-            ->add('fromOffer')
-            ->add('offerOriginalPrice')
-            ->add('shippingMethod')
-            ->add('country')
+            ->add('buyer', TextType::class, [
+                'attr'=>[
+                    'placeholder'=>'Buyer Username'
+                ]
+            ])
+            ->add('orderNum', IntegerType::class, [
+                'label'=>'Order #',
+                'attr'=>[
+                    'placeholder'=>'number after the dash'
+                ]
+
+            ])
+            ->add('shippingAddress',
+                TextareaType::class, [
+                    'label' => 'Buyer Info',
+                    'attr'=>[
+                        'placeholder'=>'Buyer shipping address, email...'
+                    ]
+                ])
         ;
     }
 

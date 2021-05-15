@@ -36,36 +36,38 @@ class MainController extends AbstractController
         return $this->render("main/home.html.twig", ["orders" => $orders, "drafted" => $drafted]);
     }
 
-//    /**
-//     * for setting country from shipping address
-//     * using Country table
-//     * @Route("/setcountry", name = "setcountry")
-//     */
-//    public function setBuyerCountry(EntityManagerInterface $em)
-//    {
-//        $countryRepo = $this->getDoctrine()->getRepository(Country::class);
-//        $countries = $countryRepo->findAll();
-//
-//        $orderRepo = $this->getDoctrine()->getRepository(Order::class);
-//        $orders = $orderRepo->findAll();
-//
-//        foreach ($orders as $order) {
-//
-//            $address = $order->getShippingAddress();
-//            foreach ($countries as $country) {
-//                if (strpos($address, $country->getName()) != false) {
-//                    $buyerCountry = $country->getName();
-//                    $order->setCountry($buyerCountry);
-//                }
-//            }
-//
-//            $em->persist($order);
-//            $em->flush();
-//        }
-//
-//        $this->addFlash('success', 'cool, all countries are set !');
-//
-//        return $this->render('main/test.html.twig', ["countries"=>$countries, "order"=>$order]);
-//    }
+    /**
+     * for setting country from shipping address
+     * using Country table
+     * @Route("/setcountry", name = "setcountry")
+     */
+    public function setBuyerCountry(EntityManagerInterface $em)
+    {
+        $countryRepo = $this->getDoctrine()->getRepository(Country::class);
+        $countries = $countryRepo->findAll();
+
+        $orderRepo = $this->getDoctrine()->getRepository(Order::class);
+        $orders = $orderRepo->findAll();
+
+        foreach ($orders as $order)
+        {
+
+            $address = $order->getShippingAddress();
+            foreach ($countries as $country)
+            {
+                if (strpos($address, $country->getName()) != false) {
+                    $buyerCountry = $country->getName();
+                    $order->setCountry($buyerCountry);
+                }
+            }
+
+            $em->persist($order);
+            $em->flush();
+        }
+
+        $this->addFlash('success', 'cool, all countries are set !');
+
+        return $this->render('main/test.html.twig', ["countries"=>$countries, "order"=>$order]);
+    }
 
 }

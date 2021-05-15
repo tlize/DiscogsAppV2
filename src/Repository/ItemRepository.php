@@ -103,4 +103,14 @@ class ItemRepository extends ServiceEntityRepository
         $query = $em->createQuery($dql);
         return $query->getResult();
     }
+
+    public function findItemsForNewOrder()
+    {
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.status = :forsale')
+            ->setParameter('forsale', 'For Sale')
+            ->orderBy('i.artist', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

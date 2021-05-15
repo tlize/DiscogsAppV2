@@ -3,7 +3,7 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="{{ path('home') }}">
-                    Home
+                   <div>Home</div>
                 </a>
             </li>
             <li class="nav-item">
@@ -45,11 +45,14 @@
                 </div>
             </li>
         </ul>
-        <form class="d-flex" action="">
-            <button class="btn btn-primary" type="submit" value="newOrder">
-                New Order
-            </button>
-        </form>
+{#        <form class="d-flex" action="{{ path('items_new_order') }}">#}
+{#            <button class="btn btn-primary" type="submit">#}
+{#                New Order#}
+{#            </button>#}
+{#        </form>#}
+        <div class="d-flex">
+            <a class="emLink" href="{{ path('items_new_order') }}">New Order</a>
+        </div>
     </div>
 </nav>
 
