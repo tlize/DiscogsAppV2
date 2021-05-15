@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Entity\Order;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -38,6 +37,19 @@ class OrderRepository extends ServiceEntityRepository
             ->join('o.orderItems', 'oi')
             ->addSelect('oi')
             ;
+    }
+
+    public function findBestCountries()
+    {
+        $em = $this->getEntityManager();
+        $dql = "
+            SELECT o.country, COUNT(o.orderNum) AS nbOrders, SUM(o.total) AS totalAmount, AVG(o.total) AS avgAmount
+                FROM App\Entity\Order o 
+                GROUP BY o.country
+                ORDER BY nbOrders DESC 
+        ";
+        $query = $em->createQuery($dql);
+        return $query->getResult();
     }
 
 }

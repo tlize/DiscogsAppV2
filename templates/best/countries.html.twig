@@ -1,0 +1,25 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ parent() }} | Most Valuable Countries{% endblock %}
+
+{% block body %}
+
+    <h4>Best Buying Countries</h4>
+
+    {% for bestCountry in bestCountries %}
+        <p>
+            <span>
+                {{ bestCountry.country }}
+            </span>
+            :
+            {% if bestCountry.nbOrders == 1 %}
+                1 order
+            {% else %}
+                {{ bestCountry.nbOrders }} orders
+            {% endif %}
+            : €{{ bestCountry.totalAmount | number_format }} total (average : {{ bestCountry.avgAmount | number_format}})
+        </p>
+    {% endfor %}
+
+{% endblock %}
+

@@ -48,4 +48,15 @@ class OrderController extends AbstractController
         return $this->render('order/detail.html.twig', ['order'=>$order]);
     }
 
+    /**
+     * best buying countries
+     * @Route("/countries", name = "best_countries_list")
+     */
+    public function bestCountries(): Response
+    {
+        $itemRepo = $this->getDoctrine()->getRepository(Order::class);
+        $bestCountries = $itemRepo->findBestCountries();
+
+        return $this->render('best/countries.html.twig', ['bestCountries'=>$bestCountries]);
+    }
 }

@@ -87,8 +87,7 @@ class ItemRepository extends ServiceEntityRepository
                 ORDER BY total DESC 
         ";
         $query = $em->createQuery($dql);
-        $bestArtists = $query->getResult();
-        return $bestArtists;
+        return $query->getResult();
     }
 
     public function findBestLabels()
@@ -102,7 +101,6 @@ class ItemRepository extends ServiceEntityRepository
                 ORDER BY total DESC 
         ";
         $query = $em->createQuery($dql);
-        $bestLabels = $query->getResult();
-        return $bestLabels;
+        return $query->getResult();
     }
 }
