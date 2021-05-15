@@ -4,6 +4,8 @@
 namespace App\Controller\Order;
 
 use App\Entity\Order;
+use App\Form\OrderType;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,5 +60,33 @@ class OrderController extends AbstractController
         $bestCountries = $itemRepo->findBestCountries();
 
         return $this->render('best/countries.html.twig', ['bestCountries'=>$bestCountries]);
+    }
+
+    /**
+     * new order
+     * @Route("/order/new", name="order_new")
+     * @param EntityManagerInterface $em
+     * @param Request $request
+     * @return Response
+     */
+    public function add(EntityManagerInterface $em, Request $request): Response
+    {
+        $order = new Order();
+//        $item->setStatus('For sale');
+//        $item->setListed(new DateTime());
+
+        $orderForm = $this->createForm(OrderType::class, $order);
+
+        $orderForm->handleRequest($request);
+        if ($orderForm->isSubmitted() && $orderForm->isValid()) {
+            $em->persist($order);
+            $em->flush();
+
+            $this->addFlash('success', 'Updated !');
+        }
+
+        return $this->render('order/new.html.twig', [
+            'orderForm'=> $orderForm->createView()
+        ]);
     }
 }

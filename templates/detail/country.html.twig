@@ -1,0 +1,22 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ parent() }} | {{ orders[0].country }}{% endblock %}
+
+{% block body %}
+    <h4>All Orders from {{ orders[0].country }}</h4>
+    {% for order in orders %}
+        <h5>
+            <a href="{{ path('order_detail', {'id' : order.id}) }}">
+                {{ order.orderNum }}
+            </a>
+            by {{ order.buyer }} on {{ order.orderDate | date("d-m-Y") }} :
+            {% if order.orderItems | length == 1 %}
+                1 item
+            {% else %}
+                {{ order.orderItems | length }} items
+            {% endif %}
+            , €{{ order.total | number_format }}
+        </h5>
+    {% endfor %}{#    </table>#}
+{% endblock %}
+

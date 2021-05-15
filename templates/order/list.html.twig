@@ -12,7 +12,9 @@
                 <a href="{{ path('order_detail', {'id' : order.id}) }}">
                     {{ order.orderNum }}
                 </a>
-                by {{ order.buyer }} ({{ order.country }}) on {{ order.orderDate | date("d-m-Y") }} :
+                by {{ order.buyer }}
+                (<a href="{{ path('country_detail', {'country' : order.country}) }}">{{ order.country }}</a>)
+                on {{ order.orderDate | date("d-m-Y") }} :
                 {% if order.orderItems | length == 1 %}
                     1 item
                 {% else %}

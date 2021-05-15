@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Order;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -24,13 +25,15 @@ class OrderRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('o')
             ->orderBy('o.orderDate', 'DESC')
+            ->join('o.orderItems', 'oi')
+            ->addSelect('oi')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
 
-    public function paginateAllWithDetails()
+    public function paginateAllWithDetails(): QueryBuilder
     {
         return $this->createQueryBuilder('o')
             ->orderBy('o.orderDate', 'DESC')
@@ -50,6 +53,16 @@ class OrderRepository extends ServiceEntityRepository
         ";
         $query = $em->createQuery($dql);
         return $query->getResult();
+    }
+
+    public function findCountryDetail($country)
+    {
+        return $this->createQueryBuilder('o')
+            ->andWhere('o.country LIKE :country')
+            ->setParameter('country', $country)
+            ->orderBy('o.orderDate', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 
 }

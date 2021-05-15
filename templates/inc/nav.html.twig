@@ -21,14 +21,6 @@
                     Menu
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="">
-                        New order
-                    </a>
-                    <a class="dropdown-item" href="{{path('item_add') }}">
-                        New item
-                    </a>
-                    <div class="dropdown-divider">
-                    </div>
                     <a class="dropdown-item" href="{{path('best_artists_list') }}">
                         Best bands / artists
                     </a>
@@ -39,8 +31,11 @@
                         Best countries
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="?search">
-                        Search
+                    <a class="dropdown-item" href="{{ path('item_add') }}">
+                        New Item
+                    </a>
+                    <a class="dropdown-item" href="">
+                        Update Price
                     </a>
                     <div class="dropdown-divider">
                     </div>
@@ -50,11 +45,11 @@
                 </div>
             </li>
         </ul>
-        <form class="d-flex">
-            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-primary" type="submit">
-                Search
+        <form class="d-flex" action="">
+            <button class="btn btn-primary" type="submit" value="newOrder">
+                New Order
             </button>
         </form>
     </div>
 </nav>
+

@@ -7,6 +7,7 @@ use App\Entity\Country;
 use App\Entity\Item;
 use App\Entity\Order;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,10 +20,15 @@ class MainController extends AbstractController
      * homepage
      * @Route("/", name = "home")
      */
-    public function home(): Response
+    public function home(PaginatorInterface $paginator,Request $request): Response
     {
         $orderRepo = $this->getDoctrine()->getRepository(Order::class);
-        $orders = $orderRepo->getLatestOrders();
+        $query = $orderRepo->paginateAllWithDetails();
+
+        $orders = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1)
+        );
 
         $itemRepo = $this->getDoctrine()->getRepository(Item::class);
         $drafted = $itemRepo->findOutOfShop();

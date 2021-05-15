@@ -6,20 +6,20 @@
 
     <h4>Best Buying Countries</h4>
 
-    {% for bestCountry in bestCountries %}
+    {% for country in bestCountries %}
         <p>
             <span>
-                {{ bestCountry.country }}
+                <a href="{{ path('country_detail', {'country' : country.country}) }}">{{ country.country }}</a>
             </span>
             :
-            {% if bestCountry.nbOrders == 1 %}
+            {% if country.nbOrders == 1 %}
                 1 order
             {% else %}
-                {{ bestCountry.nbOrders }} orders
+                {{ country.nbOrders }} orders
             {% endif %}
-            : €{{ bestCountry.totalAmount | number_format }} total (average : {{ bestCountry.avgAmount | number_format}})
+            : €{{ country.totalAmount | number_format }} total
+            (average : {{ country.avgAmount | number_format}})
         </p>
     {% endfor %}
 
 {% endblock %}
-
