@@ -37,11 +37,21 @@ class MainController extends AbstractController
     }
 
     /**
+     * test
+     * @Route("/test", name = "test")
+     */
+    public function test(): Response
+    {
+
+        return $this->render("main/test.html.twig");
+    }
+
+    /**
      * for setting country from shipping address
      * using Country table
      * @Route("/setcountry", name = "setcountry")
      */
-    public function setBuyerCountry(EntityManagerInterface $em)
+    public function setBuyerCountry(EntityManagerInterface $em): Response
     {
         $countryRepo = $this->getDoctrine()->getRepository(Country::class);
         $countries = $countryRepo->findAll();
@@ -67,7 +77,7 @@ class MainController extends AbstractController
 
         $this->addFlash('success', 'cool, all countries are set !');
 
-        return $this->render('main/test.html.twig', ["countries"=>$countries, "order"=>$order]);
+        return $this->render('main/test.html.twig');
     }
 
 }

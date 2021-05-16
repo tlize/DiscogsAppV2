@@ -3,7 +3,6 @@
 
 namespace App\Controller\Order;
 
-use App\Entity\Country;
 use App\Entity\Item;
 use App\Entity\Order;
 use App\Entity\OrderItem;
@@ -77,14 +76,23 @@ class OrderController extends AbstractController
     public function add(EntityManagerInterface $em, Request $request): Response
     {
 
-        $orderItems = new ArrayCollection();
         $total = 0;
 
+        $order = new Order();
+        $order->setOrderDate(new DateTime());
+        $orderForm = $this->createForm(OrderType::class, $order);
+        $orderItems = new ArrayCollection();
+//        $em->persist($order);
+
+        // récupération des items, calcul du total
         if(isset($_POST['id']))
         {
             foreach ($_POST['id'] as $id)
             {
                 $item = $em->getRepository(Item::class)->find($id);
+                $item->setStatus('Sold');
+//                $em->persist($item);
+//                $em->flush();
 
                 $description = $item->getArtist() . " - " . $item->getTitle() . " (" . $item->getFormat() . ")";
 
@@ -98,57 +106,39 @@ class OrderController extends AbstractController
                 $orderItem->setDescription($description);
                 $orderItem->setReleaseId($item->getReleaseId());
                 $orderItem->setMediaCondition($item->getMediaCondition());
+
                 $orderItems->add($orderItem);
 
                 $total += $item->getPrice();
+
+                $order->setTotal($total);
+                $order->setOrderItems($orderItems);
             }
         }
 
 
+        $em->persist($order);
 
-        $order = new Order();
-        $order->setOrderDate(new DateTime());
-        $order->setOrderItems($orderItems);
-        $order->setTotal($total);
-
-
-        $orderForm = $this->createForm(OrderType::class, $order);
 
         $orderForm->handleRequest($request);
         if ($orderForm->isSubmitted() && $orderForm->isValid())
         {
-//            $em->persist($order);
-
-            $countryRepo = $this->getDoctrine()->getRepository(Country::class);
-            $countries = $countryRepo->findAll();
-
-            $address = $order->getShippingAddress();
-            foreach ($countries as $country)
-            {
-                if (strpos($address, $country->getName()) != false)
-                {
-                    $buyerCountry = $country->getName();
-                    $order->setCountry($buyerCountry);
-                }
-            }
-
-            $em->persist($order);
-            $em->flush();
 
 
-
-
-
-
-
-
-//            $em->flush();
-
-            $this->addFlash('success', 'One more order !');
-            return  $this->redirectToRoute('order_detail', ['id'=>$order->getId()]);
+            $coucou = 'coucou';
+//            $this->addFlash('success', 'One more order !');
+            dump($orderItems, $order, $total, $coucou);
+            return  $this->render('main/test.html.twig', [
+                'order'=>$order,
+                'total'=>$total,
+                'orderItems'=>$orderItems
+            ]);
+//            $this->redirectToRoute('order_detail', ['id'=>$order->getId()]);
         }
 
-        return $this->render('order/new.html.twig', [
+        dump($orderItems, $total, $order);
+
+        return $this->render('order/form.html.twig', [
             'orderForm'=> $orderForm->createView(),
             'orderItems'=>$orderItems,
             'total'=>$total
