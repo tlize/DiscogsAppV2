@@ -76,35 +76,20 @@ class OrderController extends AbstractController
      */
     public function add(Request $request): Response
     {
-
-//        $total = 0;
-
         $order = new Order();
-        $order->setOrderDate(new DateTime());
+
         $orderForm = $this->createForm(OrderType::class, $order);
-//        $orderItems = new ArrayCollection();
-//        $em->persist($order);
-
-
-//
-//
-//        $em->persist($order);
-//
-//
         $orderForm->handleRequest($request);
+
         if ($orderForm->isSubmitted() && $orderForm->isValid())
         {
             $itemRepo = $this->getDoctrine()->getRepository(Item::class);
             $items = $itemRepo->findItemsForNewOrder();
 
-
-            dump($order, $items);
             return  $this->render('item/neworder.html.twig', [
                 'order'=>$order, 'items'=>$items
             ]);
-//            $this->redirectToRoute('order_detail', ['id'=>$order->getId()]);
         }
-
 
         return $this->render('order/form.html.twig', [
             'orderForm'=> $orderForm->createView()
@@ -140,18 +125,18 @@ class OrderController extends AbstractController
 
                 $orderItem = new OrderItem();
 
-                $orderItem->setOrderNum($orderNum);
-                $orderItem->setBuyer($buyer);
-                $orderItem->setShippingAddress($shippingAddress);
-                $orderItem->setOrderDate(new DateTime());
-                $orderItem->setOrderTotal(0);
-                $orderItem->setStatus('');
-                $orderItem->setItemId($item->getListingId());
-                $orderItem->setItemPrice($item->getPrice());
-                $orderItem->setItemFee(0);
-                $orderItem->setDescription($description);
-                $orderItem->setReleaseId($item->getReleaseId());
-                $orderItem->setMediaCondition($item->getMediaCondition());
+                $orderItem->setOrderNum("1797099-" . $orderNum)
+                    ->setBuyer($buyer)
+                    ->setShippingAddress($shippingAddress)
+                    ->setOrderDate(new DateTime())
+                    ->setOrderTotal(0)
+                    ->setStatus('')
+                    ->setItemId($item->getListingId())
+                    ->setItemPrice($item->getPrice())
+                    ->setItemFee(0)
+                    ->setDescription($description)
+                    ->setReleaseId($item->getReleaseId())
+                    ->setMediaCondition($item->getMediaCondition());
 
                 $orderItems->add($orderItem);
 
@@ -160,20 +145,15 @@ class OrderController extends AbstractController
                 $total += $item->getPrice();
             }
 
-            foreach ($orderItems as $orderItem)
-            {
-                $orderItem->setOrderTotal($total);
-                $em->persist($orderItem);
-                $em->flush();
-            }
+
 
             $order = new Order();
-            $order->setOrderDate(new DateTime());
-            $order->setBuyer($buyer);
-            $order->setOrderNum("1797099-" . $orderNum);
-            $order->setShippingAddress($shippingAddress);
-            $order->setTotal($total);
-            $order->setOrderItems($orderItems);
+            $order->setOrderDate(new DateTime())
+                ->setBuyer($buyer)
+                ->setOrderNum("1797099-" . $orderNum)
+                ->setShippingAddress($shippingAddress)
+                ->setTotal($total)
+                ->setOrderItems($orderItems);
 
             $countryRepo = $this->getDoctrine()->getRepository(Country::class);
             $countries = $countryRepo->findAll();
@@ -188,13 +168,21 @@ class OrderController extends AbstractController
             $em->persist($order);
             $em->flush();
 
-            $this->addFlash('success', 'one more Order, Database updated !');
+            foreach ($orderItems as $orderItem)
+            {
+                $orderItem->setOrderTotal($total)
+                    ->setOrder($order);
+                $em->persist($orderItem);
+                $em->flush();
+            }
+
+            $this->addFlash('success', 'One more Order, Database updated !');
             return $this->redirectToRoute('order_detail', ['id'=>$order->getId()]);
         }
 
         else
         {
-            $this->addFlash('error', 'back to order please...');
+            $this->addFlash('error', 'Back to order please...');
             return $this->redirectToRoute('order_new');
         }
 
