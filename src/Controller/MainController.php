@@ -42,6 +42,7 @@ class MainController extends AbstractController
      */
     public function test(): Response
     {
+        dump($_POST);
 
         return $this->render("main/test.html.twig");
     }
