@@ -4,8 +4,7 @@ namespace App\Form;
 
 use App\Entity\Item;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,28 +14,64 @@ class ItemType extends AbstractType
     {
         $builder
             ->add('listingId',
-                IntegerType::class, [
-                'label' => 'Listing Id'
+                null, [
+                'label' => 'Listing Id',
             ])
             ->add('artist',
-                TextType::class, [
+                null, [
                 'label' => 'Band or Artist'
             ])
-            ->add('title')
-            ->add('label')
-            ->add('catno')
-            ->add('format')
+            ->add('title', null, [
+                'required' => 'true'
+            ])
+            ->add('label', null, [
+                'required' => 'true'
+            ])
+            ->add('catno', null, [
+                'required' => 'true'
+            ])
+            ->add('format', null, [
+                'required' => 'true'
+            ])
             ->add('releaseId',
-                IntegerType::class, [
+                null, [
                 'label' => 'Release Id'
             ])
-            ->add('price'
-                , IntegerType::class
-            )
-            ->add('mediaCondition',
-                TextType::class, [
-                'label' => 'Media Condition'
+            ->add('price', null, [
+                'required' => 'true'
             ])
+            ->add('mediaCondition',
+                ChoiceType::class, [
+                'label' => 'Media Condition',
+                'choices' => [
+                    'Select Item Condition' => '',
+                    'Mint (M)' => 'M',
+                    'Near Mint (NM or M-)' => 'NM',
+                    'Very Good Plus (VG+)' => 'VG+',
+                    'Very Good (VG)' => 'VG',
+                    'Good Plus (G+)' => 'G+',
+                    'Good (G)' => 'G',
+                    'Fair (F)' => 'F',
+                    'Poor (P)' => 'P'
+                    ],
+                'required' => 'true'
+                ]
+            )
+            ->add('sleeveCondition',
+                ChoiceType::class, [
+                    'label' => 'Sleeve Condition',
+                    'choices' => [
+                        'Select Item Condition' => '',
+                        'Mint (M)' => 'M',
+                        'Near Mint (NM or M-)' => 'NM',
+                        'Very Good Plus (VG+)' => 'VG+',
+                        'Very Good (VG)' => 'VG',
+                        'Good Plus (G+)' => 'G+',
+                        'Good (G)' => 'G',
+                        'Fair (F)' => 'F',
+                        'Poor (P)' => 'P'
+                    ]
+                ])
         ;
     }
 
