@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Item;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -37,7 +38,7 @@ class ItemType extends AbstractType
                 null, [
                 'label' => 'Release Id'
             ])
-            ->add('price', null, [
+            ->add('price', IntegerType::class, [
                 'required' => 'true'
             ])
             ->add('mediaCondition',
@@ -70,7 +71,8 @@ class ItemType extends AbstractType
                         'Good (G)' => 'G',
                         'Fair (F)' => 'F',
                         'Poor (P)' => 'P'
-                    ]
+                    ],
+                    'required' => 'false'
                 ])
         ;
     }
