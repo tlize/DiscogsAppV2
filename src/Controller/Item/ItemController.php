@@ -5,6 +5,7 @@ namespace App\Controller\Item;
 
 use App\Entity\Item;
 use App\Form\ItemType;
+use App\Form\PriceUpdateType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -19,8 +20,8 @@ class ItemController extends AbstractController
     /**
      * item details
      * @Route("/item/{id}", name = "item_detail",
-     *     requirements={"id" : "\d+"},
-     *     methods={"GET"})
+     * requirements={"id" : "\d+"},
+     * methods={"GET"})
      */
     public function detail(EntityManagerInterface $em, $id): Response
     {
@@ -45,7 +46,8 @@ class ItemController extends AbstractController
         $itemForm = $this->createForm(ItemType::class, $item);
 
         $itemForm->handleRequest($request);
-        if ($itemForm->isSubmitted() && $itemForm->isValid()) {
+        if ($itemForm->isSubmitted() && $itemForm->isValid())
+        {
             $em->persist($item);
             $em->flush();
 
@@ -138,6 +140,31 @@ class ItemController extends AbstractController
 
         return $this->render("item/neworder.html.twig", ["items" => $items]);
     }
-}
 
-//TODO : update price - on detail page ?
+    /**
+     * update item price
+     * @Route("/item/{id}/price", name = "item_price",
+     * requirements={"id" : "\d+"})
+     * methods={"POST"})
+     */
+    public function updatePrice(EntityManagerInterface $em, Request $request, $id): Response
+    {
+        $item = $em->getRepository(Item::class)->find($id);
+        $priceForm = $this->createForm(PriceUpdateType::class);
+
+        $priceForm->handleRequest($request);
+        if ($priceForm->isSubmitted() && $priceForm->isValid())
+        {
+            $newPrice = $priceForm->getData();
+            $item->setPrice($newPrice['price']);
+
+            $em->persist($item);
+            $em->flush();
+
+            $this->addFlash('success', 'Ok, price updated !');
+            return  $this->render('item/detail.html.twig', ['id'=> $item->getId(), 'item'=>$item]);
+        }
+        return  $this->render('item/price.html.twig', ['id'=> $item->getId(), 'item'=>$item,
+            'priceForm'=>$priceForm->createView()]);
+    }
+}

@@ -164,6 +164,11 @@ nav .d-flex .emLink:hover {
 
 
 /* specificity : 1.0.0*/
+#editPrice {
+    font-size: x-small;
+}
+
+/* specificity : 1.0.0*/
 #tl_nav {
     position: fixed;
     top: 0;

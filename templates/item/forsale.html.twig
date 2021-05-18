@@ -16,6 +16,9 @@
         <thead class="thead-dark">
             <tr>
                 <th>
+                    {{ knp_pagination_sortable(items, 'Listing Id', 'i.listingId') }}
+                </th>
+                <th>
                     {{ knp_pagination_sortable(items, 'Band / Artist', 'i.artist') }}
                 </th>
                 <th>
@@ -36,14 +39,17 @@
             {% for item in items %}
                 <tr>
                     <td>
+                        <a href="{{ path('item_detail', {'id': item.id}) }}">
+                            {{ item.listingId }}
+                        </a>
+                    </td>
+                    <td>
                         <a href="{{ path('artist_detail', {'artist': item.artist}) }}">
                             {{ item.artist }}
                         </a>
                     </td>
                     <td>
-                        <a href="{{ path('item_detail', {'id': item.id}) }}">
-                            {{ item.title }}
-                        </a>
+                        {{ item.title }}
                     </td>
                     <td>
                         <a href="{{ path('label_detail', {'label': item.label}) }}">
@@ -56,7 +62,6 @@
                     <td>
                         €{{ item.price | number_format}}
                     </td>
-                    <td><input type="checkbox"/></td>
                 </tr>
             {% endfor %}
         </tbody>

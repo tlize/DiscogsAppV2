@@ -25,14 +25,26 @@
     <p>
         listing Id : {{ item.listingId }}
     </p>
-    <p>
-        {{ item.status }} : €{{ item.price | number_format}}
-        {% if item.status == 'For Sale' %}
-            <span id="editPrice">
-                (<a href="{{ path('item_price', {'id': item.id}) }}">edit price</a>)
-            </span>
-        {% endif %}
-    </p>
+    <p>current price : €{{ item.price }}</p>
+    {{ form_start(priceForm)}}
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="row">
+                <div class="col-lg-4">
+                    {{ form_label(priceForm.price) }}
+                </div>
+                <div class="col-lg-8">
+                    {{ form_widget(priceForm.price) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{#    {{ form_widget(priceForm)}}#}
+    <button class="btn btn-lg btn-primary" type="submit">Update Price</button>
+    {{ form_end(priceForm)}}
 {% endblock %}
 
 {% block title %}
