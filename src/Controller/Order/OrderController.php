@@ -25,10 +25,9 @@ class OrderController extends AbstractController
      * all orders
      * @Route("/order", name = "order_list")
      */
-    public function list(PaginatorInterface $paginator,Request $request): Response
+    public function list(EntityManagerInterface $em,PaginatorInterface $paginator,Request $request): Response
     {
-        $orderRepo = $this->getDoctrine()->getRepository(Order::class);
-        $query = $orderRepo->paginateAllWithDetails();
+        $query = $em->getRepository(Order::class)->paginateAllWithDetails();
 
         $orders = $paginator->paginate(
             $query,
@@ -44,10 +43,9 @@ class OrderController extends AbstractController
      *     requirements={"id" : "\d+"},
      *     methods={"GET"})
      */
-    public function detail($id): Response
+    public function detail(EntityManagerInterface $em, $id): Response
     {
-        $orderRepo = $this->getDoctrine()->getRepository(Order::class);
-        $order = $orderRepo->find($id);
+        $order = $em->getRepository(Order::class)->find($id);
 
         if (empty($order)) {
             throw $this->createNotFoundException("Order not found !");
@@ -60,21 +58,19 @@ class OrderController extends AbstractController
      * best buying countries
      * @Route("/countries", name = "best_countries_list")
      */
-    public function bestCountries(): Response
+    public function bestCountries(EntityManagerInterface $em): Response
     {
-        $itemRepo = $this->getDoctrine()->getRepository(Order::class);
-        $bestCountries = $itemRepo->findBestCountries();
+        $bestCountries = $em->getRepository(Order::class)->findBestCountries();
 
         return $this->render('best/countries.html.twig', ['bestCountries'=>$bestCountries]);
     }
 
     /**
      * new order
+     * form for buyer info and order nb
      * @Route("/order/new", name="order_new")
-     * @param Request $request
-     * @return Response
      */
-    public function add(Request $request): Response
+    public function add(EntityManagerInterface $em, Request $request): Response
     {
         $order = new Order();
 
@@ -83,8 +79,7 @@ class OrderController extends AbstractController
 
         if ($orderForm->isSubmitted() && $orderForm->isValid())
         {
-            $itemRepo = $this->getDoctrine()->getRepository(Item::class);
-            $items = $itemRepo->findItemsForNewOrder();
+            $items = $em->getRepository(Item::class)->findItemsForNewOrder();
 
             return  $this->render('item/neworder.html.twig', [
                 'order'=>$order, 'items'=>$items
@@ -104,7 +99,6 @@ class OrderController extends AbstractController
      */
     public function confirmOrder(EntityManagerInterface $em): RedirectResponse
     {
-        // récupération des items, calcul du total
         if(isset($_POST['id']) && isset($_POST['buyer']) && isset($_POST['orderNum']) && isset($_POST['shippingAddress']))
         {
             $buyer = $_POST['buyer'];
@@ -114,9 +108,11 @@ class OrderController extends AbstractController
             $total = 0;
             $orderItems = new ArrayCollection();
 
+            // fetch items from ids, total calculation
             foreach ($_POST['id'] as $id)
             {
                 $item = $em->getRepository(Item::class)->find($id);
+                // update item status
                 $item->setStatus('Sold');
                 $em->persist($item);
                 $em->flush();
@@ -125,6 +121,7 @@ class OrderController extends AbstractController
 
                 $orderItem = new OrderItem();
 
+                // concatenation with prefix for orderNum : my seller number (as seen in every other order)
                 $orderItem->setOrderNum("1797099-" . $orderNum)
                     ->setBuyer($buyer)
                     ->setShippingAddress($shippingAddress)
@@ -140,48 +137,61 @@ class OrderController extends AbstractController
 
                 $orderItems->add($orderItem);
 
+                // new orderItem
                 $em->persist($orderItem);
 
                 $total += $item->getPrice();
             }
 
-
-
+            // order initialisation
             $order = new Order();
             $order->setOrderDate(new DateTime())
                 ->setBuyer($buyer)
                 ->setOrderNum("1797099-" . $orderNum)
                 ->setShippingAddress($shippingAddress)
                 ->setTotal($total)
+                // OneToMany relationship
                 ->setOrderItems($orderItems);
 
-            $countryRepo = $this->getDoctrine()->getRepository(Country::class);
-            $countries = $countryRepo->findAll();
+            // set country from shipping address
+            $countries = $em->getRepository(Country::class)->findAll();
+
             foreach ($countries as $country)
             {
-                if (strpos($shippingAddress, $country->getName()) != false) {
+                if (strpos($shippingAddress, $country->getName()) != false)
+                {
                     $buyerCountry = $country->getName();
                     $order->setCountry($buyerCountry);
                 }
             }
 
+            if($order->getCountry() == null)
+            {
+                $order->setCountry('unknown');
+            }
+
+            // order created
             $em->persist($order);
             $em->flush();
 
             foreach ($orderItems as $orderItem)
             {
+                // update total, set order linked to orderItem
                 $orderItem->setOrderTotal($total)
+                    // ManyToOne relationship
                     ->setOrder($order);
                 $em->persist($orderItem);
                 $em->flush();
             }
 
+            // get to order detail page with generated id
             $this->addFlash('success', 'One more Order, Database updated !');
             return $this->redirectToRoute('order_detail', ['id'=>$order->getId()]);
         }
 
         else
         {
+            // back to new order form
             $this->addFlash('error', 'Back to order please...');
             return $this->redirectToRoute('order_new');
         }

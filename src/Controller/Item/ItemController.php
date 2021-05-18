@@ -22,10 +22,9 @@ class ItemController extends AbstractController
      *     requirements={"id" : "\d+"},
      *     methods={"GET"})
      */
-    public function detail($id): Response
+    public function detail(EntityManagerInterface $em, $id): Response
     {
-        $itemRepo = $this->getDoctrine()->getRepository(Item::class);
-        $item = $itemRepo->find($id);
+        $item = $em->getRepository(Item::class)->find($id);
 
         return $this->render("item/detail.html.twig", ["item" => $item]);
     }
@@ -63,10 +62,9 @@ class ItemController extends AbstractController
      * all sold items
      * @Route("/item/sold", name = "item_sold")
      */
-    public function soldItems(PaginatorInterface $paginator,Request $request): Response
+    public function soldItems(EntityManagerInterface $em, PaginatorInterface $paginator,Request $request): Response
     {
-        $itemRepo = $this->getDoctrine()->getRepository(Item::class);
-        $query = $itemRepo->paginateSoldItems();
+        $query = $em->getRepository(Item::class)->paginateSoldItems();
 
         $items = $paginator->paginate(
             $query,
@@ -80,10 +78,9 @@ class ItemController extends AbstractController
      * all items for sale
      * @Route("/item/forsale", name = "item_for_sale")
      */
-    public function itemsForSale(PaginatorInterface $paginator,Request $request): Response
+    public function itemsForSale(EntityManagerInterface $em, PaginatorInterface $paginator,Request $request): Response
     {
-        $itemRepo = $this->getDoctrine()->getRepository(Item::class);
-        $query = $itemRepo->paginateItemsForSale();
+        $query = $em->getRepository(Item::class)->paginateItemsForSale();
 
         $items = $paginator->paginate(
             $query,
@@ -97,10 +94,9 @@ class ItemController extends AbstractController
      * all items
      * @Route("/item", name = "item_list")
      */
-    public function itemList(PaginatorInterface $paginator,Request $request): Response
+    public function itemList(EntityManagerInterface $em, PaginatorInterface $paginator,Request $request): Response
     {
-        $itemRepo = $this->getDoctrine()->getRepository(Item::class);
-        $query = $itemRepo->paginateItems();
+        $query = $em->getRepository(Item::class)->paginateItems();
 
         $items = $paginator->paginate(
             $query,
@@ -114,10 +110,9 @@ class ItemController extends AbstractController
      * best selling artists
      * @Route("/artists", name = "best_artists_list")
      */
-    public function bestArtists(): Response
+    public function bestArtists(EntityManagerInterface $em): Response
     {
-        $itemRepo = $this->getDoctrine()->getRepository(Item::class);
-        $bestArtists = $itemRepo->findBestArtists();
+        $bestArtists = $em->getRepository(Item::class)->findBestArtists();
 
         return $this->render('best/artists.html.twig', ['bestArtists'=>$bestArtists]);
     }
@@ -126,10 +121,9 @@ class ItemController extends AbstractController
      * best selling labels
      * @Route("/labels", name = "best_labels_list")
      */
-    public function bestLabels(): Response
+    public function bestLabels(EntityManagerInterface $em): Response
     {
-        $itemRepo = $this->getDoctrine()->getRepository(Item::class);
-        $bestLabels = $itemRepo->findBestLabels();
+        $bestLabels = $em->getRepository(Item::class)->findBestLabels();
 
         return $this->render('best/labels.html.twig', ['bestLabels'=>$bestLabels]);
     }
@@ -138,11 +132,12 @@ class ItemController extends AbstractController
      * items to pick for new order
      * @Route("/item/neworder", name = "items_new_order")
      */
-    public function itemsInOrder(): Response
+    public function itemsInOrder(EntityManagerInterface $em): Response
     {
-        $itemRepo = $this->getDoctrine()->getRepository(Item::class);
-        $items = $itemRepo->findItemsForNewOrder();
+        $items = $em->getRepository(Item::class)->findItemsForNewOrder();
 
         return $this->render("item/neworder.html.twig", ["items" => $items]);
     }
 }
+
+//TODO : update price - on detail page ?
