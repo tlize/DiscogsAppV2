@@ -6,32 +6,32 @@
     <h4>All items by {{ items[0].artist }}</h4>
     <table class="table table-hover table-striped">
         <thead class="thead-dark">
-            <tr>
-                <th>Title</th>
-                <th>Label</th>
-                <th>Format</th>
-                <th>Status</th>
-                <th>Price</th>
-            </tr>
+        <tr>
+            <th>Title</th>
+            <th>Label</th>
+            <th>Format</th>
+            <th>Status</th>
+            <th>Price</th>
+        </tr>
         </thead>
         <tbody>
-            {% for item in items %}
-                <tr>
-                    <td>
-                        <a href="{{ path('item_detail', {'id': item.id}) }}">
-                            {{ item.title }}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="{{ path('label_detail', {'label': item.label}) }}">
-                            {{ item.label }}
-                        </a>
-                    </td>
-                    <td>{{ item.format }}</td>
-                    <td>{{ item.status }}</td>
-                    <td>€ {{ item.price | number_format}}</td>
-                </tr>
-            {% endfor %}
+        {% for item in items %}
+            <tr>
+                <td>
+                    <a href="{{ path('item_detail', {'id': item.id}) }}">
+                        {{ item.title }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ path('label_detail', {'label': item.label}) }}">
+                        {{ item.label }}
+                    </a>
+                </td>
+                <td>{{ item.format }}</td>
+                <td>{{ item.status }}</td>
+                <td>€ {{ item.price | number_format }}</td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
 {% endblock %}

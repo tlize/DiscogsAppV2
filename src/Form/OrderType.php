@@ -16,24 +16,23 @@ class OrderType extends AbstractType
     {
         $builder
             ->add('buyer', TextType::class, [
-                'attr'=>[
-                    'placeholder'=>'Buyer Username'
+                'attr' => [
+                    'placeholder' => 'Buyer Username'
                 ]
             ])
             ->add('orderNum', IntegerType::class, [
-                'label'=>'Order #',
-                'attr'=>[
-                    'placeholder'=>'number after the dash'
+                'label' => 'Order #',
+                'attr' => [
+                    'placeholder' => 'number after the dash'
                 ]
             ])
             ->add('shippingAddress',
                 TextareaType::class, [
                     'label' => 'Buyer Info',
-                    'attr'=>[
-                        'placeholder'=>'Buyer shipping address, email...'
+                    'attr' => [
+                        'placeholder' => 'Buyer shipping address, email...'
                     ]
-                ])
-        ;
+                ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -29,19 +29,18 @@ class ItemRepository extends ServiceEntityRepository
             ->setParameter('forSale', 'for Sale')
             ->orderBy('i.artist', 'ASC')
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
 
 
     public function findArtistDetail($artist)
     {
         return $this->createQueryBuilder('i')
-        ->andWhere('i.artist LIKE :artist')
-        ->setParameter('artist', $artist)
-        ->orderBy('i.title', 'ASC')
-        ->getQuery()
-        ->getResult();
+            ->andWhere('i.artist LIKE :artist')
+            ->setParameter('artist', $artist)
+            ->orderBy('i.title', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 
     public function findLabelDetail($label)
@@ -54,7 +53,7 @@ class ItemRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function  paginateItems(): QueryBuilder
+    public function paginateItems(): QueryBuilder
     {
         return $this->createQueryBuilder('i')
             ->orderBy('i.artist', 'ASC');

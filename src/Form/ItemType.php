@@ -16,12 +16,12 @@ class ItemType extends AbstractType
         $builder
             ->add('listingId',
                 null, [
-                'label' => 'Listing Id',
-            ])
+                    'label' => 'Listing Id',
+                ])
             ->add('artist',
                 null, [
-                'label' => 'Band or Artist'
-            ])
+                    'label' => 'Band or Artist'
+                ])
             ->add('title')
             ->add('label')
             ->add('catno', null, [
@@ -30,22 +30,22 @@ class ItemType extends AbstractType
             ->add('format')
             ->add('releaseId',
                 null, [
-                'label' => 'Release Id'
-            ])
+                    'label' => 'Release Id'
+                ])
             ->add('price', IntegerType::class)
             ->add('mediaCondition',
                 ChoiceType::class, [
-                'label' => 'Media Condition',
-                'choices' => [
-                    'Select Item Condition' => '',
-                    'Mint (M)' => 'M',
-                    'Near Mint (NM or M-)' => 'NM',
-                    'Very Good Plus (VG+)' => 'VG+',
-                    'Very Good (VG)' => 'VG',
-                    'Good Plus (G+)' => 'G+',
-                    'Good (G)' => 'G',
-                    'Fair (F)' => 'F',
-                    'Poor (P)' => 'P'
+                    'label' => 'Media Condition',
+                    'choices' => [
+                        'Select Item Condition' => '',
+                        'Mint (M)' => 'M',
+                        'Near Mint (NM or M-)' => 'NM',
+                        'Very Good Plus (VG+)' => 'VG+',
+                        'Very Good (VG)' => 'VG',
+                        'Good Plus (G+)' => 'G+',
+                        'Good (G)' => 'G',
+                        'Fair (F)' => 'F',
+                        'Poor (P)' => 'P'
                     ],
                 ]
             )
@@ -65,8 +65,7 @@ class ItemType extends AbstractType
                     ],
                     'required' => false
                 ]
-            )
-        ;
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)

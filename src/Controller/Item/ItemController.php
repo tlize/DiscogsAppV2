@@ -45,17 +45,16 @@ class ItemController extends AbstractController
         $itemForm = $this->createForm(ItemType::class, $item);
 
         $itemForm->handleRequest($request);
-        if ($itemForm->isSubmitted() && $itemForm->isValid())
-        {
+        if ($itemForm->isSubmitted() && $itemForm->isValid()) {
             $em->persist($item);
             $em->flush();
 
             $this->addFlash('success', 'One more item !');
-            return  $this->redirectToRoute('item_detail', ['id'=>$item->getId()]);
+            return $this->redirectToRoute('item_detail', ['id' => $item->getId()]);
         }
 
         return $this->render('item/add.html.twig', [
-            'itemForm'=> $itemForm->createView()
+            'itemForm' => $itemForm->createView()
         ]);
     }
 
@@ -63,7 +62,7 @@ class ItemController extends AbstractController
      * all sold items
      * @Route("/item/sold", name = "item_sold")
      */
-    public function soldItems(EntityManagerInterface $em, PaginatorInterface $paginator,Request $request): Response
+    public function soldItems(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
     {
         $query = $em->getRepository(Item::class)->paginateSoldItems();
 
@@ -79,7 +78,7 @@ class ItemController extends AbstractController
      * all items for sale
      * @Route("/item/forsale", name = "item_for_sale")
      */
-    public function itemsForSale(EntityManagerInterface $em, PaginatorInterface $paginator,Request $request): Response
+    public function itemsForSale(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
     {
         $query = $em->getRepository(Item::class)->paginateItemsForSale();
 
@@ -95,7 +94,7 @@ class ItemController extends AbstractController
      * all items
      * @Route("/item", name = "item_list")
      */
-    public function itemList(EntityManagerInterface $em, PaginatorInterface $paginator,Request $request): Response
+    public function itemList(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
     {
         $query = $em->getRepository(Item::class)->paginateItems();
 
@@ -104,7 +103,7 @@ class ItemController extends AbstractController
             $request->query->getInt('page', 1),
             100
         );
-        return $this->render('item/list.html.twig', ['items'=>$items]);
+        return $this->render('item/list.html.twig', ['items' => $items]);
     }
 
     /**
@@ -114,7 +113,7 @@ class ItemController extends AbstractController
     public function bestArtists(EntityManagerInterface $em): Response
     {
         $bestArtists = $em->getRepository(Item::class)->findBestArtists();
-        return $this->render('best/artists.html.twig', ['bestArtists'=>$bestArtists]);
+        return $this->render('best/artists.html.twig', ['bestArtists' => $bestArtists]);
     }
 
     /**
@@ -124,7 +123,7 @@ class ItemController extends AbstractController
     public function bestLabels(EntityManagerInterface $em): Response
     {
         $bestLabels = $em->getRepository(Item::class)->findBestLabels();
-        return $this->render('best/labels.html.twig', ['bestLabels'=>$bestLabels]);
+        return $this->render('best/labels.html.twig', ['bestLabels' => $bestLabels]);
     }
 
     /**
@@ -149,8 +148,7 @@ class ItemController extends AbstractController
         $priceForm = $this->createForm(PriceUpdateType::class);
 
         $priceForm->handleRequest($request);
-        if ($priceForm->isSubmitted() && $priceForm->isValid())
-        {
+        if ($priceForm->isSubmitted() && $priceForm->isValid()) {
             $newPrice = $priceForm->getData();
             $item->setPrice($newPrice['price']);
 
@@ -158,9 +156,9 @@ class ItemController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Ok, price updated !');
-            return  $this->render('item/detail.html.twig', ['id'=> $item->getId(), 'item'=>$item]);
+            return $this->render('item/detail.html.twig', ['id' => $item->getId(), 'item' => $item]);
         }
-        return  $this->render('item/price.html.twig', ['id'=> $item->getId(), 'item'=>$item,
-            'priceForm'=>$priceForm->createView()]);
+        return $this->render('item/price.html.twig', ['id' => $item->getId(), 'item' => $item,
+            'priceForm' => $priceForm->createView()]);
     }
 }

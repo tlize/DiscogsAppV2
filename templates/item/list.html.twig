@@ -15,62 +15,62 @@
     </h4>
     <table class="table table-hover table-striped">
         <thead class="thead-dark">
-            <tr>
-                <th>
-                    {{ knp_pagination_sortable(items, 'Listing Id', 'i.listingId') }}
-                </th>
-                <th>
-                    {{ knp_pagination_sortable(items, 'Band / Artist', 'i.artist') }}
-                </th>
-                <th>
-                    {{ knp_pagination_sortable(items, 'Title', 'i.title') }}
-                </th>
-                <th>
-                    {{ knp_pagination_sortable(items, 'Label', 'i.label') }}
-                </th>
-                <th>
-                    {{ knp_pagination_sortable(items, 'Format', 'i.format') }}
-                </th>
-                <th>
-                    {{ knp_pagination_sortable(items, 'Status', 'i.status') }}
-                </th>
-                <th>
-                    {{ knp_pagination_sortable(items, 'Price', 'i.price') }}
-                </th>
-            </tr>
+        <tr>
+            <th>
+                {{ knp_pagination_sortable(items, 'Listing Id', 'i.listingId') }}
+            </th>
+            <th>
+                {{ knp_pagination_sortable(items, 'Band / Artist', 'i.artist') }}
+            </th>
+            <th>
+                {{ knp_pagination_sortable(items, 'Title', 'i.title') }}
+            </th>
+            <th>
+                {{ knp_pagination_sortable(items, 'Label', 'i.label') }}
+            </th>
+            <th>
+                {{ knp_pagination_sortable(items, 'Format', 'i.format') }}
+            </th>
+            <th>
+                {{ knp_pagination_sortable(items, 'Status', 'i.status') }}
+            </th>
+            <th>
+                {{ knp_pagination_sortable(items, 'Price', 'i.price') }}
+            </th>
+        </tr>
         </thead>
         <tbody>
-            {% for item in items %}
-                <tr>
-                    <td>
-                        <a href="{{ path('item_detail', {'id': item.id}) }}">
-                            {{ item.listingId }}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="{{ path('artist_detail', {'artist': item.artist}) }}">
-                            {{ item.artist }}
-                        </a>
-                    </td>
-                    <td>
-                        {{ item.title }}
-                    </td>
-                    <td>
-                        <a href="{{ path('label_detail', {'label': item.label}) }}">
-                            {{ item.label }}
-                        </a>
-                    </td>
-                    <td>
-                        {{ item.format }}
-                    </td>
-                    <td>
-                        {{ item.status }}
-                    </td>
-                    <td>
-                        €{{ item.price | number_format}}
-                    </td>
-                </tr>
-            {% endfor %}
+        {% for item in items %}
+            <tr>
+                <td>
+                    <a href="{{ path('item_detail', {'id': item.id}) }}">
+                        {{ item.listingId }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ path('artist_detail', {'artist': item.artist}) }}">
+                        {{ item.artist }}
+                    </a>
+                </td>
+                <td>
+                    {{ item.title }}
+                </td>
+                <td>
+                    <a href="{{ path('label_detail', {'label': item.label}) }}">
+                        {{ item.label }}
+                    </a>
+                </td>
+                <td>
+                    {{ item.format }}
+                </td>
+                <td>
+                    {{ item.status }}
+                </td>
+                <td>
+                    €{{ item.price | number_format }}
+                </td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
     <div class="pagination">

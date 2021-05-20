@@ -26,8 +26,7 @@ class OrderRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('o')
             ->orderBy('o.orderDate', 'DESC')
             ->join('o.orderItems', 'oi')
-            ->addSelect('oi')
-            ;
+            ->addSelect('oi');
     }
 
     public function findBestCountries()
