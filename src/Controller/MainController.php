@@ -9,9 +9,9 @@ use App\Entity\Order;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
 
 
 class MainController extends AbstractController
@@ -20,7 +20,7 @@ class MainController extends AbstractController
      * homepage
      * @Route("/", name = "home")
      */
-    public function home(EntityManagerInterface $em, PaginatorInterface $paginator,Request $request): Response
+    public function home(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
     {
         $query = $em->getRepository(Order::class)->paginateAllWithDetails();
 
@@ -55,11 +55,9 @@ class MainController extends AbstractController
 
         $orders = $em->getRepository(Order::class)->findAll();
 
-        foreach ($orders as $order)
-        {
+        foreach ($orders as $order) {
             $address = $order->getShippingAddress();
-            foreach ($countries as $country)
-            {
+            foreach ($countries as $country) {
                 if (strpos($address, $country->getName()) != false) {
                     $buyerCountry = $country->getName();
                     $order->setCountry($buyerCountry);

@@ -32,7 +32,7 @@ class DetailController extends AbstractController
      */
     public function labelDetail(EntityManagerInterface $em, $label): Response
     {
-        $items =$em->getRepository(Item::class)->findLabelDetail($label);
+        $items = $em->getRepository(Item::class)->findLabelDetail($label);
         return $this->render("detail/label.html.twig", ["items" => $items]);
     }
 

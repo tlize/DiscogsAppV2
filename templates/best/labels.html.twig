@@ -4,21 +4,21 @@
 
 {% block body %}
     <h4>Best Selling Labels</h4>
-        {% for bestLabel in bestLabels %}
-            <p>
+    {% for bestLabel in bestLabels %}
+        <p>
                 <span>
                     <a href="{{ path('label_detail', {'label': bestLabel.label}) }}">
                     {{ bestLabel.label }}
                 </a>
                 </span>
-                 :
-                {% if bestLabel.nbItems == 1 %}
-                    1 item
-                {% else %}
-                    {{ bestLabel.nbItems }} items
-                {% endif %}
-                , €{{ bestLabel.total | number_format }}
-            </p>
-        {% endfor %}
+            :
+            {% if bestLabel.nbItems == 1 %}
+                1 item
+            {% else %}
+                {{ bestLabel.nbItems }} items
+            {% endif %}
+            , €{{ bestLabel.total | number_format }}
+        </p>
+    {% endfor %}
 {% endblock %}
 

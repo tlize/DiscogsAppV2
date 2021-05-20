@@ -14,7 +14,7 @@
         </a>
         - {{ item.catno }}
     </h5>
-    {% if item.comments != null  %}
+    {% if item.comments != null %}
         <p>
             ( {{ item.comments }} )
         </p>
@@ -26,7 +26,7 @@
         listing Id : {{ item.listingId }}
     </p>
     <p>
-        {{ item.status }} : €{{ item.price | number_format}}
+        {{ item.status }} : €{{ item.price | number_format }}
         {% if item.status == 'For Sale' %}
             <span id="editPrice">
                 (<a href="{{ path('item_price', {'id': item.id}) }}">edit price</a>)

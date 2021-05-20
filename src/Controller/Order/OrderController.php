@@ -25,7 +25,7 @@ class OrderController extends AbstractController
      * all orders
      * @Route("/order", name = "order_list")
      */
-    public function list(EntityManagerInterface $em,PaginatorInterface $paginator,Request $request): Response
+    public function list(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
     {
         $query = $em->getRepository(Order::class)->paginateAllWithDetails();
 
@@ -51,7 +51,7 @@ class OrderController extends AbstractController
             throw $this->createNotFoundException("Order not found !");
         }
 
-        return $this->render('order/detail.html.twig', ['order'=>$order]);
+        return $this->render('order/detail.html.twig', ['order' => $order]);
     }
 
     /**
@@ -61,7 +61,7 @@ class OrderController extends AbstractController
     public function bestCountries(EntityManagerInterface $em): Response
     {
         $bestCountries = $em->getRepository(Order::class)->findBestCountries();
-        return $this->render('best/countries.html.twig', ['bestCountries'=>$bestCountries]);
+        return $this->render('best/countries.html.twig', ['bestCountries' => $bestCountries]);
     }
 
     /**
@@ -76,19 +76,16 @@ class OrderController extends AbstractController
         $orderForm = $this->createForm(OrderType::class, $order);
         $orderForm->handleRequest($request);
 
-        if ($orderForm->isSubmitted() && $orderForm->isValid())
-        {
+        if ($orderForm->isSubmitted() && $orderForm->isValid()) {
             $items = $em->getRepository(Item::class)->findItemsForNewOrder();
 
-            dump($_POST);
-
-            return  $this->render('item/neworder.html.twig', [
-                'order'=>$order, 'items'=>$items
+            return $this->render('item/neworder.html.twig', [
+                'order' => $order, 'items' => $items
             ]);
         }
 
         return $this->render('order/form.html.twig', [
-            'orderForm'=> $orderForm->createView()
+            'orderForm' => $orderForm->createView()
         ]);
 
     }
@@ -100,8 +97,7 @@ class OrderController extends AbstractController
      */
     public function confirmOrder(EntityManagerInterface $em): RedirectResponse
     {
-        if(isset($_POST['id']) && isset($_POST['buyer']) && isset($_POST['orderNum']) && isset($_POST['shippingAddress']))
-        {
+        if (isset($_POST['id']) && isset($_POST['buyer']) && isset($_POST['orderNum']) && isset($_POST['shippingAddress'])) {
             $buyer = $_POST['buyer'];
             $orderNum = $_POST['orderNum'];
             $shippingAddress = $_POST['shippingAddress'];
@@ -110,8 +106,7 @@ class OrderController extends AbstractController
             $orderItems = new ArrayCollection();
 
             // fetch items from ids, total calculation
-            foreach ($_POST['id'] as $id)
-            {
+            foreach ($_POST['id'] as $id) {
                 $item = $em->getRepository(Item::class)->find($id);
                 // update item status
                 $item->setStatus('Sold');
@@ -157,17 +152,14 @@ class OrderController extends AbstractController
             // set country from shipping address
             $countries = $em->getRepository(Country::class)->findAll();
 
-            foreach ($countries as $country)
-            {
-                if (strpos($shippingAddress, $country->getName()) != false)
-                {
+            foreach ($countries as $country) {
+                if (strpos($shippingAddress, $country->getName()) != false) {
                     $buyerCountry = $country->getName();
                     $order->setCountry($buyerCountry);
                 }
             }
 
-            if($order->getCountry() == null)
-            {
+            if ($order->getCountry() == null) {
                 $order->setCountry('unknown');
             }
 
@@ -175,8 +167,7 @@ class OrderController extends AbstractController
             $em->persist($order);
             $em->flush();
 
-            foreach ($orderItems as $orderItem)
-            {
+            foreach ($orderItems as $orderItem) {
                 // update total, set order linked to orderItem
                 $orderItem->setOrderTotal($total)
                     // ManyToOne relationship
@@ -187,11 +178,8 @@ class OrderController extends AbstractController
 
             // get to order detail page with generated id
             $this->addFlash('success', 'One more Order, Database updated !');
-            return $this->redirectToRoute('order_detail', ['id'=>$order->getId()]);
-        }
-
-        else
-        {
+            return $this->redirectToRoute('order_detail', ['id' => $order->getId()]);
+        } else {
             // back to new order form
             $this->addFlash('error', 'Back to order please...');
             return $this->redirectToRoute('order_new');

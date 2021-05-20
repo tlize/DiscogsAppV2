@@ -40,8 +40,7 @@ input, footer input {
 
 
 /* specificity : 0.1.0*/
-.flash
-{
+.flash {
     padding: 20px;
     display: block;
     font-size: 24px;
@@ -50,14 +49,12 @@ input, footer input {
 }
 
 /* specificity : 0.1.0*/
-.flash-success
-{
+.flash-success {
     background-color: #6b9311;
 }
 
 /* specificity : 0.1.0*/
-.flash-error
-{
+.flash-error {
     background-color: #AA3333;
 }
 

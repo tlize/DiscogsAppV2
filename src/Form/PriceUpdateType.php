@@ -2,8 +2,8 @@
 
 namespace App\Form;
 
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,9 +13,8 @@ class PriceUpdateType extends AbstractType
     {
         $builder
             ->add('price', IntegerType::class, [
-                'label'=>'New Price'
-            ])
-        ;
+                'label' => 'New Price'
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
