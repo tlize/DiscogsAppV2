@@ -33,6 +33,8 @@
             </span>
         {% endif %}
     </p>
+    {% set urlImages = ['https://www.discogs.com/release/', item.releaseId, '-', item.title |slug, '/images'] | join %}
+    <a id="urlImages" href="{{ urlImages }}" target="_blank">Discogs Image Gallery</a>
 {% endblock %}
 
 {% block title %}

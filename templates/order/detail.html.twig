@@ -10,9 +10,15 @@
     {% else %}
         <ul>
             {% for orderItem in order.orderItems %}
+                {% set descriptionSplit = orderItem.description | split(' - ') %}
+                {% set itemArtist = descriptionSplit[0] %}
+                {% set itemTitleAndFormat = descriptionSplit[1] %}
                 <li>
                     <h5>
-                        {{ orderItem.description }} : €{{ orderItem.itemPrice | number_format }}
+                        <a href="{{ path('artist_detail', {'artist': itemArtist}) }}">
+                            {{ itemArtist | raw }}
+                        </a>
+                        - {{ itemTitleAndFormat}} : €{{ orderItem.itemPrice | number_format }}
                     </h5>
                 </li>
             {% endfor %}

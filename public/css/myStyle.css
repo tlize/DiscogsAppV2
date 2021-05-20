@@ -160,8 +160,8 @@ nav .d-flex .emLink:hover {
 }
 
 
-/* specificity : 1.0.0*/
-#editPrice {
+/* specificity : 1.0.0, 1.0.0*/
+#editPrice, #urlImages {
     font-size: x-small;
 }
 
