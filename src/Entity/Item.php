@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ItemRepository;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -21,13 +22,15 @@ class Item
     private $id;
 
     /**
-     *
+     * @Assert\Positive
+     * @Assert\NotNull()
      * @Assert\NotBlank(message="Listing id is mandatory !"))
      * @ORM\Column(type="integer")
      */
     private $listingId;
 
     /**
+     *
      * @Assert\Length(max=255, maxMessage="No more than 255 characters !")
      * @ORM\Column(type="string", length=255)
      */
@@ -58,7 +61,7 @@ class Item
     private $format;
 
     /**
-     * @Assert\PositiveOrZero(message="Can't be negative !")
+     * @Assert\Positive
      * @ORM\Column(type="integer")
      */
     private $releaseId;
@@ -69,7 +72,7 @@ class Item
     private $status;
 
     /**
-     * @Assert\PositiveOrZero(message="Can't be negative !")
+     * @Assert\PositiveOrZero
      * @ORM\Column(type="decimal", precision=6, scale=2)
      */
     private $price;
@@ -237,12 +240,12 @@ class Item
         return $this;
     }
 
-    public function getListed(): ?\DateTimeInterface
+    public function getListed(): ?DateTimeInterface
     {
         return $this->listed;
     }
 
-    public function setListed(\DateTimeInterface $listed): self
+    public function setListed(DateTimeInterface $listed): self
     {
         $this->listed = $listed;
 

@@ -22,25 +22,17 @@ class ItemType extends AbstractType
                 null, [
                 'label' => 'Band or Artist'
             ])
-            ->add('title', null, [
-                'required' => 'true'
-            ])
-            ->add('label', null, [
-                'required' => 'true'
-            ])
+            ->add('title')
+            ->add('label')
             ->add('catno', null, [
-                'required' => 'true'
+                'label' => 'Catalog #'
             ])
-            ->add('format', null, [
-                'required' => 'true'
-            ])
+            ->add('format')
             ->add('releaseId',
                 null, [
                 'label' => 'Release Id'
             ])
-            ->add('price', IntegerType::class, [
-                'required' => 'true'
-            ])
+            ->add('price', IntegerType::class)
             ->add('mediaCondition',
                 ChoiceType::class, [
                 'label' => 'Media Condition',
@@ -55,7 +47,6 @@ class ItemType extends AbstractType
                     'Fair (F)' => 'F',
                     'Poor (P)' => 'P'
                     ],
-                'required' => 'true'
                 ]
             )
             ->add('sleeveCondition',
@@ -72,8 +63,9 @@ class ItemType extends AbstractType
                         'Fair (F)' => 'F',
                         'Poor (P)' => 'P'
                     ],
-                    'required' => 'false'
-                ])
+                    'required' => false
+                ]
+            )
         ;
     }
 

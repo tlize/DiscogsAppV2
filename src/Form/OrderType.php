@@ -25,7 +25,6 @@ class OrderType extends AbstractType
                 'attr'=>[
                     'placeholder'=>'number after the dash'
                 ]
-
             ])
             ->add('shippingAddress',
                 TextareaType::class, [

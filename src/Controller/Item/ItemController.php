@@ -26,7 +26,6 @@ class ItemController extends AbstractController
     public function detail(EntityManagerInterface $em, $id): Response
     {
         $item = $em->getRepository(Item::class)->find($id);
-
         return $this->render("item/detail.html.twig", ["item" => $item]);
     }
 
@@ -115,7 +114,6 @@ class ItemController extends AbstractController
     public function bestArtists(EntityManagerInterface $em): Response
     {
         $bestArtists = $em->getRepository(Item::class)->findBestArtists();
-
         return $this->render('best/artists.html.twig', ['bestArtists'=>$bestArtists]);
     }
 
@@ -126,7 +124,6 @@ class ItemController extends AbstractController
     public function bestLabels(EntityManagerInterface $em): Response
     {
         $bestLabels = $em->getRepository(Item::class)->findBestLabels();
-
         return $this->render('best/labels.html.twig', ['bestLabels'=>$bestLabels]);
     }
 
@@ -137,7 +134,6 @@ class ItemController extends AbstractController
     public function itemsInOrder(EntityManagerInterface $em): Response
     {
         $items = $em->getRepository(Item::class)->findItemsForNewOrder();
-
         return $this->render("item/neworder.html.twig", ["items" => $items]);
     }
 

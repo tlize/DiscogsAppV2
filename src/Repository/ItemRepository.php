@@ -60,7 +60,7 @@ class ItemRepository extends ServiceEntityRepository
             ->orderBy('i.artist', 'ASC');
     }
 
-    public function paginateSoldItems()
+    public function paginateSoldItems(): QueryBuilder
     {
         return $this->createQueryBuilder('i')
             ->andWhere('i.status = :sold')
@@ -68,7 +68,7 @@ class ItemRepository extends ServiceEntityRepository
             ->orderBy('i.artist', 'ASC');
     }
 
-    public function paginateItemsForSale()
+    public function paginateItemsForSale(): QueryBuilder
     {
         return $this->createQueryBuilder('i')
             ->andWhere('i.status = :forsale')
@@ -86,8 +86,7 @@ class ItemRepository extends ServiceEntityRepository
                 GROUP BY i.artist
                 ORDER BY total DESC 
         ";
-        $query = $em->createQuery($dql);
-        return $query->getResult();
+        return $em->createQuery($dql)->getResult();
     }
 
     public function findBestLabels()
@@ -100,8 +99,7 @@ class ItemRepository extends ServiceEntityRepository
                 GROUP BY i.label
                 ORDER BY total DESC 
         ";
-        $query = $em->createQuery($dql);
-        return $query->getResult();
+        return $em->createQuery($dql)->getResult();
     }
 
     public function findItemsForNewOrder()

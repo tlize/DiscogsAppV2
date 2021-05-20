@@ -32,7 +32,7 @@ class OrderController extends AbstractController
         $orders = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
-            500
+            50
         );
         return $this->render('order/list.html.twig', ['orders' => $orders]);
     }
@@ -61,7 +61,6 @@ class OrderController extends AbstractController
     public function bestCountries(EntityManagerInterface $em): Response
     {
         $bestCountries = $em->getRepository(Order::class)->findBestCountries();
-
         return $this->render('best/countries.html.twig', ['bestCountries'=>$bestCountries]);
     }
 
@@ -80,6 +79,8 @@ class OrderController extends AbstractController
         if ($orderForm->isSubmitted() && $orderForm->isValid())
         {
             $items = $em->getRepository(Item::class)->findItemsForNewOrder();
+
+            dump($_POST);
 
             return  $this->render('item/neworder.html.twig', [
                 'order'=>$order, 'items'=>$items

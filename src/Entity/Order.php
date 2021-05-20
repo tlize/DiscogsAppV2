@@ -6,6 +6,7 @@ use App\Repository\OrderRepository;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=OrderRepository::class)
@@ -26,6 +27,7 @@ class Order
     private $buyer;
 
     /**
+     * @Assert\Positive(message="Order # can't be negative...")
      * @ORM\Column(type="string", length=20)
      */
     private $orderNum;
@@ -117,6 +119,7 @@ class Order
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Regex(pattern="/[\r\n.*]/", message="Can't be just one line...")
      */
     private $shippingAddress;
 

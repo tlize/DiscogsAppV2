@@ -5,6 +5,7 @@ namespace App\Controller\Detail;
 
 use App\Entity\Item;
 use App\Entity\Order;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,10 +18,9 @@ class DetailController extends AbstractController
      *  requirements={"artist" : ".*"},
      *  methods={"GET"})
      */
-    public function artistDetail($artist): Response
+    public function artistDetail(EntityManagerInterface $em, $artist): Response
     {
-        $itemRepo = $this->getDoctrine()->getRepository(Item::class);
-        $items = $itemRepo->findArtistDetail($artist);
+        $items = $em->getRepository(Item::class)->findArtistDetail($artist);
         return $this->render("detail/artist.html.twig", ["items" => $items]);
     }
 
@@ -30,10 +30,9 @@ class DetailController extends AbstractController
      *  requirements={"label" : ".*"},
      *  methods={"GET"})
      */
-    public function labelDetail($label): Response
+    public function labelDetail(EntityManagerInterface $em, $label): Response
     {
-        $itemRepo = $this->getDoctrine()->getRepository(Item::class);
-        $items = $itemRepo->findLabelDetail($label);
+        $items =$em->getRepository(Item::class)->findLabelDetail($label);
         return $this->render("detail/label.html.twig", ["items" => $items]);
     }
 
@@ -43,13 +42,9 @@ class DetailController extends AbstractController
      *  requirements={"country" : ".*"},
      *  methods={"GET"})
      */
-    public function countryDetail($country): Response
+    public function countryDetail(EntityManagerInterface $em, $country): Response
     {
-        $itemRepo = $this->getDoctrine()->getRepository(Order::class);
-        $orders = $itemRepo->findCountryDetail($country);
-
-        dump($orders);
-
+        $orders = $em->getRepository(Order::class)->findCountryDetail($country);
         return $this->render("detail/country.html.twig", ["orders" => $orders]);
     }
 }

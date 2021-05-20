@@ -21,18 +21,6 @@ class OrderRepository extends ServiceEntityRepository
     }
 
 
-    public function getLatestOrders()
-    {
-        return $this->createQueryBuilder('o')
-            ->orderBy('o.orderDate', 'DESC')
-            ->join('o.orderItems', 'oi')
-            ->addSelect('oi')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
     public function paginateAllWithDetails(): QueryBuilder
     {
         return $this->createQueryBuilder('o')
@@ -51,8 +39,7 @@ class OrderRepository extends ServiceEntityRepository
                 GROUP BY o.country
                 ORDER BY nbOrders DESC 
         ";
-        $query = $em->createQuery($dql);
-        return $query->getResult();
+        return $em->createQuery($dql)->getResult();
     }
 
     public function findCountryDetail($country)
