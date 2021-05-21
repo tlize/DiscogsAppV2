@@ -1,4 +1,4 @@
-<nav class="navbar sticky-top navbar-expand navbar-dark bg-dark row">
+<nav id="myNavBar" class="navbar sticky-top navbar-expand navbar-dark bg-dark row">
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
@@ -6,15 +6,26 @@
                     <div>Home</div>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="{{ path('item_list') }}">
+            <li class="nav-item dropdown">
+                <a class="nav-link active" href="#" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
                     Inventory
                 </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="{{ path('order_list') }}">
-                    Orders
-                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{{ path('item_list') }}">
+                        All Items
+                    </a>
+                    <a class="dropdown-item" href="{{ path('item_for_sale') }}">
+                        Items For Sale
+                    </a>
+                    <a class="dropdown-item" href="{{ path('item_sold') }}">
+                        Sold Items
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ path('item_add') }}">
+                        Add an Item
+                    </a>
+                </div>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
@@ -22,6 +33,10 @@
                     Menu
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{{ path('order_list') }}">
+                        All Orders
+                    </a>
+                    <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="{{ path('best_artists_list') }}">
                         Best bands / artists
                     </a>
@@ -32,11 +47,6 @@
                         Best countries
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{{ path('item_add') }}">
-                        New Item
-                    </a>
-                    <div class="dropdown-divider">
-                    </div>
                     <a class="dropdown-item" href="">
                         All users
                     </a>

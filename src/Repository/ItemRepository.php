@@ -83,7 +83,7 @@ class ItemRepository extends ServiceEntityRepository
                 FROM App\Entity\Item i 
                 WHERE i.status = 'Sold' 
                 GROUP BY i.artist
-                ORDER BY total DESC 
+                ORDER BY total DESC, nbItems DESC
         ";
         return $em->createQuery($dql)->getResult();
     }
@@ -96,7 +96,7 @@ class ItemRepository extends ServiceEntityRepository
                 FROM App\Entity\Item i 
                 WHERE i.status = 'Sold' 
                 GROUP BY i.label
-                ORDER BY total DESC 
+                ORDER BY total DESC, nbItems DESC
         ";
         return $em->createQuery($dql)->getResult();
     }

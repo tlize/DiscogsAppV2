@@ -36,7 +36,7 @@ class OrderRepository extends ServiceEntityRepository
             SELECT o.country, COUNT(o.orderNum) AS nbOrders, SUM(o.total) AS totalAmount, AVG(o.total) AS avgAmount
                 FROM App\Entity\Order o 
                 GROUP BY o.country
-                ORDER BY nbOrders DESC 
+                ORDER BY nbOrders DESC, totalAmount DESC
         ";
         return $em->createQuery($dql)->getResult();
     }

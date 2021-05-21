@@ -6,24 +6,68 @@
     <h4>
         All Orders
     </h4>
-
-    {% for order in orders %}
-        <h5>
-            <a href="{{ path('order_detail', {'id' : order.id}) }}">
-                {{ order.orderNum }}
-            </a>
-            by {{ order.buyer }}
-            (<a href="{{ path('country_detail', {'country' : order.country}) }}">{{ order.country }}</a>)
-            on {{ order.orderDate | date("d-m-Y") }} :
-            {% if order.orderItems | length == 1 %}
-                1 item
-            {% else %}
-                {{ order.orderItems | length }} items
-            {% endif %}
-            , €{{ order.total | number_format }}
-        </h5>
-    {% endfor %}
-
+    <table class="table table-hover table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>
+                Order #
+            </th>
+            <th>
+                {{ knp_pagination_sortable(orders, 'Date', 'o.orderDate') }}
+            </th>
+            <th>
+                Buyer
+            </th>
+            <th>
+                Shipping Address
+            </th>
+            <th>
+                {{ knp_pagination_sortable(orders, 'Country', 'o.country') }}
+            </th>
+            <th>
+                Nb of Items
+            </th>
+            <th>
+                {{ knp_pagination_sortable(orders, 'Total', 'o.total') }}
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for order in orders %}
+            <tr>
+                <td>
+                    <a href="{{ path('order_detail', {'id': order.id}) }}">
+                        {{ order.orderNum }}
+                    </a>
+                </td>
+                <td>
+                    {{ order.orderDate | date("d-m-Y") }}
+                </td>
+                <td>
+                    {{ order.buyer }}
+                </td>
+                <td>
+                    {% if order.shippingAddress | length > 100 %}
+                        {{ [order.shippingAddress | slice(0,100), '...'] | join }}
+                    {% else %}
+                        {{ order.shippingAddress }}
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('country_detail', {'country': order.country}) }}">
+                        {{ order.country }}
+                    </a>
+                </td>
+                <td>
+                    {{ order.orderItems | length }}
+                </td>
+                <td>
+                    €{{ order.total | number_format }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
     <div class="pagination">
         {{ knp_pagination_render(orders) }}
     </div>
