@@ -51,7 +51,17 @@ class OrderController extends AbstractController
             throw $this->createNotFoundException("Order not found !");
         }
 
-        return $this->render('order/detail.html.twig', ['order' => $order]);
+        $items = new ArrayCollection();
+        $orderItems = $order->getOrderItems();
+
+        foreach ($orderItems as $orderItem)
+        {
+            $listingNb = $orderItem->getItemId();
+            $item = $em->getRepository(Item::class)->findOrderItem($listingNb);
+            $items->add($item);
+        }
+
+        return $this->render('order/detail.html.twig', ['order' => $order, 'items' => $items]);
     }
 
     /**

@@ -5,20 +5,28 @@
     <h4>Order # {{ order.orderNum }}</h4>
     {% if order.orderItems | length == 1 %}
         <h5>
-            {{ order.orderItems[0].description }} : €{{ order.orderItems[0].itemPrice | number_format }}
+            <a href="{{ path('artist_detail', {'artist': items[0][0].artist}) }}">
+                {{ items[0][0].artist }}
+            </a>
+            - {{ items[0][0].title }} ({{ items[0][0].format }}),
+            <a href="{{ path('label_detail', {'label': items[0][0].label}) }}">
+                {{ items[0][0].label }}
+            </a>
+            : €{{ order.orderItems[0].itemPrice | number_format }}
         </h5>
     {% else %}
         <ul>
-            {% for orderItem in order.orderItems %}
-                {% set descriptionSplit = orderItem.description | split(' - ') %}
-                {% set itemArtist = descriptionSplit[0] %}
-                {% set itemTitleAndFormat = descriptionSplit[1] %}
-                <li>
+            {% for item in items %}
+               <li>
                     <h5>
-                        <a href="{{ path('artist_detail', {'artist': itemArtist}) }}">
-                            {{ itemArtist | raw }}
+                        <a href="{{ path('artist_detail', {'artist': item[0].artist}) }}">
+                            {{ item[0].artist }}
                         </a>
-                        - {{ itemTitleAndFormat}} : €{{ orderItem.itemPrice | number_format }}
+                        - {{ item[0].title }} ({{ item[0].format }}),
+                        <a href="{{ path('label_detail', {'label': item[0].label}) }}">
+                            {{ item[0].label }}
+                        </a>
+                        : €{{ item[0].price | number_format }}
                     </h5>
                 </li>
             {% endfor %}
@@ -33,4 +41,3 @@
 {% block title %}
     {{ parent() }} | Order {{ order.orderNum }}
 {% endblock %}
-

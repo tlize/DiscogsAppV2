@@ -110,4 +110,14 @@ class ItemRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findOrderItem ($listingId)
+    {
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.listingId = :listingId')
+            ->setParameter('listingId', $listingId)
+            ->getQuery()
+            ->getResult();
+    }
+
 }
