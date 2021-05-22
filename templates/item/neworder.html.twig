@@ -65,12 +65,11 @@
         <input form="setSold" type="hidden" name="orderNum" value="{{ order.orderNum }}">
         <input form="setSold" type="hidden" name="buyer" value="{{ order.buyer }}">
         <input form="setSold" type="hidden" name="shippingAddress" value="{{ order.shippingAddress }}">
-
     </form>
 
     {% block footer %}
         <input form="setSold" type="submit" value="Set Sold">
-        {{ parent() }}
+        &copy;<a href="mailto:tlize@tristanlize.fr">tlize</a> {{ "now" | date("Y") }}
     {% endblock %}
 
 

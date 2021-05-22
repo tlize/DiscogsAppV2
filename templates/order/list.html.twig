@@ -16,7 +16,7 @@
                 {{ knp_pagination_sortable(orders, 'Date', 'o.orderDate') }}
             </th>
             <th>
-                Buyer
+                {{ knp_pagination_sortable(orders, 'Buyer', 'o.buyer') }}
             </th>
             <th>
                 Shipping Address
@@ -25,7 +25,7 @@
                 {{ knp_pagination_sortable(orders, 'Country', 'o.country') }}
             </th>
             <th>
-                Nb of Items
+                {{ knp_pagination_sortable(orders, 'Nb of Items', 'o.nbItems') }}
             </th>
             <th>
                 {{ knp_pagination_sortable(orders, 'Total', 'o.total') }}
@@ -59,7 +59,7 @@
                     </a>
                 </td>
                 <td>
-                    {{ order.orderItems | length }}
+                    {{ order.nbItems }}
                 </td>
                 <td>
                     €{{ order.total | number_format }}

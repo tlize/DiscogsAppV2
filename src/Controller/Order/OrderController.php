@@ -56,8 +56,8 @@ class OrderController extends AbstractController
 
         foreach ($orderItems as $orderItem)
         {
-            $listingNb = $orderItem->getItemId();
-            $item = $em->getRepository(Item::class)->findOrderItem($listingNb);
+            $listingId = $orderItem->getItemId();
+            $item = $em->getRepository(Item::class)->findOrderItem($listingId);
             $items->add($item);
         }
 
@@ -158,6 +158,7 @@ class OrderController extends AbstractController
                 ->setTotal($total)
                 // OneToMany relationship
                 ->setOrderItems($orderItems);
+            $order->setNbItems($orderItems->count());
 
             // set country from shipping address
             $countries = $em->getRepository(Country::class)->findAll();

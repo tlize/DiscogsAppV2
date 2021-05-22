@@ -170,6 +170,29 @@ class Order
     }
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private$nbItems;
+
+    /**
+     * @return mixed
+     */
+    public function getNbItems()
+    {
+        return $this->nbItems;
+    }
+
+    /**
+     * @param mixed $nbItems
+     */
+    public function setNbItems($nbItems): void
+    {
+        $this->nbItems = $nbItems;
+    }
+
+
+
+    /**
      * @return mixed
      */
     public function getOrderItems()

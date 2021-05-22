@@ -10,10 +10,10 @@
                 {{ order.orderNum }}
             </a>
             by {{ order.buyer }} on {{ order.orderDate | date("d-m-Y") }} :
-            {% if order.orderItems | length == 1 %}
+            {% if order.nbItems == 1 %}
                 1 item
             {% else %}
-                {{ order.orderItems | length }} items
+                {{ order.nbItems }} items
             {% endif %}
             , €{{ order.total | number_format }}
         </h5>

@@ -3,7 +3,7 @@
 {% block body %}
 
     <h4>Order # {{ order.orderNum }}</h4>
-    {% if order.orderItems | length == 1 %}
+    {% if order.nbItems == 1 %}
         <h5>
             <a href="{{ path('artist_detail', {'artist': items[0][0].artist}) }}">
                 {{ items[0][0].artist }}
