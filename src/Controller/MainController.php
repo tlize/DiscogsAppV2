@@ -38,4 +38,3 @@ class MainController extends AbstractController
 //todo : tri par nb items, total, avg, dans best labels et best artists
 // tri par nb orders, total, avg, dans best countries
 // avec lien knp_pagination_sortable() en sous-titre ?
-// blablaaaaaaaaaaa
