@@ -75,6 +75,10 @@ a, h5 a, table a, footer a, .navbar a {
     color: #ffffff;
 }
 
+.pagination {
+    font-size: x-small;
+}
+
 /* specificity : 0.1.1*/
 input[type=submit] {
     width: 100%;
