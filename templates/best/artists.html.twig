@@ -22,6 +22,8 @@
             , €{{ bestArtist.total | number_format }}
         </p>
     {% endfor %}
-
+    <div class="pagination">
+        {{ knp_pagination_render(bestArtists) }}
+    </div>
 {% endblock %}
 

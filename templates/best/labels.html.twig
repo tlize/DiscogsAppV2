@@ -20,5 +20,8 @@
             , €{{ bestLabel.total | number_format }}
         </p>
     {% endfor %}
+    <div class="pagination">
+        {{ knp_pagination_render(bestLabels) }}
+    </div>
 {% endblock %}
 

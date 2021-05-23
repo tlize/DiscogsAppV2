@@ -18,6 +18,55 @@ class ItemController extends AbstractController
 {
 
     /**
+     * all items
+     * @Route("/item", name = "item_list")
+     */
+    public function itemList(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
+    {
+        $query = $em->getRepository(Item::class)->findAllItems();
+
+        $items = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            100
+        );
+        return $this->render('item/list.html.twig', ['items' => $items]);
+    }
+
+    /**
+     * all sold items
+     * @Route("/item/sold", name = "item_sold")
+     */
+    public function soldItems(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
+    {
+        $query = $em->getRepository(Item::class)->findSoldItems();
+
+        $items = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            100
+        );
+        return $this->render("item/sold.html.twig", ["items" => $items]);
+    }
+
+    /**
+     * all items for sale
+     * @Route("/item/forsale", name = "item_for_sale")
+     */
+    public function itemsForSale(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
+    {
+        $query = $em->getRepository(Item::class)->findItemsForSale();
+
+        $items = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            100
+        );
+        return $this->render("item/forsale.html.twig", ["items" => $items]);
+    }
+
+
+    /**
      * item details
      * @Route("/item/{id}", name = "item_detail",
      * requirements={"id" : "\d+"},
@@ -27,6 +76,39 @@ class ItemController extends AbstractController
     {
         $item = $em->getRepository(Item::class)->find($id);
         return $this->render("item/detail.html.twig", ["item" => $item]);
+    }
+
+
+    /**
+     * best selling artists
+     * @Route("/artists", name = "best_artists_list")
+     */
+    public function bestArtists(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
+    {
+        $query = $em->getRepository(Item::class)->findBestArtists();
+
+        $bestArtists = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            15
+        );
+        return $this->render('best/artists.html.twig', ['bestArtists' => $bestArtists]);
+    }
+
+    /**
+     * best selling labels
+     * @Route("/labels", name = "best_labels_list")
+     */
+    public function bestLabels(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
+    {
+        $query = $em->getRepository(Item::class)->findBestLabels();
+
+        $bestLabels = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            15
+        );
+        return $this->render('best/labels.html.twig', ['bestLabels' => $bestLabels]);
     }
 
     /**
@@ -58,73 +140,6 @@ class ItemController extends AbstractController
         ]);
     }
 
-    /**
-     * all sold items
-     * @Route("/item/sold", name = "item_sold")
-     */
-    public function soldItems(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
-    {
-        $query = $em->getRepository(Item::class)->paginateSoldItems();
-
-        $items = $paginator->paginate(
-            $query,
-            $request->query->getInt('page', 1),
-            100
-        );
-        return $this->render("item/sold.html.twig", ["items" => $items]);
-    }
-
-    /**
-     * all items for sale
-     * @Route("/item/forsale", name = "item_for_sale")
-     */
-    public function itemsForSale(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
-    {
-        $query = $em->getRepository(Item::class)->paginateItemsForSale();
-
-        $items = $paginator->paginate(
-            $query,
-            $request->query->getInt('page', 1),
-            100
-        );
-        return $this->render("item/forsale.html.twig", ["items" => $items]);
-    }
-
-    /**
-     * all items
-     * @Route("/item", name = "item_list")
-     */
-    public function itemList(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
-    {
-        $query = $em->getRepository(Item::class)->paginateItems();
-
-        $items = $paginator->paginate(
-            $query,
-            $request->query->getInt('page', 1),
-            100
-        );
-        return $this->render('item/list.html.twig', ['items' => $items]);
-    }
-
-    /**
-     * best selling artists
-     * @Route("/artists", name = "best_artists_list")
-     */
-    public function bestArtists(EntityManagerInterface $em): Response
-    {
-        $bestArtists = $em->getRepository(Item::class)->findBestArtists();
-        return $this->render('best/artists.html.twig', ['bestArtists' => $bestArtists]);
-    }
-
-    /**
-     * best selling labels
-     * @Route("/labels", name = "best_labels_list")
-     */
-    public function bestLabels(EntityManagerInterface $em): Response
-    {
-        $bestLabels = $em->getRepository(Item::class)->findBestLabels();
-        return $this->render('best/labels.html.twig', ['bestLabels' => $bestLabels]);
-    }
 
     /**
      * items to pick for new order

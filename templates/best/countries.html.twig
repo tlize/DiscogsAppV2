@@ -21,5 +21,7 @@
             (average : €{{ country.avgAmount | number_format }})
         </p>
     {% endfor %}
-
+    <div class="pagination">
+        {{ knp_pagination_render(bestCountries) }}
+    </div>
 {% endblock %}
