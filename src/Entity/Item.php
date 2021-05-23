@@ -2,14 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ItemRepository;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @UniqueEntity(fields={"listingId"})
  * @ORM\Entity(repositoryClass=ItemRepository::class)
  * @ApiResource()
  */
