@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @UniqueEntity(fields={"listingId"})
  * @ORM\Entity(repositoryClass=ItemRepository::class)
+ * @ApiResource()
  */
 class Item
 {
