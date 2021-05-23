@@ -8,8 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=CountryRepository::class)
+ * @ApiResource
  */
-#[ApiResource]
 class Country
 {
     /**
