@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\OrderItemRepository;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -223,12 +225,12 @@ class OrderItem
         return $this;
     }
 
-    public function getOrderDate(): ?\DateTimeInterface
+    public function getOrderDate(): ?DateTimeInterface
     {
         return $this->orderDate;
     }
 
-    public function setOrderDate(\DateTimeInterface $orderDate): self
+    public function setOrderDate(DateTimeInterface $orderDate): self
     {
         $this->orderDate = $orderDate;
 
@@ -451,24 +453,24 @@ class OrderItem
         return $this;
     }
 
-    public function getRatingOfBuyerDate(): ?\DateTimeInterface
+    public function getRatingOfBuyerDate(): ?DateTimeInterface
     {
         return $this->ratingOfBuyerDate;
     }
 
-    public function setRatingOfBuyerDate(?\DateTimeInterface $ratingOfBuyerDate): self
+    public function setRatingOfBuyerDate(?DateTimeInterface $ratingOfBuyerDate): self
     {
         $this->ratingOfBuyerDate = $ratingOfBuyerDate;
 
         return $this;
     }
 
-    public function getRatingOfSellerDate(): ?\DateTimeInterface
+    public function getRatingOfSellerDate(): ?DateTimeInterface
     {
         return $this->ratingOfSellerDate;
     }
 
-    public function setRatingOfSellerDate(?\DateTimeInterface $ratingOfSellerDate): self
+    public function setRatingOfSellerDate(?DateTimeInterface $ratingOfSellerDate): self
     {
         $this->ratingOfSellerDate = $ratingOfSellerDate;
 
@@ -535,12 +537,12 @@ class OrderItem
         return $this;
     }
 
-    public function getLastActivity(): ?\DateTimeInterface
+    public function getLastActivity(): ?DateTimeInterface
     {
         return $this->lastActivity;
     }
 
-    public function setLastActivity(?\DateTimeInterface $lastActivity): self
+    public function setLastActivity(?DateTimeInterface $lastActivity): self
     {
         $this->lastActivity = $lastActivity;
 
