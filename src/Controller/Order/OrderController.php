@@ -27,7 +27,7 @@ class OrderController extends AbstractController
      */
     public function list(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
     {
-        $query = $em->getRepository(Order::class)->paginateAllWithDetails();
+        $query = $em->getRepository(Order::class)->findAllWithDetails();
 
         $orders = $paginator->paginate(
             $query,
@@ -36,6 +36,7 @@ class OrderController extends AbstractController
         );
         return $this->render('order/list.html.twig', ['orders' => $orders]);
     }
+
 
     /**
      * order details
@@ -64,6 +65,7 @@ class OrderController extends AbstractController
         return $this->render('order/detail.html.twig', ['order' => $order, 'items' => $items]);
     }
 
+
     /**
      * best buying countries
      * @Route("/countries", name = "best_countries_list")
@@ -74,9 +76,10 @@ class OrderController extends AbstractController
         return $this->render('best/countries.html.twig', ['bestCountries' => $bestCountries]);
     }
 
+
     /**
-     * new order
-     * form for buyer info and order nb
+     * new order form
+     * for buyer info and order nb
      * @Route("/order/new", name="order_new")
      */
     public function add(EntityManagerInterface $em, Request $request): Response
@@ -99,6 +102,7 @@ class OrderController extends AbstractController
         ]);
 
     }
+
 
     /**
      * confirm order

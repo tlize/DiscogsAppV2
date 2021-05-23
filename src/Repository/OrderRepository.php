@@ -21,7 +21,7 @@ class OrderRepository extends ServiceEntityRepository
     }
 
 
-    public function paginateAllWithDetails(): QueryBuilder
+    public function findAllWithDetails(): QueryBuilder
     {
         return $this->createQueryBuilder('o')
             ->orderBy('o.orderDate', 'DESC')
@@ -31,14 +31,16 @@ class OrderRepository extends ServiceEntityRepository
 
     public function findBestCountries()
     {
-        $em = $this->getEntityManager();
-        $dql = "
-            SELECT o.country, COUNT(o.orderNum) AS nbOrders, SUM(o.total) AS totalAmount, AVG(o.total) AS avgAmount
-                FROM App\Entity\Order o 
-                GROUP BY o.country
-                ORDER BY nbOrders DESC, totalAmount DESC
-        ";
-        return $em->createQuery($dql)->getResult();
+        return $this->createQueryBuilder('o')
+            ->addSelect('o.country')
+            ->addSelect('COUNT(o.orderNum) AS nbOrders')
+            ->addSelect('SUM(o.total) AS totalAmount')
+            ->addSelect('AVG(o.total) AS avgAmount')
+            ->groupBy('o.country')
+            ->orderBy('nbOrders', 'DESC')
+            ->addOrderBy('totalAmount', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 
     public function findCountryDetail($country)

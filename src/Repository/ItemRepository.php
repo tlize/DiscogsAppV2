@@ -20,6 +20,29 @@ class ItemRepository extends ServiceEntityRepository
         parent::__construct($registry, Item::class);
     }
 
+
+    public function findAllItems(): QueryBuilder
+    {
+        return $this->createQueryBuilder('i')
+            ->orderBy('i.artist', 'ASC');
+    }
+
+    public function findSoldItems(): QueryBuilder
+    {
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.status = :sold')
+            ->setParameter('sold', 'Sold')
+            ->orderBy('i.artist', 'ASC');
+    }
+
+    public function findItemsForSale(): QueryBuilder
+    {
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.status = :forsale')
+            ->setParameter('forsale', 'For Sale')
+            ->orderBy('i.artist', 'ASC');
+    }
+
     public function findOutOfShop()
     {
         return $this->createQueryBuilder('i')
@@ -28,6 +51,37 @@ class ItemRepository extends ServiceEntityRepository
             ->andWhere('i.status != :forSale')
             ->setParameter('forSale', 'for Sale')
             ->orderBy('i.artist', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+
+    public function findBestArtists()
+    {
+        return $this->createQueryBuilder('i')
+            ->addSelect('i.artist')
+            ->addSelect('COUNT(i.listingId) AS nbItems')
+            ->addSelect('SUM(i.price) AS total')
+            ->andWhere('i.status = :sold')
+            ->setParameter('sold', 'Sold')
+            ->groupBy('i.artist')
+            ->orderBy('total', 'DESC')
+            ->addOrderBy('nbItems', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findBestLabels()
+    {
+        return $this->createQueryBuilder('i')
+            ->addSelect('i.label')
+            ->addSelect('COUNT(i.listingId) AS nbItems')
+            ->addSelect('SUM(i.price) AS total')
+            ->andWhere('i.status = :sold')
+            ->setParameter('sold', 'Sold')
+            ->groupBy('i.label')
+            ->orderBy('total', 'DESC')
+            ->addOrderBy('nbItems', 'DESC')
             ->getQuery()
             ->getResult();
     }
@@ -53,53 +107,6 @@ class ItemRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function paginateItems(): QueryBuilder
-    {
-        return $this->createQueryBuilder('i')
-            ->orderBy('i.artist', 'ASC');
-    }
-
-    public function paginateSoldItems(): QueryBuilder
-    {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.status = :sold')
-            ->setParameter('sold', 'Sold')
-            ->orderBy('i.artist', 'ASC');
-    }
-
-    public function paginateItemsForSale(): QueryBuilder
-    {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.status = :forsale')
-            ->setParameter('forsale', 'For Sale')
-            ->orderBy('i.artist', 'ASC');
-    }
-
-    public function findBestArtists()
-    {
-        $em = $this->getEntityManager();
-        $dql = "
-            SELECT i.artist, COUNT(i.listingId) AS nbItems, SUM(i.price) AS total
-                FROM App\Entity\Item i 
-                WHERE i.status = 'Sold' 
-                GROUP BY i.artist
-                ORDER BY total DESC, nbItems DESC
-        ";
-        return $em->createQuery($dql)->getResult();
-    }
-
-    public function findBestLabels()
-    {
-        $em = $this->getEntityManager();
-        $dql = "
-            SELECT i.label, COUNT(i.listingId) AS nbItems, SUM(i.price) AS total
-                FROM App\Entity\Item i 
-                WHERE i.status = 'Sold' 
-                GROUP BY i.label
-                ORDER BY total DESC, nbItems DESC
-        ";
-        return $em->createQuery($dql)->getResult();
-    }
 
     public function findItemsForNewOrder()
     {
@@ -111,6 +118,7 @@ class ItemRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+
     public function findOrderItem ($listingId)
     {
         return $this->createQueryBuilder('i')
@@ -119,5 +127,6 @@ class ItemRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
 
 }

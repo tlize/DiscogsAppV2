@@ -21,7 +21,7 @@ class MainController extends AbstractController
      */
     public function home(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
     {
-        $query = $em->getRepository(Order::class)->paginateAllWithDetails();
+        $query = $em->getRepository(Order::class)->findAllWithDetails();
 
         $orders = $paginator->paginate(
             $query,
