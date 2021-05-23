@@ -21,6 +21,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class OrderController extends AbstractController
 {
 
+    //list////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     /**
      * all orders
      * @Route("/order", name = "order_list")
@@ -37,6 +39,8 @@ class OrderController extends AbstractController
         return $this->render('order/list.html.twig', ['orders' => $orders]);
     }
 
+
+    //details////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * order details
@@ -66,6 +70,8 @@ class OrderController extends AbstractController
     }
 
 
+    //ranks////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     /**
      * best buying countries
      * @Route("/countries", name = "best_countries_list")
@@ -82,6 +88,8 @@ class OrderController extends AbstractController
         return $this->render('best/countries.html.twig', ['bestCountries' => $bestCountries]);
     }
 
+
+    //new////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * new order form
@@ -108,7 +116,6 @@ class OrderController extends AbstractController
         ]);
 
     }
-
 
     /**
      * confirm order
@@ -207,4 +214,6 @@ class OrderController extends AbstractController
         }
 
     }
+
+
 }
