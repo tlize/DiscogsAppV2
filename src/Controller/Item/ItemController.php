@@ -83,17 +83,15 @@ class ItemController extends AbstractController
      * best selling artists
      * @Route("/artists", name = "best_artists_list")
      */
-    public function bestArtists(EntityManagerInterface $em): Response
+    public function bestArtists(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
     {
-        $bestArtists = $em->getRepository(Item::class)->findBestArtists();
+        $query = $em->getRepository(Item::class)->findBestArtists();
 
-//        $bestArtists = $paginator->paginate(
-//            $query,
-//            $request->query->getInt('page', 1),
-//            100
-//        );
-//        dump($bestArtists);
-//        return $this->render('main/test.html.twig', ['bestArtists' => $bestArtists]);
+        $bestArtists = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            15
+        );
         return $this->render('best/artists.html.twig', ['bestArtists' => $bestArtists]);
     }
 
@@ -101,9 +99,15 @@ class ItemController extends AbstractController
      * best selling labels
      * @Route("/labels", name = "best_labels_list")
      */
-    public function bestLabels(EntityManagerInterface $em): Response
+    public function bestLabels(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
     {
-        $bestLabels = $em->getRepository(Item::class)->findBestLabels();
+        $query = $em->getRepository(Item::class)->findBestLabels();
+
+        $bestLabels = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            15
+        );
         return $this->render('best/labels.html.twig', ['bestLabels' => $bestLabels]);
     }
 

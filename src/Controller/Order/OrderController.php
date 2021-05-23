@@ -70,9 +70,15 @@ class OrderController extends AbstractController
      * best buying countries
      * @Route("/countries", name = "best_countries_list")
      */
-    public function bestCountries(EntityManagerInterface $em): Response
+    public function bestCountries(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
     {
-        $bestCountries = $em->getRepository(Order::class)->findBestCountries();
+        $query = $em->getRepository(Order::class)->findBestCountries();
+
+        $bestCountries = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            15
+        );
         return $this->render('best/countries.html.twig', ['bestCountries' => $bestCountries]);
     }
 
