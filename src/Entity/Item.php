@@ -7,12 +7,15 @@ use App\Repository\ItemRepository;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @UniqueEntity(fields={"listingId"})
  * @ORM\Entity(repositoryClass=ItemRepository::class)
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext={"read:collection", "read:item"}
+ * )
  */
 class Item
 {
@@ -20,6 +23,7 @@ class Item
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"read:collection", "read:item"})
      */
     private $id;
 
