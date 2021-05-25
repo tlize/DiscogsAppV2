@@ -35,9 +35,29 @@
 <div class="container-fluid">
 
     {% include 'inc/nav.html.twig' %}
-    {% include 'inc/searchicon.html.twig' %}
 
-    {% for label, messages in app.flashes %}
+
+    {% set base =  [app.request.baseUrl, '/'] | join() %}
+    {% set previous =  app.request.headers.get('referer') %}
+    {% set request =  app.request.requestUri %}
+
+
+{#    {% set previouspaths =  previousrequest | slice() %}#}
+{#    {% set previous =  previouspaths | slice('/', previouspaths | length) %}#}
+
+
+    {% set route =  request | slice(base | length) %}
+
+
+{#    {% set base =  app.request.baseUrl %}#}
+{#    {% if clic and clic == 'search' and clic != previous %}#}
+
+{#        {% include 'inc/searchform.html.twig' %}#}
+{#    {% else %}#}
+
+        {% include 'inc/searchicon.html.twig' %}
+{#    {% endif %}#}
+    {% for label,    messages in app.flashes %}
         {% for message in messages %}
             <div class="flash flash-{{ label }}">
                 {{ message }}
@@ -47,7 +67,13 @@
 
     <main class="container-fluid">
         <br>
-        {% block body %}{% endblock %}
+        <p>previous : {{ previous }}</p>
+        <p>route : {{ route }}</p>
+
+
+        {% block body %}
+
+        {% endblock %}
     </main>
     <footer>
         {% block footer %}
