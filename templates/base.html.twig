@@ -36,25 +36,15 @@
 
     {% include 'inc/nav.html.twig' %}
 
-
-    {% set base =  [app.request.baseUrl, '/'] | join() %}
     {% set previous =  app.request.headers.get('referer') %}
-    {% set request =  app.request.requestUri %}
+    {% set previousRequest =  previous | split('/') | last %}
 
+    {% set current =  app.request.requestUri %}
+    {% set request =  current | split('/') | last %}
 
-{#    {% set previouspaths =  previousrequest | slice() %}#}
-{#    {% set previous =  previouspaths | slice('/', previouspaths | length) %}#}
-
-
-    {% set route =  request | slice(base | length) %}
-
-
-{#    {% set base =  app.request.baseUrl %}#}
-{#    {% if clic and clic == 'search' and clic != previous %}#}
-
+{#    {% if request == 'search' and previousRequest != 'search' %}#}
 {#        {% include 'inc/searchform.html.twig' %}#}
 {#    {% else %}#}
-
         {% include 'inc/searchicon.html.twig' %}
 {#    {% endif %}#}
     {% for label,    messages in app.flashes %}
@@ -67,8 +57,8 @@
 
     <main class="container-fluid">
         <br>
-        <p>previous : {{ previous }}</p>
-        <p>route : {{ route }}</p>
+        <p>previousRequest : {{ previousRequest }}</p>
+        <p>request : {{ request }}</p>
 
 
         {% block body %}
