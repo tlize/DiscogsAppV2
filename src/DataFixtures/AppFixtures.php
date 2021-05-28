@@ -24,14 +24,32 @@ class AppFixtures extends Fixture
             'M', 'NM', 'VG+', 'VG'
         );
 
+        $labels = Array();
+        for ($l = 0; $l < 50; $l++) {
+            $label = $faker->company;
+            $labels[] = $label;
+        }
+
+        $artists = Array();
+        for ($l = 0; $l < 150; $l++) {
+            $artist = $faker->firstName . ' ' . $faker->lastName;
+            $artists[] = $artist;
+        }
+
+        $countries = Array();
+        for ($c = 0; $c < 20; $c++) {
+            $country = $faker->country;
+            $countries[] = $country;
+        }
+
         //items
         $items= new ArrayCollection();
 
         for ($i = 0; $i < 500; $i++) {
             $item = new Item();
             $item->setListingId($faker->numberBetween())
-                ->setArtist($faker->firstName . ' ' . $faker->lastName)
-                ->setLabel($faker->company)
+                ->setArtist($faker->randomElement($artists))
+                ->setLabel($faker->randomElement($labels))
                 ->setCatno($faker->regexify('[A-Z]{5}[0-4]{3}'))
                 ->setFormat($faker->randomElement($format))
                 ->setReleaseId($faker->numberBetween(0000001, 9999999))
@@ -54,8 +72,9 @@ class AppFixtures extends Fixture
             $order->setBuyer($faker->userName)
                 ->setOrderNum('666666-' . $orderNum)
                 ->setShippingAddress($faker->address)
-                ->setCountry($faker->country)
-                ->setOrderDate(new DateTime())
+                ->setCountry($faker->randomElement($countries))
+                ->setOrderDate($faker->dateTimeBetween('- 1 year'))
+//                ->setOrderDate($faker->dateTimeBetween('- 1 year'))
                 ->setNbItems(rand(1,3));
 
             $orderItems = new ArrayCollection();
