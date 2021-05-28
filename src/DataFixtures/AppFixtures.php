@@ -74,7 +74,6 @@ class AppFixtures extends Fixture
                 ->setShippingAddress($faker->address)
                 ->setCountry($faker->randomElement($countries))
                 ->setOrderDate($faker->dateTimeBetween('- 1 year'))
-//                ->setOrderDate($faker->dateTimeBetween('- 1 year'))
                 ->setNbItems(rand(1,3));
 
             $orderItems = new ArrayCollection();
