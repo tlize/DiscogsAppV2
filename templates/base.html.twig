@@ -32,46 +32,31 @@
 
 <body>
 
-<div class="container-fluid">
+    <div class="container-fluid">
 
-    {% include 'inc/nav.html.twig' %}
-
-    {% set previous =  app.request.headers.get('referer') %}
-    {% set previousRequest =  previous | split('/') | last %}
-
-    {% set current =  app.request.requestUri %}
-    {% set request =  current | split('/') | last %}
-
-{#    {% if request == 'search' and previousRequest != 'search' %}#}
-{#        {% include 'inc/searchform.html.twig' %}#}
-{#    {% else %}#}
+        {% include 'inc/nav.html.twig' %}
         {% include 'inc/searchicon.html.twig' %}
-{#    {% endif %}#}
-    {% for label,    messages in app.flashes %}
-        {% for message in messages %}
-            <div class="flash flash-{{ label }}">
-                {{ message }}
-            </div>
+
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="flash flash-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
         {% endfor %}
-    {% endfor %}
 
-    <main class="container-fluid">
-        <br>
-        <p>previousRequest : {{ previousRequest }}</p>
-        <p>request : {{ request }}</p>
+        <main class="container-fluid">
+            <br>
+            {% block body %}{% endblock %}
+        </main>
 
+        <footer>
+            {% block footer %}
+                &copy;<a href="mailto:tlize@tristanlize.fr">tlize</a> {{ "now" | date("Y") }}
+            {% endblock %}
+        </footer>
 
-        {% block body %}
-
-        {% endblock %}
-    </main>
-    <footer>
-        {% block footer %}
-            &copy;<a href="mailto:tlize@tristanlize.fr">tlize</a> {{ "now" | date("Y") }}
-        {% endblock %}
-    </footer>
-
-</div>
+    </div>
 
 </body>
 </html>
