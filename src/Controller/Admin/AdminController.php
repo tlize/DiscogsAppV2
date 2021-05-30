@@ -56,7 +56,7 @@ class AdminController extends AbstractController
      * after table Order was added this new column
      * @Route("/setnbofitems", name = "setnbofitems")
      */
-    public function setItemsNb(EntityManagerInterface $em)
+    public function setItemsNb(EntityManagerInterface $em): Response
     {
         $orders = $em->getRepository(Order::class)->findAll();
         foreach ($orders as $order) {

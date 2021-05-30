@@ -128,6 +128,7 @@ class ItemController extends AbstractController
      */
     public function add(EntityManagerInterface $em, Request $request): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $item = new Item();
         $item->setStatus('For sale');
         $item->setListed(new DateTime());

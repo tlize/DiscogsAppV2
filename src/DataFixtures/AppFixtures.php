@@ -61,18 +61,29 @@ class AppFixtures extends Fixture
 
             $items->add($item);
             $manager->persist($item);
-            $manager->flush();
+        }
+
+        $outOfShop = Array(
+            'Draft', 'Violation'
+        );
+        for ($oos = 0; $oos < 5; $oos++) {
+            $item = $items[rand(0, $items->count() - 1)];
+            $item->setStatus($faker->randomElement($outOfShop));
+            $manager->persist($item);
         }
 
         $orderNum = 1;
+//        $startDate = 201;
+//        $endDate = 200;
         for ($o = 0; $o < 200; $o++) {
             $order = new Order();
             $total = 0;
-            $pickedItem = 0;
             $order->setBuyer($faker->userName)
                 ->setOrderNum('666666-' . $orderNum)
                 ->setShippingAddress($faker->address)
                 ->setCountry($faker->randomElement($countries))
+//                ->setOrderDate($faker->dateTimeBetween('- ' . $startDate . 'days',
+//                    '- ' . $endDate . 'days'))
                 ->setOrderDate($faker->dateTimeBetween('- 1 year'))
                 ->setNbItems(rand(1,3));
 
@@ -85,7 +96,7 @@ class AppFixtures extends Fixture
                     $orderItem->setOrderNum($order->getOrderNum())
                         ->setBuyer($order->getBuyer())
                         ->setShippingAddress($order->getShippingAddress())
-                        ->setOrderDate(new DateTime())
+                        ->setOrderDate($order->getOrderDate())
                         ->setOrderTotal(0)
                         ->setStatus('')
                         ->setItemId($item->getListingId())
@@ -97,7 +108,6 @@ class AppFixtures extends Fixture
                         ->setItemPrice($item->getPrice());
 
                     $total +=$orderItem->getItemPrice();
-                    $pickedItem++;
                     $item->setStatus('Sold');
                     $orderItems->add($orderItem);
                     $manager->persist($orderItem);
@@ -115,6 +125,8 @@ class AppFixtures extends Fixture
 
             $manager->persist($order);
             $orderNum++;
+//            $startDate--;
+//            $endDate--;
         }
 
         foreach ($items as $item) {
@@ -128,4 +140,3 @@ class AppFixtures extends Fixture
 }
 
 // php bin/console doctrine:fixtures:load
-// sql, table order_item : UPDATE `order_item` SET order_id = substr(order_num, 8)

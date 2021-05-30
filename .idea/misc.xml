@@ -6,4 +6,7 @@
   <component name="PhpEntryPointsManager">
     <suppressed_annotations>@Route</suppressed_annotations>
   </component>
+  <component name="ProjectPlainTextFileTypeManager">
+    <file url="file://$PROJECT_DIR$/src/Controller/AdminController.php" />
+  </component>
 </project>

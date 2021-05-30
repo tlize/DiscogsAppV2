@@ -98,6 +98,7 @@ class OrderController extends AbstractController
      */
     public function add(EntityManagerInterface $em, Request $request): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $order = new Order();
 
         $orderForm = $this->createForm(OrderType::class, $order);
@@ -124,6 +125,7 @@ class OrderController extends AbstractController
      */
     public function confirmOrder(EntityManagerInterface $em): RedirectResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         if (isset($_POST['id']) && isset($_POST['buyer']) && isset($_POST['orderNum']) && isset($_POST['shippingAddress'])) {
             $buyer = $_POST['buyer'];
             $orderNum = $_POST['orderNum'];
