@@ -40,7 +40,7 @@ class MainController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function add(Request $request): Response
+    public function search(Request $request): Response
     {
         $searchForm = $this->createForm(SearchType::class);
 
