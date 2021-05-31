@@ -76,7 +76,7 @@ class OrderController extends AbstractController
      * best buying countries
      * @Route("/countries", name = "best_countries_list")
      */
-    public function bestCountries(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
+    public function bestCountries(EntityManagerInterface $em): Response
     {
         $query = $em->getRepository(Order::class)->findBestCountries();
 
