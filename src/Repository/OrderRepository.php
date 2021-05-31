@@ -20,6 +20,7 @@ class OrderRepository extends ServiceEntityRepository
         parent::__construct($registry, Order::class);
     }
 
+    //lists///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function findAllWithDetails(): QueryBuilder
     {
@@ -42,6 +43,8 @@ class OrderRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    //details///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function findCountryDetail($country)
     {

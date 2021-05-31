@@ -49,18 +49,15 @@ input, footer input {
     background-color: #AA3333;
 }
 
-/*!* specificity : 0.1.0*!*/
-/*.background {*/
-/*    background-image: url("../img/records.jpg");*/
-/*    background-size: cover;*/
-/*    position: fixed;*/
-/*    top: 0;*/
-/*    bottom: 0;*/
-/*    left: 0;*/
-/*    right: 0;*/
-/*    opacity: .5;*/
-/*    z-index: -1;*/
-/*}*/
+/* specificity : 0.1.0*/
+.pagination {
+    font-size: x-small;
+}
+
+/* specificity : 0.1.0*/
+.searchIcon {
+    position:absolute; right:10px;
+}
 
 
 /* specificity : 0.0.1, 0.0.2, 0.0.2, 0.0.2, 0.1.1*/
@@ -76,6 +73,11 @@ a, h5 a, table a, footer a, .navbar a {
 }
 
 /* specificity : 0.1.1*/
+.searchIcon img {
+    size: 20px;
+}
+
+/* specificity : 0.1.1*/
 input[type=submit] {
     width: 100%;
     background-color: #0069d9;
@@ -83,6 +85,12 @@ input[type=submit] {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+}
+
+
+/* specificity : 0.1.2*/
+nav .d-flex a {
+    color: #ffffff;
 }
 
 
@@ -102,6 +110,12 @@ a:hover, h5 a:hover, table a:hover, footer a:hover, .navbar a:hover {
 /* specificity : 0.2.1*/
 a.dropdown-item:hover {
     background-color: inherit;
+}
+
+
+/* specificity : 0.2.2*/
+nav .d-flex a:hover {
+    color: #ffffff;
 }
 
 

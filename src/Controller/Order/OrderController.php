@@ -21,6 +21,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class OrderController extends AbstractController
 {
 
+    //list////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     /**
      * all orders
      * @Route("/order", name = "order_list")
@@ -37,6 +39,8 @@ class OrderController extends AbstractController
         return $this->render('order/list.html.twig', ['orders' => $orders]);
     }
 
+
+    //details////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * order details
@@ -66,6 +70,8 @@ class OrderController extends AbstractController
     }
 
 
+    //ranks////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     /**
      * best buying countries
      * @Route("/countries", name = "best_countries_list")
@@ -83,6 +89,8 @@ class OrderController extends AbstractController
     }
 
 
+    //new////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     /**
      * new order form
      * for buyer info and order nb
@@ -90,6 +98,7 @@ class OrderController extends AbstractController
      */
     public function add(EntityManagerInterface $em, Request $request): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $order = new Order();
 
         $orderForm = $this->createForm(OrderType::class, $order);
@@ -109,7 +118,6 @@ class OrderController extends AbstractController
 
     }
 
-
     /**
      * confirm order
      * data treatment before updating db
@@ -117,6 +125,7 @@ class OrderController extends AbstractController
      */
     public function confirmOrder(EntityManagerInterface $em): RedirectResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         if (isset($_POST['id']) && isset($_POST['buyer']) && isset($_POST['orderNum']) && isset($_POST['shippingAddress'])) {
             $buyer = $_POST['buyer'];
             $orderNum = $_POST['orderNum'];
@@ -207,4 +216,6 @@ class OrderController extends AbstractController
         }
 
     }
+
+
 }

@@ -4,11 +4,13 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\Table(name="app_user")
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id
@@ -20,7 +22,7 @@ class User
     /**
      * @ORM\Column(type="string", length=50)
      */
-    private $userName;
+    private $username;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -28,65 +30,104 @@ class User
     private $password;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $email;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $registerDate;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isAdmin;
+    private $roles;
 
-    public function getId(): ?int
+    /**
+     * @return mixed
+     */
+    public function getId()
     {
         return $this->id;
     }
 
-    public function getUserName(): ?string
+    /**
+     * @return mixed
+     */
+    public function getUsername()
     {
-        return $this->userName;
+        return $this->username;
     }
 
-    public function setUserName(string $userName): self
+    /**
+     * @param mixed $username
+     */
+    public function setUsername($username): void
     {
-        $this->userName = $userName;
-
-        return $this;
+        $this->username = $username;
     }
 
-    public function getPassword(): ?string
+
+
+    /**
+     * @return mixed
+     */
+    public function getPassword()
     {
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    /**
+     * @param mixed $password
+     */
+    public function setPassword($password): void
     {
         $this->password = $password;
-
-        return $this;
     }
 
-    public function getRegisterDate(): ?\DateTimeInterface
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email): void
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRegisterDate()
     {
         return $this->registerDate;
     }
 
-    public function setRegisterDate(\DateTimeInterface $registerDate): self
+    /**
+     * @param mixed $registerDate
+     */
+    public function setRegisterDate($registerDate): void
     {
         $this->registerDate = $registerDate;
-
-        return $this;
     }
 
-    public function getIsAdmin(): ?bool
+    /**
+     * @return mixed
+     */
+    public function getRoles()
     {
-        return $this->isAdmin;
+        return ["ROLE_USER"];
     }
 
-    public function setIsAdmin(bool $isAdmin): self
+
+    public function getSalt()
     {
-        $this->isAdmin = $isAdmin;
-
-        return $this;
+        return null;
     }
+
+    public function eraseCredentials() {}
 }

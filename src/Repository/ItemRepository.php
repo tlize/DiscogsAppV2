@@ -20,6 +20,7 @@ class ItemRepository extends ServiceEntityRepository
         parent::__construct($registry, Item::class);
     }
 
+    //lists///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function findAllItems(): QueryBuilder
     {
@@ -55,6 +56,7 @@ class ItemRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    //ranks///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function findBestArtists()
     {
@@ -86,6 +88,7 @@ class ItemRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    //details///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function findArtistDetail($artist)
     {
@@ -107,6 +110,7 @@ class ItemRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    //new///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function findItemsForNewOrder()
     {

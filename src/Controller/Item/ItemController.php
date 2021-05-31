@@ -8,6 +8,8 @@ use App\Form\ItemType;
 use App\Form\PriceUpdateType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +19,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class ItemController extends AbstractController
 {
 
+    //lists////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    public function pgnLimit(QueryBuilder $query, int $limit, PaginatorInterface $paginator, Request $request): PaginationInterface
+    {
+        return $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            $limit
+        );
+    }
+
     /**
      * all items
      * @Route("/item", name = "item_list")
@@ -24,12 +38,8 @@ class ItemController extends AbstractController
     public function itemList(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
     {
         $query = $em->getRepository(Item::class)->findAllItems();
+        $items = $this->pgnLimit($query, 100, $paginator, $request);
 
-        $items = $paginator->paginate(
-            $query,
-            $request->query->getInt('page', 1),
-            100
-        );
         return $this->render('item/list.html.twig', ['items' => $items]);
     }
 
@@ -40,12 +50,8 @@ class ItemController extends AbstractController
     public function soldItems(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
     {
         $query = $em->getRepository(Item::class)->findSoldItems();
+        $items = $this->pgnLimit($query, 50, $paginator, $request);
 
-        $items = $paginator->paginate(
-            $query,
-            $request->query->getInt('page', 1),
-            100
-        );
         return $this->render("item/sold.html.twig", ["items" => $items]);
     }
 
@@ -56,15 +62,12 @@ class ItemController extends AbstractController
     public function itemsForSale(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
     {
         $query = $em->getRepository(Item::class)->findItemsForSale();
-
-        $items = $paginator->paginate(
-            $query,
-            $request->query->getInt('page', 1),
-            100
-        );
+        $items = $this->pgnLimit($query, 50, $paginator, $request);
         return $this->render("item/forsale.html.twig", ["items" => $items]);
     }
 
+
+    //details////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * item details
@@ -78,6 +81,8 @@ class ItemController extends AbstractController
         return $this->render("item/detail.html.twig", ["item" => $item]);
     }
 
+
+    //ranks////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * best selling artists
@@ -111,8 +116,11 @@ class ItemController extends AbstractController
         return $this->render('best/labels.html.twig', ['bestLabels' => $bestLabels]);
     }
 
+
+    //new////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     /**
-     * add an item
+     * new item form
      * @Route("/item/add", name="item_add")
      * @param EntityManagerInterface $em
      * @param Request $request
@@ -120,6 +128,7 @@ class ItemController extends AbstractController
      */
     public function add(EntityManagerInterface $em, Request $request): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $item = new Item();
         $item->setStatus('For sale');
         $item->setListed(new DateTime());
@@ -140,7 +149,6 @@ class ItemController extends AbstractController
         ]);
     }
 
-
     /**
      * items to pick for new order
      * @Route("/item/neworder", name = "items_new_order")
@@ -150,6 +158,9 @@ class ItemController extends AbstractController
         $items = $em->getRepository(Item::class)->findItemsForNewOrder();
         return $this->render("item/neworder.html.twig", ["items" => $items]);
     }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * update item price
