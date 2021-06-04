@@ -14,11 +14,12 @@
         </a>
         - {{ item.catno }}
     </h5>
-    {% if item.comments != null %}
-        <p>
-            ( {{ item.comments }} )
-        </p>
-    {% endif %}
+    <p>
+        {{ item.mediaCondition | split('(') | last | trim (')') }} (sleeve : {{ item.sleeveCondition | split('(') | last }}
+        {% if item.comments != null %}
+            - {{ item.comments }}
+        {% endif %}
+    </p>
     <p>
         release Id : {{ item.releaseId }}
     </p>
@@ -33,8 +34,8 @@
             </span>
         {% endif %}
     </p>
-    {% set urlImages = ['https://www.discogs.com/release/', item.releaseId, '-', item.title |slug, '/images'] | join %}
-    <a id="urlImages" href="{{ urlImages }}" target="_blank">Discogs Image Gallery</a>
+    {% set releasePage = ['https://www.discogs.com/', item.artist | slug, '-', item.title |slug, '/release/', item.releaseId] | join %}
+    <a id="releasePage" href="{{ releasePage }}" target="_blank">Discogs Release Page</a>
 {% endblock %}
 
 {% block title %}
