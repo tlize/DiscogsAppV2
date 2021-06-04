@@ -119,6 +119,14 @@
       <path value="$PROJECT_DIR$/vendor/symfony/orm-pack" />
       <path value="$PROJECT_DIR$/vendor/symfony/serializer-pack" />
       <path value="$PROJECT_DIR$/vendor/api-platform/api-pack" />
+      <path value="$PROJECT_DIR$/vendor/guzzlehttp/streams" />
+      <path value="$PROJECT_DIR$/vendor/guzzlehttp/ringphp" />
+      <path value="$PROJECT_DIR$/vendor/guzzlehttp/oauth-subscriber" />
+      <path value="$PROJECT_DIR$/vendor/guzzlehttp/guzzle-services" />
+      <path value="$PROJECT_DIR$/vendor/guzzlehttp/guzzle" />
+      <path value="$PROJECT_DIR$/vendor/guzzlehttp/command" />
+      <path value="$PROJECT_DIR$/vendor/ricbra/php-discogs-api" />
+      <path value="$PROJECT_DIR$/vendor/react/promise" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.2" />
