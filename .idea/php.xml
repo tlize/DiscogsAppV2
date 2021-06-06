@@ -107,26 +107,13 @@
       <path value="$PROJECT_DIR$/vendor/knplabs/knp-paginator-bundle" />
       <path value="$PROJECT_DIR$/vendor/knplabs/knp-components" />
       <path value="$PROJECT_DIR$/vendor/twig/string-extra" />
-      <path value="$PROJECT_DIR$/vendor/nelmio/cors-bundle" />
-      <path value="$PROJECT_DIR$/vendor/fig/link-util" />
-      <path value="$PROJECT_DIR$/vendor/api-platform/core" />
-      <path value="$PROJECT_DIR$/vendor/willdurand/negotiation" />
       <path value="$PROJECT_DIR$/vendor/symfony/maker-bundle" />
       <path value="$PROJECT_DIR$/vendor/nikic/php-parser" />
+      <path value="$PROJECT_DIR$/vendor/symfony/orm-pack" />
+      <path value="$PROJECT_DIR$/vendor/symfony/serializer-pack" />
       <path value="$PROJECT_DIR$/vendor/fakerphp/faker" />
       <path value="$PROJECT_DIR$/vendor/doctrine/doctrine-fixtures-bundle" />
       <path value="$PROJECT_DIR$/vendor/doctrine/data-fixtures" />
-      <path value="$PROJECT_DIR$/vendor/symfony/orm-pack" />
-      <path value="$PROJECT_DIR$/vendor/symfony/serializer-pack" />
-      <path value="$PROJECT_DIR$/vendor/api-platform/api-pack" />
-      <path value="$PROJECT_DIR$/vendor/guzzlehttp/streams" />
-      <path value="$PROJECT_DIR$/vendor/guzzlehttp/ringphp" />
-      <path value="$PROJECT_DIR$/vendor/guzzlehttp/oauth-subscriber" />
-      <path value="$PROJECT_DIR$/vendor/guzzlehttp/guzzle-services" />
-      <path value="$PROJECT_DIR$/vendor/guzzlehttp/guzzle" />
-      <path value="$PROJECT_DIR$/vendor/guzzlehttp/command" />
-      <path value="$PROJECT_DIR$/vendor/ricbra/php-discogs-api" />
-      <path value="$PROJECT_DIR$/vendor/react/promise" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.2" />

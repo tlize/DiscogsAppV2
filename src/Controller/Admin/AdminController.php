@@ -6,8 +6,6 @@ namespace App\Controller\Admin;
 
 use App\Entity\Country;
 use App\Entity\Order;
-use Discogs\ClientFactory;
-use Discogs\Subscriber\ThrottleSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,24 +20,6 @@ class AdminController extends AbstractController
      */
     public function test(): Response
     {
-        $consumerKey = 'pPpkTFmXvwXASzlNXfUH';
-        $consumerSecret = 'XWcdCbCDvtPYtrZkqRllPXoTopcXEnEp';
-
-        $client = ClientFactory::factory([
-            'defaults' => [
-                'headers' => ['User-Agent' => 'discogsInventory'],
-                'query' => [
-                    'key' => $consumerKey,
-                    'secret' => $consumerSecret,
-                ],
-            ]
-        ]);
-        $client->getHttpClient()->getEmitter()->attach(new ThrottleSubscriber());
-
-//        $response = $client->
-
-
-
         dump($_POST);
 
         return $this->render("main/test.html.twig");

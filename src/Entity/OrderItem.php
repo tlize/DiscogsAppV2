@@ -2,14 +2,12 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\OrderItemRepository;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=OrderItemRepository::class)
- * @ApiResource()
  */
 class OrderItem
 {

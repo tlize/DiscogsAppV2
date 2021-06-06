@@ -112,20 +112,11 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/twig/string-extra" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/maker-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/nikic/php-parser" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/orm-pack" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/serializer-pack" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/fakerphp/faker" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/doctrine-fixtures-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/data-fixtures" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/orm-pack" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/serializer-pack" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/api-platform/api-pack" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/streams" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/ringphp" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/oauth-subscriber" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/guzzle-services" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/guzzle" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/guzzlehttp/command" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/ricbra/php-discogs-api" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/react/promise" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
