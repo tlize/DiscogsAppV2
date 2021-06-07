@@ -7,9 +7,12 @@ namespace App\Controller\Admin;
 use App\Entity\Country;
 use App\Entity\Order;
 use Doctrine\ORM\EntityManagerInterface;
+use GuzzleHttp\Client;
+use Jolita\DiscogsApi\DiscogsApi;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\discogs_auth\DiscogsAuth;
 
 class AdminController extends AbstractController
 {
@@ -20,7 +23,20 @@ class AdminController extends AbstractController
      */
     public function test(): Response
     {
-        dump($_POST);
+        $client = new Client();
+
+        $agent = new DiscogsAuth();
+        $token = $agent->getToken();
+        $userAgent = $agent->getUserAgent();
+
+        $discogs = new DiscogsApi($client, $token, $userAgent);
+
+        $orders = $discogs->getMyOrders();
+
+        $username = $agent->getUserName();
+        $inventory = $discogs->getMyInventory($username);
+
+        dump($orders, $inventory);
 
         return $this->render("main/test.html.twig");
     }
