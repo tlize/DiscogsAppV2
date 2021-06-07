@@ -31,12 +31,15 @@ class AdminController extends AbstractController
 
         $discogs = new DiscogsApi($client, $token, $userAgent);
 
-        $orders = $discogs->getMyOrders();
+        //$orders = $discogs->getMyOrders();
 
         $username = $agent->getUserName();
-        $inventory = $discogs->getMyInventory($username);
+        //$inventory = $discogs->getMyInventory($username);
 
-        dump($orders, $inventory);
+        $collection = $discogs
+            ->get("users/$username/collection/folders/1/releases", '', [], true);
+
+        dump($collection);
 
         return $this->render("main/test.html.twig");
     }
