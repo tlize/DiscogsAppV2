@@ -4,6 +4,8 @@
 namespace App\Controller\Admin;
 
 
+use App\discogs_api\MyDiscogsApi;
+use App\discogs_auth\DiscogsAuth;
 use App\Entity\Country;
 use App\Entity\Order;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,7 +14,6 @@ use Jolita\DiscogsApi\DiscogsApi;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\discogs_auth\DiscogsAuth;
 
 class AdminController extends AbstractController
 {
@@ -25,21 +26,19 @@ class AdminController extends AbstractController
     {
         $client = new Client();
 
-        $agent = new DiscogsAuth();
-        $token = $agent->getToken();
-        $userAgent = $agent->getUserAgent();
+        $discogsAuth = new DiscogsAuth();
+        $token = $discogsAuth->getToken();
+        $userAgent = $discogsAuth->getUserAgent();
+        $username = $discogsAuth->getUserName();
 
         $discogs = new DiscogsApi($client, $token, $userAgent);
+        $inventory = $discogs->getMyInventory($username);
+        $orders = $discogs->getMyOrders();
 
-        //$orders = $discogs->getMyOrders();
+        $myDiscogs = new MyDiscogsApi($client, $token, $userAgent);
+        $collection = $myDiscogs->getMyCollection($username);
 
-        $username = $agent->getUserName();
-        //$inventory = $discogs->getMyInventory($username);
-
-        $collection = $discogs
-            ->get("users/$username/collection/folders/1/releases", '', [], true);
-
-        dump($collection);
+        dump($inventory, $orders, $collection);
 
         return $this->render("main/test.html.twig");
     }
