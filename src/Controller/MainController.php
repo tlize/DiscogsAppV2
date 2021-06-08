@@ -36,6 +36,7 @@ class MainController extends AbstractController
         $drafted = $myDiscogs->getDraft($username);
         $violation = $myDiscogs->getViolation($username);
 
+        dump($orders);
         return $this->render("main/home.html.twig",
             ["orders" => $orders, "drafted" => $drafted, "violation" => $violation]);
     }

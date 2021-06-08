@@ -2,42 +2,53 @@
 
 {% block body %}
 
-    <h4>Order # {{ order.orderNum }}</h4>
-    {% if order.nbItems == 1 %}
+    <h4>Order # {{ order.id }}</h4>
+    <h6>
+        By {{ order.buyer.username }} on {{ order.created | date("d-m-Y") }}
+    </h6>
+    {% if order.items | length == 1 %}
+        {% set item = order.items[0] %}
         <h5>
-            <a href="{{ path('artist_detail', {'artist': items[0][0].artist}) }}">
-                {{ items[0][0].artist }}
-            </a>
-            - {{ items[0][0].title }} ({{ items[0][0].format }}),
-            <a href="{{ path('label_detail', {'label': items[0][0].label}) }}">
-                {{ items[0][0].label }}
-            </a>
-            : €{{ order.orderItems[0].itemPrice | number_format }}
+            {% set itemSplit = item.release.description | split('(') %}
+            {% if itemSplit | length == 2 %}
+                {% set artistAndTitle = itemSplit[0] %}
+            {% else %}
+                {% set artistAndTitle = [itemSplit[0], itemSplit[1]] | join %}
+            {% endif %}
+            {% set releaseSlug = artistAndTitle | slug %}
+            {% set releaseUrl = ['https://www.discogs.com/', releaseSlug, '/release/', item.release.id] | join %}
+            <a href="{{ releaseUrl }}" target="_blank">{{ item.release.description }}</a>
+            : €{{ item.price.value | number_format }}
         </h5>
     {% else %}
         <ul>
-            {% for item in items %}
+            {% for item in order.items %}
                <li>
-                    <h5>
-                        <a href="{{ path('artist_detail', {'artist': item[0].artist}) }}">
-                            {{ item[0].artist }}
-                        </a>
-                        - {{ item[0].title }} ({{ item[0].format }}),
-                        <a href="{{ path('label_detail', {'label': item[0].label}) }}">
-                            {{ item[0].label }}
-                        </a>
-                        : €{{ item[0].price | number_format }}
-                    </h5>
+                   <h5>
+                       {% set itemSplit = item.release.description | split('(') %}
+                       {% if itemSplit | length == 2 %}
+                       {% set artistAndTitle = itemSplit[0] %}
+                       {% else %}
+                           {% set artistAndTitle = [itemSplit[0], itemSplit[1]] | join %}
+                       {% endif %}
+                       {% set releaseSlug = artistAndTitle | slug %}
+                       {% set releaseUrl = ['https://www.discogs.com/', releaseSlug, '/release/', item.release.id] | join %}
+                       <a href="{{ releaseUrl }}" target="_blank">{{ item.release.description }}</a>
+                       : €{{ item.price.value | number_format }}
+                   </h5>
                 </li>
             {% endfor %}
         </ul>
         <h5>
-            Total : €{{ order.total | number_format }}
+            Total : €{{ order.total.value | number_format }}
         </h5>
     {% endif %}
 
 {% endblock %}
 
 {% block title %}
-    {{ parent() }} | Order {{ order.orderNum }}
+    {{ parent() }} | Order {{ order.id }}
 {% endblock %}
+
+{# TODO link on description : item detail with parameter id #}
+{# TODO buyer country #}

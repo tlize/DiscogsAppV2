@@ -7,7 +7,10 @@
     {% set latestOrders = orders.orders %}
     {% for order in latestOrders %}
         <h5>
-            {{ order.id }} by {{ order.buyer.username }} on {{ order.created | date("d-m-Y") }} :
+            <a href="{{ path('order_detail', {'id' : order.id}) }}">
+                {{ order.id }}
+            </a>
+            by {{ order.buyer.username }} on {{ order.created | date("d-m-Y") }} :
             {% if order.items | length == 1 %}
                 1 item
             {% else %}
@@ -103,7 +106,8 @@
     {% endif %}
 {% endblock %}
 
-{# TODO links for details #}
+{# TODO links for details on order, artist... #}
+{# TODO what about the label ? #}
 {# TODO order_country table ? #}
 {# TODO manage Collection ? #}
 
