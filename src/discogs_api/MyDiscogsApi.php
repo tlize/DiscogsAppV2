@@ -23,4 +23,9 @@ class MyDiscogsApi extends DiscogsApi
     {
         return $this->get("users/$userName/inventory", '', ['status' => 'violation'], true);
     }
+
+    public function getInventoryItem(string $id)
+    {
+        return $this->get("marketplace/listings/$id", '', [], true);
+    }
 }

@@ -3,6 +3,7 @@
 
 namespace App\Controller\Item;
 
+use App\discogs_api\DiscogsClient;
 use App\Entity\Item;
 use App\Form\ItemType;
 use App\Form\PriceUpdateType;
@@ -20,7 +21,6 @@ class ItemController extends AbstractController
 {
 
     //lists////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
     public function pgnLimit(QueryBuilder $query, int $limit, PaginatorInterface $paginator, Request $request): PaginationInterface
     {
@@ -75,9 +75,11 @@ class ItemController extends AbstractController
      * requirements={"id" : "\d+"},
      * methods={"GET"})
      */
-    public function detail(EntityManagerInterface $em, $id): Response
+    public function detail($id): Response
     {
-        $item = $em->getRepository(Item::class)->find($id);
+        $discogsClient = new DiscogsClient();
+        $item = $discogsClient->getMyDiscogsClient()->getInventoryItem($id);
+
         return $this->render("item/detail.html.twig", ["item" => $item]);
     }
 

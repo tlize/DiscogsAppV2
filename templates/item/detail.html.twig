@@ -1,43 +1,23 @@
-{% extends 'base.html.twig' %}
-
-{% block body %}
-    <h4>
-        <a href="{{ path('artist_detail', {'artist': item.artist}) }}">
-            {{ item.artist }}
-        </a>
-        - {{ item.title }}
-    </h4>
-    <h5>
-        {{ item.format }} -
-        <a href="{{ path('label_detail', {'label': item.label}) }}">
-            {{ item.label }}
-        </a>
-        - {{ item.catno }}
-    </h5>
-    {% if item.comments != null %}
-        <p>
-            ( {{ item.comments }} )
-        </p>
-    {% endif %}
-    <p>
-        release Id : {{ item.releaseId }}
-    </p>
-    <p>
-        listing Id : {{ item.listingId }}
-    </p>
-    <p>
-        {{ item.status }} : €{{ item.price | number_format }}
-        {% if item.status == 'For Sale' %}
-            <span id="editPrice">
-                (<a href="{{ path('item_price', {'id': item.id}) }}">edit price</a>)
-            </span>
+<details>
+    <summary>{{ item.release.description }} : €{{ item.price.value | number_format }}</summary>
+    <div class="itemInfo">
+        <p>Media Condition : {{ item.media_condition }}</p>
+        {% if item.sleeve_condition != null %}
+            <p>
+                Sleeve Condition : {{ item.sleeve_condition }}
+            </p>
         {% endif %}
-    </p>
-    {% set urlImages = ['https://www.discogs.com/release/', item.releaseId, '-', item.title |slug, '/images'] | join %}
-    <a id="urlImages" href="{{ urlImages }}" target="_blank">Discogs Image Gallery</a>
-{% endblock %}
-
-{% block title %}
-    {{ parent() }} | {{ item.title }}
-{% endblock %}
-
+        {% if item.condition_comments != null %}
+            <p>
+                {{ item.condition_comments | raw }}
+            </p>
+        {% endif %}
+        <p>
+            listing Id : {{ item.id }}
+        </p>
+        {% set releasePage = ['https://www.discogs.com/', item.release.description |slug, '/release/', item.release.id] | join %}
+        <p>
+            release Id : <a href="{{ releasePage }}" title="Discogs Release Page" target="_blank">{{ item.release.id }}</a>
+        </p>
+    </div>
+</details>

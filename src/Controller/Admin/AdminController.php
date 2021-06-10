@@ -4,13 +4,11 @@
 namespace App\Controller\Admin;
 
 
-use App\discogs_api\MyDiscogsApi;
+use App\discogs_api\DiscogsClient;
 use App\discogs_auth\DiscogsAuth;
 use App\Entity\Country;
 use App\Entity\Order;
 use Doctrine\ORM\EntityManagerInterface;
-use GuzzleHttp\Client;
-use Jolita\DiscogsApi\DiscogsApi;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,21 +22,12 @@ class AdminController extends AbstractController
      */
     public function test(): Response
     {
-        $client = new Client();
+        $discogsClient = new DiscogsClient();
 
         $discogsAuth = new DiscogsAuth();
-        $token = $discogsAuth->getToken();
-        $userAgent = $discogsAuth->getUserAgent();
         $username = $discogsAuth->getUserName();
-
-        $discogs = new DiscogsApi($client, $token, $userAgent);
-        $inventory = $discogs->getMyInventory($username);
-        $orders = $discogs->getMyOrders();
-
-        $myDiscogs = new MyDiscogsApi($client, $token, $userAgent);
-        $collection = $myDiscogs->getMyCollection($username);
-
-        dump($inventory, $orders, $collection);
+        $collection = $discogsClient->getMyDiscogsClient()->getMyCollection($username);
+        dump($collection);
 
         return $this->render("main/test.html.twig");
     }

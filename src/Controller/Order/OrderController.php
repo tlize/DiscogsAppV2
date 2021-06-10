@@ -3,7 +3,7 @@
 
 namespace App\Controller\Order;
 
-use App\discogs_auth\DiscogsAuth;
+use App\discogs_api\DiscogsClient;
 use App\Entity\Country;
 use App\Entity\Item;
 use App\Entity\Order;
@@ -12,8 +12,6 @@ use App\Form\OrderType;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
-use GuzzleHttp\Client;
-use Jolita\DiscogsApi\DiscogsApi;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -23,7 +21,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class OrderController extends AbstractController
 {
-
     //list////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -52,34 +49,14 @@ class OrderController extends AbstractController
      */
     public function detail($id): Response
     {
-        $client = new Client();
-
-        $discogsAuth = new DiscogsAuth();
-        $token = $discogsAuth->getToken();
-        $userAgent = $discogsAuth->getUserAgent();
-
-        $discogs = new DiscogsApi($client, $token, $userAgent);
-
-        $order = $discogs->orderWithId($id);
+        $discogsClient = new DiscogsClient();
+        $order = $discogsClient->getDiscogsClient()->orderWithId($id);
 
         if (empty($order)) {
             throw $this->createNotFoundException("Order not found !");
         }
 
-//        $items = new ArrayCollection();
-//        $orderItems = $order->getOrderItems();
-//
-//        foreach ($orderItems as $orderItem)
-//        {
-//            $listingId = $orderItem->getItemId();
-//            $item = $em->getRepository(Item::class)->findOrderItem($listingId);
-//            $items->add($item);
-//        }
-
-        dump($order);
-        return $this->render('order/detail.html.twig', ['order' => $order
-//            , 'items' => $items
-        ]);
+        return $this->render('order/detail.html.twig', ['order' => $order]);
     }
 
 

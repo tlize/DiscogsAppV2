@@ -3,11 +3,9 @@
 
 namespace App\Controller;
 
-use App\discogs_api\MyDiscogsApi;
+use App\discogs_api\DiscogsClient;
 use App\discogs_auth\DiscogsAuth;
 use App\Form\SearchType;
-use GuzzleHttp\Client;
-use Jolita\DiscogsApi\DiscogsApi;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,21 +20,15 @@ class MainController extends AbstractController
      */
     public function home(): Response
     {
-        $client = new Client();
+        $discogsClient = new DiscogsClient();
 
         $discogsAuth = new DiscogsAuth();
-        $token = $discogsAuth->getToken();
-        $userAgent = $discogsAuth->getUserAgent();
         $username = $discogsAuth->getUserName();
 
-        $discogs = new DiscogsApi($client, $token, $userAgent);
-        $orders = $discogs->getMyOrders(1, 10, 'All');
+        $orders = $discogsClient->getDiscogsClient()->getMyOrders(1, 10, 'All');
+        $drafted = $discogsClient->getMyDiscogsClient()->getDraft($username);
+        $violation = $discogsClient->getMyDiscogsClient()->getViolation($username);
 
-        $myDiscogs = new MyDiscogsApi($client, $token, $userAgent);
-        $drafted = $myDiscogs->getDraft($username);
-        $violation = $myDiscogs->getViolation($username);
-
-        dump($orders);
         return $this->render("main/home.html.twig",
             ["orders" => $orders, "drafted" => $drafted, "violation" => $violation]);
     }
