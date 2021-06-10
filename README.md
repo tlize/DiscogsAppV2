@@ -1,4 +1,5 @@
 # DiscogsAppV2
+symfony app using Discogs API and JolitaGrazite package to browse my Discogs seller profile and have my own stats or ranks
 
 new version of myDiscogsSellerInventory, which was entirely built on vanilla php
 
