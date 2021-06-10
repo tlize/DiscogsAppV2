@@ -53,7 +53,8 @@
     "twbs/bootstrap": "4.6.0",
     "twig/extra-bundle": "^2.12|^3.0",
     "twig/string-extra": "^3.3",
-    "twig/twig": "^2.12|^3.0"
+    "twig/twig": "^2.12|^3.0",
+    "ext-json": "*"
   },
   "require-dev": {
     "symfony/browser-kit": "^5.2",

@@ -60,11 +60,6 @@ input, footer input {
 }
 
 /* specificity : 0.1.0*/
-.searchIcon {
-    position:absolute; right:10px;
-}
-
-/* specificity : 0.1.0*/
 .itemInfo {
     font-size: small;
 }
@@ -80,11 +75,6 @@ a, h5 a, table a, footer a, .navbar a {
 .thead-dark tr {
     background: #343a40;
     color: #ffffff;
-}
-
-/* specificity : 0.1.1*/
-.searchIcon img {
-    size: 20px;
 }
 
 /* specificity : 0.1.1*/
@@ -141,10 +131,3 @@ nav .d-flex a:hover {
     background-color: #c8c7c7;
     opacity: .6;
 }
-
-
-/* specificity : 0.1.0, 1.0.0, 1.0.0*/
-.notes, #editPrice, #urlImages {
-    font-size: x-small;
-}
-

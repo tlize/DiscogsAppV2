@@ -8,6 +8,8 @@ use App\discogs_api\DiscogsClient;
 use App\discogs_auth\DiscogsAuth;
 use App\Entity\Country;
 use App\Entity\Order;
+use App\Entity\OrderCountry;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,20 +43,45 @@ class AdminController extends AbstractController
     {
         $countries = $em->getRepository(Country::class)->findAll();
 
-        $orders = $em->getRepository(Order::class)->findAll();
+        $discogsClient = new DiscogsClient();
 
-        foreach ($orders as $order) {
-            $address = $order->getShippingAddress();
-            foreach ($countries as $country) {
-                if (strpos($address, $country->getName()) != false) {
-                    $buyerCountry = $country->getName();
-                    $order->setCountry($buyerCountry);
-                }
-            }
-            $em->persist($order);
+//        $allOrders = [];
+
+        $ordersUpTo100 = $discogsClient->getDiscogsClient()->getMyOrders(1, 100, 'All');
+        $jOrdersUpTo100 = json_decode($ordersUpTo100, true, null, JSON_OBJECT_AS_ARRAY);
+        foreach ($jOrdersUpTo100 as $order) {
+
+//            $order = json_decode($jOrder);
+            $orderId = $order['id'];
+            $shippingAddress = $order['shipping_address'];
+            $orderCountry = new OrderCountry();
+            $orderCountry->setOrderId($orderId);
+            $orderCountry->setShippingAddress($shippingAddress);
+            $em->persist($orderCountry);
         }
         $em->flush();
-        $this->addFlash('success', 'cool, country is now set for all orders !');
+//        $ordersUpTo200 = $discogsClient->getDiscogsClient()->getMyOrders(2, 100, 'All');
+//        foreach ($ordersUpTo200 as $order) {
+//            $allOrders[] = $order;
+//        }
+//        $ordersUpTo300 = $discogsClient->getDiscogsClient()->getMyOrders(3, 100, 'All');
+//        foreach ($ordersUpTo300 as $order) {
+//            $allOrders[] = $order;
+//        }
+
+//        foreach ($orders as $order) {
+//            $address = $order->getShippingAddress();
+//            foreach ($countries as $country) {
+//                if (strpos($address, $country->getName()) != false) {
+//                    $buyerCountry = $country->getName();
+//                    $order->setCountry($buyerCountry);
+//                }
+//            }
+//            $em->persist($order);
+//        }
+//        $em->flush();
+//        $this->addFlash('success', 'cool, country is now set for all orders !');
+        dump($ordersUpTo100, $countries);
         return $this->render('main/test.html.twig');
     }
 

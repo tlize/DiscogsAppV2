@@ -28,4 +28,5 @@ class MyDiscogsApi extends DiscogsApi
     {
         return $this->get("marketplace/listings/$id", '', [], true);
     }
+
 }
