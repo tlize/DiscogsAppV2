@@ -36,15 +36,13 @@ class OrderCountryRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?OrderCountry
+    public function findOneByOrderId($orderId)
     {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
+        return $this->createQueryBuilder('oc')
+            ->andWhere('oc.orderId = :orderId')
+            ->setParameter('orderId', $orderId)
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getResult()
         ;
     }
-    */
 }

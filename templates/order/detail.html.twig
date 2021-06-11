@@ -6,20 +6,17 @@
     <h6>
         By {{ order.buyer.username }} on {{ order.created | date("d-m-Y") }}
     </h6>
+    <h6>
+        {{ order.shipping_address }}
+    </h6>
     {% if order.items | length == 1 %}
         {% set item = order.items[0] %}
-
-        <h5>
-            {% include 'item/detail.html.twig' %}
-        </h5>
-
+        {% include 'inc/itemdescription.html.twig' %}
     {% else %}
         <ul>
             {% for item in order.items %}
-               <li>
-                   <h5>
-                       {% include 'item/detail.html.twig' %}
-                   </h5>
+                <li>
+                    {% include 'inc/itemdescription.html.twig' %}
                 </li>
             {% endfor %}
         </ul>
@@ -33,5 +30,3 @@
 {% block title %}
     {{ parent() }} | Order {{ order.id }}
 {% endblock %}
-
-{# TODO buyer country #}

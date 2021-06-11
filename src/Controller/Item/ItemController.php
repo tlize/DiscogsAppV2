@@ -80,7 +80,7 @@ class ItemController extends AbstractController
         $discogsClient = new DiscogsClient();
         $item = $discogsClient->getMyDiscogsClient()->getInventoryItem($id);
 
-        return $this->render("item/detail.html.twig", ["item" => $item]);
+        return $this->render("inc/itemdescription.html.twig", ["item" => $item]);
     }
 
 
@@ -184,7 +184,7 @@ class ItemController extends AbstractController
             $em->flush();
 
             $this->addFlash('success', 'Ok, price updated !');
-            return $this->render('item/detail.html.twig', ['id' => $item->getId(), 'item' => $item]);
+            return $this->render('inc/itemdescription.html.twig', ['id' => $item->getId(), 'item' => $item]);
         }
         return $this->render('item/price.html.twig', ['id' => $item->getId(), 'item' => $item,
             'priceForm' => $priceForm->createView()]);

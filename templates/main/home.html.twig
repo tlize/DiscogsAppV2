@@ -10,7 +10,13 @@
             <a href="{{ path('order_detail', {'id' : order.id}) }}">
                 {{ order.id }}
             </a>
-            by {{ order.buyer.username }} on {{ order.created | date("d-m-Y") }} :
+            by {{ order.buyer.username }}
+            {% if orderCountries[order.id] != null %}
+                 ({{ orderCountries[order.id][0].country }})
+            {% else %}
+                <a href="{{ path('set_country', {'orderId' : order.id}) }}">(set country ?)</a>
+            {% endif %}
+            on {{ order.created | date("d-m-Y") }} :
             {% if order.items | length == 1 %}
                 1 item
             {% else %}
@@ -108,6 +114,5 @@
 
 {# TODO links for details on order, artist... #}
 {# TODO what about the label ? #}
-{# TODO order_country table ? #}
 {# TODO manage Collection ? #}
 
