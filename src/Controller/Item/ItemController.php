@@ -3,7 +3,7 @@
 
 namespace App\Controller\Item;
 
-use App\discogs_api\DiscogsClient;
+use App\DiscogsApi\DiscogsClient;
 use App\Entity\Item;
 use App\Form\ItemType;
 use App\Form\PriceUpdateType;

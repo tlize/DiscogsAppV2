@@ -3,8 +3,8 @@
 
 namespace App\Controller;
 
-use App\discogs_api\DiscogsClient;
-use App\discogs_auth\DiscogsAuth;
+use App\DiscogsApi\DiscogsClient;
+use App\DiscogsApiAuth\DiscogsAuth;
 use App\Entity\OrderCountry;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

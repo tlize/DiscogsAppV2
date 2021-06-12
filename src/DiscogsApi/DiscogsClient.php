@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\discogs_api;
+namespace App\DiscogsApi;
 
 
-use App\discogs_auth\DiscogsAuth;
+use App\DiscogsApiAuth\DiscogsAuth;
 use GuzzleHttp\Client;
 use Jolita\DiscogsApi\DiscogsApi;
 

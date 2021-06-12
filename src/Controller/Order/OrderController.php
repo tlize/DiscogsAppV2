@@ -3,12 +3,13 @@
 
 namespace App\Controller\Order;
 
-use App\discogs_api\DiscogsClient;
+use App\DiscogsApi\DiscogsClient;
 use App\Entity\Country;
 use App\Entity\Item;
 use App\Entity\Order;
 use App\Entity\OrderItem;
 use App\Form\OrderType;
+use App\Pagination\MyPaginator;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,10 +37,8 @@ class OrderController extends AbstractController
         $discogsClient = new DiscogsClient();
         $orders = $discogsClient->getDiscogsClient()->getMyOrders($page);
 
-        $pagination = [];
-        $pages = $orders->pagination->pages;
-        $pagination['page'] = $page;
-        $pagination['pages'] = $pages;
+        $myPaginator = new MyPaginator();
+        $pagination = $myPaginator->paginate($orders, $page);
 
         return $this->render('order/list.html.twig', ['orders' => $orders, 'pagination' => $pagination]);
     }

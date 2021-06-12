@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\discogs_api;
+namespace App\DiscogsApi;
 
 
 use Jolita\DiscogsApi\DiscogsApi;
