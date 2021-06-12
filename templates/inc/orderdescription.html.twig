@@ -1,0 +1,22 @@
+<details>
+    <summary>
+        {{ order.id }}
+    </summary>
+    <div class="orderInfo">
+        {% if order.items | length == 1 %}
+            {% set item = order.items[0] %}
+            {% include 'inc/itemdescription.html.twig' %}
+        {% else %}
+            <ul>
+                {% for item in order.items %}
+                    <li>
+                        {% include 'inc/itemdescription.html.twig' %}
+                    </li>
+                {% endfor %}
+            </ul>
+            <h5>
+                Total : €{{ order.total.value | number_format }}
+            </h5>
+        {% endif %}
+    </div>
+</details>

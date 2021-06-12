@@ -27,16 +27,21 @@ class OrderController extends AbstractController
      * all orders
      * @Route("/order", name = "order_list")
      */
-    public function list(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
+    public function list(int $page = 1): Response
     {
-        $query = $em->getRepository(Order::class)->findAllWithDetails();
+        if (isset($_GET['page'])) {
+            $page = $_GET['page'];
+        }
 
-        $orders = $paginator->paginate(
-            $query,
-            $request->query->getInt('page', 1),
-            50
-        );
-        return $this->render('order/list.html.twig', ['orders' => $orders]);
+        $discogsClient = new DiscogsClient();
+        $orders = $discogsClient->getDiscogsClient()->getMyOrders($page);
+
+        $pagination = [];
+        $pages = $orders->pagination->pages;
+        $pagination['page'] = $page;
+        $pagination['pages'] = $pages;
+
+        return $this->render('order/list.html.twig', ['orders' => $orders, 'pagination' => $pagination]);
     }
 
 

@@ -1,0 +1,32 @@
+<div class="pagination">
+    <nav>
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="{{ path(app.request.get('_route'), app.request.query.all|merge({'page':1})) }}" aria-label="Previous">
+                    <span>First</span>
+                </a>
+            </li>
+            {% for i in 1..pagination.pages %}
+                {% if i == pagination.page %}
+                    <li class="page-link active">
+                        <a href="#">{{ i }}</a>
+                    </li>
+                {% else %}
+                    {% if (i-pagination.page)|abs < 3%}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ path(app.request.get('_route') ,app.request.query.all|merge({'page': i})) }}">
+                                {{ i }}
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            <li class="page-item">
+                <a class="page-link" href="{{ path(app.request.get('_route') , app.request.query.all|merge({'page':pagination.pages})) }}" aria-label="Next">
+                    <span>Last</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+

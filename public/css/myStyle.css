@@ -54,16 +54,11 @@ input, footer input {
     background-color: #AA3333;
 }
 
-/* specificity : 0.1.0*/
-.pagination {
-    font-size: x-small;
-}
 
-/* specificity : 0.1.0*/
-.itemInfo {
+/* specificity : 0.1.0, 0.1.1*/
+.itemInfo, .orderInfo h5 {
     font-size: small;
 }
-
 
 /* specificity : 0.0.1, 0.0.2, 0.0.2, 0.0.2, 0.1.1*/
 a, h5 a, table a, footer a, .navbar a {
@@ -130,4 +125,9 @@ nav .d-flex a:hover {
 .table-hover tr:hover td {
     background-color: #c8c7c7;
     opacity: .6;
+}
+
+/* specificity : 0.2.2*/
+.pagination .active {
+    font-weight: bold;
 }

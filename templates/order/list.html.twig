@@ -4,7 +4,7 @@
 
 {% block body %}
     <h4>
-        All Orders
+        {{ orders.pagination.items }} Orders
     </h4>
     <table class="table table-hover table-striped">
         <thead class="thead-dark">
@@ -13,62 +13,60 @@
                 Order #
             </th>
             <th>
-                {{ knp_pagination_sortable(orders, 'Date', 'o.orderDate') }}
+                Date
             </th>
             <th>
-                {{ knp_pagination_sortable(orders, 'Buyer', 'o.buyer') }}
+                Buyer
             </th>
             <th>
                 Shipping Address
             </th>
             <th>
-                {{ knp_pagination_sortable(orders, 'Country', 'o.country') }}
+                Nb of Items
             </th>
             <th>
-                {{ knp_pagination_sortable(orders, 'Nb of Items', 'o.nbItems') }}
+                Status
             </th>
             <th>
-                {{ knp_pagination_sortable(orders, 'Total', 'o.total') }}
+                Total
             </th>
         </tr>
         </thead>
         <tbody>
-        {% for order in orders %}
+        {% for order in orders.orders %}
             <tr>
                 <td>
-                    <a href="{{ path('order_detail', {'id': order.id}) }}">
-                        {{ order.orderNum }}
-                    </a>
+                    {% include'inc/orderdescription.html.twig' with {'order' : order} %}
                 </td>
                 <td>
-                    {{ order.orderDate | date("d-m-Y") }}
+                    {{ order.created | date("d-m-Y") }}
                 </td>
                 <td>
-                    {{ order.buyer }}
+                    {{ order.buyer.username }}
                 </td>
                 <td>
-                    {% if order.shippingAddress | length > 100 %}
-                        {{ [order.shippingAddress | slice(0,100), '...'] | join }}
+                    {% if order.shipping_address | length > 100 %}
+                        {{ [order.shipping_address | slice(0,100), '...'] | join }}
                     {% else %}
-                        {{ order.shippingAddress }}
+                        {{ order.shipping_address }}
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{{ path('country_detail', {'country': order.country}) }}">
-                        {{ order.country }}
-                    </a>
+                    {{ order.items | length }}
                 </td>
                 <td>
-                    {{ order.nbItems }}
+                    {{ order.status }}
                 </td>
                 <td>
-                    €{{ order.total | number_format }}
+                    €{{ order.total.value | number_format }}
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-    <div class="pagination">
-        {{ knp_pagination_render(orders) }}
-    </div>
+
+    {% if orders.pagination.pages > 1 %}
+        {% include 'inc/pagination.html.twig' with {'pagination' : pagination}  %}
+    {% endif %}
+
 {% endblock %}
