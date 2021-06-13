@@ -6,6 +6,7 @@ namespace App\Controller\Item;
 use App\DiscogsApi\DiscogsClient;
 use App\DiscogsApiAuth\DiscogsAuth;
 use App\Entity\Item;
+use App\Entity\ItemLabel;
 use App\Form\ItemType;
 use App\Form\PriceUpdateType;
 use App\Pagination\MyPaginator;
@@ -22,67 +23,79 @@ class ItemController extends AbstractController
 
     //lists////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * all items
-     * @Route("/item", name = "item_list")
-     */
-    public function itemList(int $page = 1): Response
+    public function getInventoryByStatus($page, $status)
     {
-        if (isset($_GET['page'])) {
-            $page = $_GET['page'];
-        }
         $discogsAuth = new DiscogsAuth();
         $username = $discogsAuth->getUserName();
 
         $discogsClient = new DiscogsClient();
-        $items = $discogsClient->getMyDiscogsClient()->getInventoryItems($username, $page);
+        return $discogsClient->getMyDiscogsClient()->getInventoryItems($username, $page, 50, $status);
+    }
 
+    public function getItemsLabels($em, $items): array
+    {
+        $itemLabels = [];
+        foreach ($items->listings as $item) {
+            $releaseId = $item->release->id;
+            $itemLabel = $em->getRepository(ItemLabel::class)->findOneByReleaseId($releaseId);
+            $itemLabels[$releaseId] = $itemLabel;
+        }
+        return $itemLabels;
+    }
+
+    public function getPagination($items, $page): array
+    {
         $myPaginator = new MyPaginator();
-        $pagination = $myPaginator->paginate($items, $page);
+        return $myPaginator->paginate($items, $page);
+    }
 
-        return $this->render('item/list.html.twig', ['items' => $items, 'pagination' => $pagination]);
+
+    /**
+     * all items
+     * @Route("/item", name = "item_list")
+     */
+    public function itemList(EntityManagerInterface $em, int $page = 1): Response
+    {
+        if (isset($_GET['page'])) {
+            $page = $_GET['page'];
+        }
+        $items = $this->getInventoryByStatus($page, 'All');
+        $itemLabels = $this->getItemsLabels($em, $items);
+        $pagination = $this->getPagination($items, $page);
+
+        return $this->render('item/list.html.twig', ['items' => $items, 'itemLabels' => $itemLabels, 'pagination' => $pagination]);
     }
 
     /**
      * all sold items
      * @Route("/item/sold", name = "item_sold")
      */
-    public function soldItems(int $page = 1): Response
+    public function soldItems(EntityManagerInterface $em, int $page = 1): Response
     {
         if (isset($_GET['page'])) {
             $page = $_GET['page'];
         }
-        $discogsAuth = new DiscogsAuth();
-        $username = $discogsAuth->getUserName();
+        $items = $this->getInventoryByStatus($page, 'Sold');
+        $itemLabels = $this->getItemsLabels($em, $items);
+        $pagination = $this->getPagination($items, $page);
 
-        $discogsClient = new DiscogsClient();
-        $items = $discogsClient->getMyDiscogsClient()->getInventoryItems($username, $page, 50, 'Sold');
-
-        $myPaginator = new MyPaginator();
-        $pagination = $myPaginator->paginate($items, $page);
-
-        return $this->render('item/sold.html.twig', ['items' => $items, 'pagination' => $pagination]);
+        return $this->render('item/sold.html.twig', ['items' => $items, 'itemLabels' => $itemLabels, 'pagination' => $pagination]);
     }
 
     /**
      * all items for sale
      * @Route("/item/forsale", name = "item_for_sale")
      */
-    public function itemsForSale(int $page = 1): Response
+    public function itemsForSale(EntityManagerInterface $em, int $page = 1): Response
     {
         if (isset($_GET['page'])) {
             $page = $_GET['page'];
         }
-        $discogsAuth = new DiscogsAuth();
-        $username = $discogsAuth->getUserName();
+        $items = $this->getInventoryByStatus($page, 'For Sale');
+        $itemLabels = $this->getItemsLabels($em, $items);
+        $pagination = $this->getPagination($items, $page);
 
-        $discogsClient = new DiscogsClient();
-        $items = $discogsClient->getMyDiscogsClient()->getInventoryItems($username, $page, 50, 'For Sale');
-
-        $myPaginator = new MyPaginator();
-        $pagination = $myPaginator->paginate($items, $page);
-
-        return $this->render('item/forsale.html.twig', ['items' => $items, 'pagination' => $pagination]);
+        return $this->render('item/forsale.html.twig', ['items' => $items, 'itemLabels' => $itemLabels, 'pagination' => $pagination]);
     }
 
 

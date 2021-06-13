@@ -19,6 +19,9 @@
                 Title
             </th>
             <th>
+                Label
+            </th>
+            <th>
                 Catalog #
             </th>
             <th>
@@ -41,6 +44,13 @@
                 </td>
                 <td>
                     {{ item.release.title }}
+                </td>
+                <td>
+                    {% if itemLabels[item.release.id] != null %}
+                        {{ itemLabels[item.release.id][0].label }}
+                    {% else %}
+                        <a href="{{ path('set_label', {'releaseId' : item.release.id}) }}">(set label ?)</a>
+                    {% endif %}
                 </td>
                 <td>
                     {{ item.release.catalog_number }}

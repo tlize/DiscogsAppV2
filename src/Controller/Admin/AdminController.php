@@ -7,6 +7,7 @@ namespace App\Controller\Admin;
 use App\DiscogsApi\DiscogsClient;
 use App\DiscogsApiAuth\DiscogsAuth;
 use App\Entity\Country;
+use App\Entity\ItemLabel;
 use App\Entity\OrderCountry;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -63,6 +64,32 @@ class AdminController extends AbstractController
         $em->flush();
         $this->addFlash('success', 'Cool, country is now set for order ' . $orderId . ' !');
         return $this->render('order/detail.html.twig', ['order' => $order]);
+    }
+
+    /**
+     * set item label from releaseId
+     * use item_label table
+     * @Route("/setlabel/{releaseId}", name = "set_label",
+     *     methods={"GET"})
+     */
+    public function setItemLabel(EntityManagerInterface $em, $releaseId): Response
+    {
+        $discogsClient = new DiscogsClient();
+
+        $itemLabel = new ItemLabel();
+        $itemLabel->setReleaseId($releaseId);
+
+        //get matching item
+        $item = $discogsClient->getDiscogsClient()->release($releaseId);
+        $itemLabel->setLabel($item->labels[0]->name);
+
+        $em->persist($itemLabel);
+        $em->flush();
+
+        $this->addFlash('success', 'Cool, label is now set for item : ' . $item->title);
+        dump($item, $itemLabel);
+
+        return $this->render('main/test.html.twig');
     }
 
 }
