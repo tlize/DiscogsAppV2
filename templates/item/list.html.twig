@@ -4,70 +4,65 @@
 
 {% block body %}
     <h4>
-        All items
+        {{ items.pagination.items }} Items in Inventory
     </h4>
     <table class="table table-hover table-striped">
         <thead class="thead-dark">
         <tr>
             <th>
-                {{ knp_pagination_sortable(items, 'Listing Id', 'i.listingId') }}
+                Discogs Id
             </th>
             <th>
-                {{ knp_pagination_sortable(items, 'Band / Artist', 'i.artist') }}
+                Band / Artist
             </th>
             <th>
-                {{ knp_pagination_sortable(items, 'Title', 'i.title') }}
+                Title
             </th>
             <th>
-                {{ knp_pagination_sortable(items, 'Label', 'i.label') }}
+                Catalog #
             </th>
             <th>
-                {{ knp_pagination_sortable(items, 'Format', 'i.format') }}
+                Format
             </th>
             <th>
-                {{ knp_pagination_sortable(items, 'Status', 'i.status') }}
+                Status
             </th>
             <th>
-                {{ knp_pagination_sortable(items, 'Price', 'i.price') }}
+                Price
             </th>
         </tr>
         </thead>
         <tbody>
-        {% for item in items %}
+        {% for item in items.listings %}
             <tr>
                 <td>
-                    <a href="{{ path('item_detail', {'id': item.id}) }}">
-                        {{ item.listingId }}
-                    </a>
+                    {% set releasePage = ['https://www.discogs.com/', item.release.description |slug, '/release/', item.release.id] | join %}
+                    <a href="{{ releasePage }}" title="Discogs Release Page" target="_blank">{{ item.release.id }}</a>
                 </td>
                 <td>
-                    <a href="{{ path('artist_detail', {'artist': item.artist}) }}">
-                        {{ item.artist }}
-                    </a>
+                    {{ item.release.artist }}
                 </td>
                 <td>
-                    {{ item.title }}
+                    {{ item.release.title }}
                 </td>
                 <td>
-                    <a href="{{ path('label_detail', {'label': item.label}) }}">
-                        {{ item.label }}
-                    </a>
+                    {{ item.release.catalog_number }}
                 </td>
                 <td>
-                    {{ item.format }}
+                    {{ item.release.format }}
                 </td>
                 <td>
                     {{ item.status }}
                 </td>
                 <td>
-                    €{{ item.price | number_format }}
+                    €{{ item.price.value | number_format }}
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-    <div class="pagination">
-        {{ knp_pagination_render(items) }}
-    </div>
+    {% if items.pagination.pages > 1 %}
+        {% include 'inc/pagination.html.twig' with {'pagination' : pagination}  %}
+    {% endif %}
 {% endblock %}
 

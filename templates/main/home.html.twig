@@ -60,7 +60,8 @@
             {% for item in draftItems %}
                 <tr>
                     <td>
-                        {{ item.id }}
+                        {% set releasePage = ['https://www.discogs.com/', item.release.description |slug, '/release/', item.release.id] | join %}
+                        <a href="{{ releasePage }}" title="Discogs Release Page" target="_blank">{{ item.release.id }}</a>
                     </td>
                     <td>
                         {{ item.release.catalog_number }}
@@ -85,7 +86,8 @@
             {% for item in violationItems %}
                 <tr>
                     <td>
-                        {{ item.id }}
+                        {% set releasePage = ['https://www.discogs.com/', item.release.description |slug, '/release/', item.release.id] | join %}
+                        <a href="{{ releasePage }}" title="Discogs Release Page" target="_blank">{{ item.release.id }}</a>
                     </td>
                     <td>
                         {{ item.release.catalog_number }}

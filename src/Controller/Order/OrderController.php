@@ -7,6 +7,7 @@ use App\DiscogsApi\DiscogsClient;
 use App\Entity\Country;
 use App\Entity\Item;
 use App\Entity\Order;
+use App\Entity\OrderCountry;
 use App\Entity\OrderItem;
 use App\Form\OrderType;
 use App\Pagination\MyPaginator;
@@ -28,7 +29,7 @@ class OrderController extends AbstractController
      * all orders
      * @Route("/order", name = "order_list")
      */
-    public function list(int $page = 1): Response
+    public function list(EntityManagerInterface $em, int $page = 1): Response
     {
         if (isset($_GET['page'])) {
             $page = $_GET['page'];
@@ -37,10 +38,16 @@ class OrderController extends AbstractController
         $discogsClient = new DiscogsClient();
         $orders = $discogsClient->getDiscogsClient()->getMyOrders($page);
 
+        foreach ($orders->orders as $order) {
+            $orderNum = $order->id;
+            $orderCountry = $em->getRepository(OrderCountry::class)->findOneByOrderId($orderNum);
+            $orderCountries[$orderNum] = $orderCountry;
+        }
+
         $myPaginator = new MyPaginator();
         $pagination = $myPaginator->paginate($orders, $page);
 
-        return $this->render('order/list.html.twig', ['orders' => $orders, 'pagination' => $pagination]);
+        return $this->render('order/list.html.twig', ['orders' => $orders, "orderCountries" => $orderCountries, 'pagination' => $pagination]);
     }
 
 

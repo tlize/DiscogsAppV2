@@ -29,4 +29,19 @@ class MyDiscogsApi extends DiscogsApi
         return $this->get("marketplace/listings/$id", '', [], true);
     }
 
+    public function getInventoryItems(string $userName, int $page = null, int $perPage = null, string $status = null,
+          string $sort = null, string $sortOrder = null)
+    {
+        $query = [
+            'page' => $page ?? 1,
+            'per_page' => $perPage ?? 50,
+            'status' => $status ?? 'All',
+            'sort' => $sort ?? 'artist',
+            'sort_order' => $sortOrder ?? 'asc',
+        ];
+
+        return $this->getAuthenticated("users/$userName/inventory", '', $query);
+    }
+
+
 }

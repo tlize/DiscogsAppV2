@@ -25,7 +25,7 @@ class MainController extends AbstractController
         $username = $discogsAuth->getUserName();
 
         $orderCountries = [];
-        $orders = $discogsClient->getDiscogsClient()->getMyOrders(1, 10, 'All');
+        $orders = $discogsClient->getDiscogsClient()->getMyOrders(1, 5, 'All');
 
         foreach ($orders->orders as $order) {
             $orderNum = $order->id;

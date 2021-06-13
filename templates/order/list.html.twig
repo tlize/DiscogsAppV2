@@ -22,6 +22,9 @@
                 Shipping Address
             </th>
             <th>
+                Country
+            </th>
+            <th>
                 Nb of Items
             </th>
             <th>
@@ -45,10 +48,17 @@
                     {{ order.buyer.username }}
                 </td>
                 <td>
-                    {% if order.shipping_address | length > 100 %}
-                        {{ [order.shipping_address | slice(0,100), '...'] | join }}
+                    {% if order.shipping_address | length > 70 %}
+                        {{ [order.shipping_address | slice(0,70), '...'] | join }}
                     {% else %}
                         {{ order.shipping_address }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if orderCountries[order.id] != null %}
+                        {{ orderCountries[order.id][0].country }}
+                    {% else %}
+                        <a href="{{ path('set_country', {'orderId' : order.id}) }}">(set country ?)</a>
                     {% endif %}
                 </td>
                 <td>

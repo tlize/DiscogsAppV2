@@ -4,13 +4,13 @@
 namespace App\Controller\Item;
 
 use App\DiscogsApi\DiscogsClient;
+use App\DiscogsApiAuth\DiscogsAuth;
 use App\Entity\Item;
 use App\Form\ItemType;
 use App\Form\PriceUpdateType;
+use App\Pagination\MyPaginator;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\QueryBuilder;
-use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,48 +22,67 @@ class ItemController extends AbstractController
 
     //lists////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function pgnLimit(QueryBuilder $query, int $limit, PaginatorInterface $paginator, Request $request): PaginationInterface
-    {
-        return $paginator->paginate(
-            $query,
-            $request->query->getInt('page', 1),
-            $limit
-        );
-    }
-
     /**
      * all items
      * @Route("/item", name = "item_list")
      */
-    public function itemList(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
+    public function itemList(int $page = 1): Response
     {
-        $query = $em->getRepository(Item::class)->findAllItems();
-        $items = $this->pgnLimit($query, 100, $paginator, $request);
+        if (isset($_GET['page'])) {
+            $page = $_GET['page'];
+        }
+        $discogsAuth = new DiscogsAuth();
+        $username = $discogsAuth->getUserName();
 
-        return $this->render('item/list.html.twig', ['items' => $items]);
+        $discogsClient = new DiscogsClient();
+        $items = $discogsClient->getMyDiscogsClient()->getInventoryItems($username, $page);
+
+        $myPaginator = new MyPaginator();
+        $pagination = $myPaginator->paginate($items, $page);
+
+        return $this->render('item/list.html.twig', ['items' => $items, 'pagination' => $pagination]);
     }
 
     /**
      * all sold items
      * @Route("/item/sold", name = "item_sold")
      */
-    public function soldItems(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
+    public function soldItems(int $page = 1): Response
     {
-        $query = $em->getRepository(Item::class)->findSoldItems();
-        $items = $this->pgnLimit($query, 50, $paginator, $request);
+        if (isset($_GET['page'])) {
+            $page = $_GET['page'];
+        }
+        $discogsAuth = new DiscogsAuth();
+        $username = $discogsAuth->getUserName();
 
-        return $this->render("item/sold.html.twig", ["items" => $items]);
+        $discogsClient = new DiscogsClient();
+        $items = $discogsClient->getMyDiscogsClient()->getInventoryItems($username, $page, 50, 'Sold');
+
+        $myPaginator = new MyPaginator();
+        $pagination = $myPaginator->paginate($items, $page);
+
+        return $this->render('item/sold.html.twig', ['items' => $items, 'pagination' => $pagination]);
     }
 
     /**
      * all items for sale
      * @Route("/item/forsale", name = "item_for_sale")
      */
-    public function itemsForSale(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
+    public function itemsForSale(int $page = 1): Response
     {
-        $query = $em->getRepository(Item::class)->findItemsForSale();
-        $items = $this->pgnLimit($query, 50, $paginator, $request);
-        return $this->render("item/forsale.html.twig", ["items" => $items]);
+        if (isset($_GET['page'])) {
+            $page = $_GET['page'];
+        }
+        $discogsAuth = new DiscogsAuth();
+        $username = $discogsAuth->getUserName();
+
+        $discogsClient = new DiscogsClient();
+        $items = $discogsClient->getMyDiscogsClient()->getInventoryItems($username, $page, 50, 'For Sale');
+
+        $myPaginator = new MyPaginator();
+        $pagination = $myPaginator->paginate($items, $page);
+
+        return $this->render('item/forsale.html.twig', ['items' => $items, 'pagination' => $pagination]);
     }
 
 
