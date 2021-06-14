@@ -6,20 +6,10 @@
                     Home
                 </a>
             </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link active" href="#" role="button" data-bs-toggle="dropdown"
-                   aria-expanded="false">
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ path('order_list') }}">
                     Orders
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="nav-link active" href="{{ path('order_list') }}">
-                        All Orders
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a class="nav-link active" href="{{ path('order_new') }}">
-                        New Order
-                    </a>
-                </div>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link active" href="#" role="button" data-bs-toggle="dropdown"
@@ -37,9 +27,6 @@
                         All Items
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{{ path('item_add') }}">
-                        Add an Item
-                    </a>
                 </div>
             </li>
             <li class="nav-item dropdown">

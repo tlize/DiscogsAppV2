@@ -1,16 +1,13 @@
 <?php
 
 
-namespace App\Controller\Item;
+namespace App\Controller\Inventory;
 
 use App\DiscogsApi\DiscogsClient;
 use App\DiscogsApiAuth\DiscogsAuth;
-use App\Entity\Item;
 use App\Entity\ItemLabel;
-use App\Form\ItemType;
-use App\Form\PriceUpdateType;
+use App\Entity\OrderStatsObject;
 use App\Pagination\MyPaginator;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,33 +19,6 @@ class ItemController extends AbstractController
 {
 
     //lists////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public function getInventoryByStatus($page, $status)
-    {
-        $discogsAuth = new DiscogsAuth();
-        $username = $discogsAuth->getUserName();
-
-        $discogsClient = new DiscogsClient();
-        return $discogsClient->getMyDiscogsClient()->getInventoryItems($username, $page, 50, $status);
-    }
-
-    public function getItemsLabels($em, $items): array
-    {
-        $itemLabels = [];
-        foreach ($items->listings as $item) {
-            $releaseId = $item->release->id;
-            $itemLabel = $em->getRepository(ItemLabel::class)->findOneByReleaseId($releaseId);
-            $itemLabels[$releaseId] = $itemLabel;
-        }
-        return $itemLabels;
-    }
-
-    public function getPagination($items, $page): array
-    {
-        $myPaginator = new MyPaginator();
-        return $myPaginator->paginate($items, $page);
-    }
-
 
     /**
      * all items
@@ -124,13 +94,12 @@ class ItemController extends AbstractController
      */
     public function bestArtists(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
     {
-        $query = $em->getRepository(Item::class)->findBestArtists();
-
         $bestArtists = $paginator->paginate(
-            $query,
+            $em->getRepository(OrderStatsObject::class)->findBestArtists(),
             $request->query->getInt('page', 1),
             15
         );
+        dump($bestArtists);
         return $this->render('best/artists.html.twig', ['bestArtists' => $bestArtists]);
     }
 
@@ -140,10 +109,8 @@ class ItemController extends AbstractController
      */
     public function bestLabels(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
     {
-        $query = $em->getRepository(Item::class)->findBestLabels();
-
         $bestLabels = $paginator->paginate(
-            $query,
+            $em->getRepository(OrderStatsObject::class)->findBestLabels(),
             $request->query->getInt('page', 1),
             15
         );
@@ -151,74 +118,31 @@ class ItemController extends AbstractController
     }
 
 
-    //new////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //refactoring////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * new item form
-     * @Route("/item/add", name="item_add")
-     * @param EntityManagerInterface $em
-     * @param Request $request
-     * @return Response
-     */
-    public function add(EntityManagerInterface $em, Request $request): Response
+    public function getInventoryByStatus($page, $status)
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
-        $item = new Item();
-        $item->setStatus('For sale');
-        $item->setListed(new DateTime());
+        $discogsAuth = new DiscogsAuth();
+        $username = $discogsAuth->getUserName();
 
-        $itemForm = $this->createForm(ItemType::class, $item);
-
-        $itemForm->handleRequest($request);
-        if ($itemForm->isSubmitted() && $itemForm->isValid()) {
-            $em->persist($item);
-            $em->flush();
-
-            $this->addFlash('success', 'One more item !');
-            return $this->redirectToRoute('item_detail', ['id' => $item->getId()]);
-        }
-
-        return $this->render('item/add.html.twig', [
-            'itemForm' => $itemForm->createView()
-        ]);
+        $discogsClient = new DiscogsClient();
+        return $discogsClient->getMyDiscogsClient()->getInventoryItems($username, $page, 50, $status);
     }
 
-    /**
-     * items to pick for new order
-     * @Route("/item/neworder", name = "items_new_order")
-     */
-    public function itemsInOrder(EntityManagerInterface $em): Response
+    public function getItemsLabels($em, $items): array
     {
-        $items = $em->getRepository(Item::class)->findItemsForNewOrder();
-        return $this->render("item/neworder.html.twig", ["items" => $items]);
+        $itemLabels = [];
+        foreach ($items->listings as $item) {
+            $releaseId = $item->release->id;
+            $itemLabel = $em->getRepository(ItemLabel::class)->findOneByReleaseId($releaseId);
+            $itemLabels[$releaseId] = $itemLabel;
+        }
+        return $itemLabels;
     }
 
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * update item price
-     * @Route("/item/{id}/price", name = "item_price",
-     * requirements={"id" : "\d+"})
-     * methods={"POST"})
-     */
-    public function updatePrice(EntityManagerInterface $em, Request $request, $id): Response
+    public function getPagination($items, $page): array
     {
-        $item = $em->getRepository(Item::class)->find($id);
-        $priceForm = $this->createForm(PriceUpdateType::class);
-
-        $priceForm->handleRequest($request);
-        if ($priceForm->isSubmitted() && $priceForm->isValid()) {
-            $newPrice = $priceForm->getData();
-            $item->setPrice($newPrice['price']);
-
-            $em->persist($item);
-            $em->flush();
-
-            $this->addFlash('success', 'Ok, price updated !');
-            return $this->render('inc/itemdescription.html.twig', ['id' => $item->getId(), 'item' => $item]);
-        }
-        return $this->render('item/price.html.twig', ['id' => $item->getId(), 'item' => $item,
-            'priceForm' => $priceForm->createView()]);
+        $myPaginator = new MyPaginator();
+        return $myPaginator->paginate($items, $page);
     }
 }

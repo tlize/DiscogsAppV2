@@ -4,10 +4,13 @@
 
     <h4>Order # {{ order.id }}</h4>
     <h6>
-        By {{ order.buyer.username }} on {{ order.created | date("d-m-Y") }}
+        By {{ order.buyer.username }}
     </h6>
     <h6>
         {{ order.shipping_address }}
+    </h6>
+    <h6>
+        on {{ order.created | date("d-m-Y") }}
     </h6>
     {% if order.items | length == 1 %}
         {% set item = order.items[0] %}

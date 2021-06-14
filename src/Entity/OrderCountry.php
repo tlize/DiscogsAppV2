@@ -18,19 +18,19 @@ class OrderCountry
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=25)
+     * @ORM\Column(type="string", length=20)
      */
     private $orderId;
-
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $shippingAddress;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $country;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $total;
 
     public function getId(): ?int
     {
@@ -49,18 +49,6 @@ class OrderCountry
         return $this;
     }
 
-    public function getShippingAddress(): ?string
-    {
-        return $this->shippingAddress;
-    }
-
-    public function setShippingAddress(string $shippingAddress): self
-    {
-        $this->shippingAddress = $shippingAddress;
-
-        return $this;
-    }
-
     public function getCountry(): ?string
     {
         return $this->country;
@@ -69,6 +57,18 @@ class OrderCountry
     public function setCountry(string $country): self
     {
         $this->country = $country;
+
+        return $this;
+    }
+
+    public function getTotal(): ?int
+    {
+        return $this->total;
+    }
+
+    public function setTotal(int $total): self
+    {
+        $this->total = $total;
 
         return $this;
     }

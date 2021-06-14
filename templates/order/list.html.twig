@@ -39,7 +39,9 @@
         {% for order in orders.orders %}
             <tr>
                 <td>
-                    {% include'inc/orderdescription.html.twig' with {'order' : order} %}
+                    <a href="{{ path('order_detail', {'id': order.id}) }}">
+                        {{ order.id }}
+                    </a>
                 </td>
                 <td>
                     {{ order.created | date("d-m-Y") }}

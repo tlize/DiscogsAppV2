@@ -7,9 +7,9 @@
     {% for bestLabel in bestLabels %}
         <p>
                 <span>
-                    <a href="{{ path('label_detail', {'label': bestLabel.label}) }}">
+{#                    <a href="{{ path('label_detail', {'label': bestLabel.label}) }}">#}
                     {{ bestLabel.label }}
-                </a>
+{#                </a>#}
                 </span>
             :
             {% if bestLabel.nbItems == 1 %}

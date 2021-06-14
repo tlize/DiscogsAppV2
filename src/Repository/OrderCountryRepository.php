@@ -43,6 +43,20 @@ class OrderCountryRepository extends ServiceEntityRepository
             ->setParameter('orderId', $orderId)
             ->getQuery()
             ->getResult()
-        ;
+            ;
+    }
+
+    public function findBestCountries()
+    {
+        return $this->createQueryBuilder('oc')
+            ->addSelect('oc.country')
+            ->addSelect('COUNT(oc.orderId) AS nbOrders')
+            ->addSelect('SUM(oc.total) AS totalAmount')
+            ->addSelect('AVG(oc.total) AS avgAmount')
+            ->groupBy('oc.country')
+            ->orderBy('nbOrders', 'DESC')
+            ->addOrderBy('totalAmount', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 }

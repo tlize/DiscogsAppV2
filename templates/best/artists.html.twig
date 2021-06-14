@@ -9,9 +9,9 @@
     {% for bestArtist in bestArtists %}
         <p>
             <span>
-                <a href="{{ path('artist_detail', {'artist': bestArtist.artist}) }}">
+{#                <a href="{{ path('artist_detail', {'artist': bestArtist.artist}) }}">#}
                     {{ bestArtist.artist }}
-                </a>
+{#                </a>#}
             </span>
             :
             {% if bestArtist.nbItems == 1 %}
