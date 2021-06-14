@@ -99,7 +99,6 @@ class ItemController extends AbstractController
             $request->query->getInt('page', 1),
             15
         );
-        dump($bestArtists);
         return $this->render('best/artists.html.twig', ['bestArtists' => $bestArtists]);
     }
 

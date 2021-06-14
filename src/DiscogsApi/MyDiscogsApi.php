@@ -9,9 +9,16 @@ use Jolita\DiscogsApi\DiscogsApi;
 class MyDiscogsApi extends DiscogsApi
 {
 
-    public function getMyCollection(string $username)
+    public function getMyCollection(string $username, int $page)
     {
-        return $this->get("users/$username/collection/folders/1/releases", '', [], true);
+        $query = [
+            'page' => $page ?? 1,
+            'per_page' => $perPage ?? 50,
+            'status' => $status ?? 'All',
+            'sort' => $sort ?? 'artist',
+            'sort_order' => $sortOrder ?? 'asc',
+        ];
+        return $this->get("users/$username/collection/folders/1/releases", '', $query, true);
     }
 
     public function getDraft(string $userName)
@@ -43,5 +50,9 @@ class MyDiscogsApi extends DiscogsApi
         return $this->getAuthenticated("users/$userName/inventory", '', $query);
     }
 
+    public function getCollectionValue(string $username)
+    {
+        return $this->get("/users/$username/collection/value", '', [], true);
+    }
 
 }

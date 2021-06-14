@@ -6,10 +6,26 @@
                     Home
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="{{ path('order_list') }}">
+            <li class="nav-item dropdown">
+                <a class="nav-link active" href="#" role="button" data-bs-toggle="dropdown"
+                   aria-expanded="false">
                     Orders
                 </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="nav-link active" href="{{ path('order_list') }}">
+                        All Orders
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ path('best_artists_list') }}">
+                        Best Bands / Artists
+                    </a>
+                    <a class="dropdown-item" href="{{ path('best_labels_list') }}">
+                        Best Labels
+                    </a>
+                    <a class="dropdown-item" href="{{ path('best_countries_list') }}">
+                        Best Countries
+                    </a>
+                </div>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link active" href="#" role="button" data-bs-toggle="dropdown"
@@ -29,23 +45,10 @@
                     <div class="dropdown-divider"></div>
                 </div>
             </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-                   aria-expanded="false">
-                        Ranks
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{{ path('collection_list') }}">
+                    Collection
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-
-                    <a class="dropdown-item" href="{{ path('best_artists_list') }}">
-                        Bands / Artists
-                    </a>
-                    <a class="dropdown-item" href="{{ path('best_labels_list') }}">
-                        Labels
-                    </a>
-                    <a class="dropdown-item" href="{{ path('best_countries_list') }}">
-                        Countries
-                    </a>
-                </div>
             </li>
             <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="{{ path('test') }}">

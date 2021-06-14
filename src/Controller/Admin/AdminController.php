@@ -5,7 +5,6 @@ namespace App\Controller\Admin;
 
 
 use App\DiscogsApi\DiscogsClient;
-use App\DiscogsApiAuth\DiscogsAuth;
 use App\Entity\Country;
 use App\Entity\ItemLabel;
 use App\Entity\OrderCountry;
@@ -23,12 +22,7 @@ class AdminController extends AbstractController
      */
     public function test(): Response
     {
-        $discogsClient = new DiscogsClient();
-
-        $discogsAuth = new DiscogsAuth();
-        $username = $discogsAuth->getUserName();
-        $collection = $discogsClient->getMyDiscogsClient()->getMyCollection($username);
-        dump($collection);
+        dump($_POST);
 
         return $this->render("main/test.html.twig");
     }
@@ -50,11 +44,10 @@ class AdminController extends AbstractController
 
         //get matching order
         $order = $discogsClient->getDiscogsClient()->orderWithId($orderId);
-        $orderCountry->setShippingAddress($order->shipping_address);
 
         foreach ($countries as $country) {
             //find which country name is included in shipping address
-            if (strpos($orderCountry->getShippingAddress(), $country->getName()) != false) {
+            if (strpos($order->getShippingAddress(), $country->getName()) != false) {
                 $buyerCountry = $country->getName();
                 $orderCountry->setCountry($buyerCountry);
             }
