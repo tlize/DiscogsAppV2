@@ -5,13 +5,8 @@ namespace App\Controller\Inventory;
 
 use App\DiscogsApi\DiscogsClient;
 use App\DiscogsApiAuth\DiscogsAuth;
-use App\Entity\ItemLabel;
-use App\Entity\OrderStatsObject;
 use App\Pagination\MyPaginator;
-use Doctrine\ORM\EntityManagerInterface;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -24,48 +19,66 @@ class ItemController extends AbstractController
      * all items
      * @Route("/item", name = "item_list")
      */
-    public function itemList(EntityManagerInterface $em, int $page = 1): Response
+    public function itemList(int $page = 1, string $sort = 'artist', string $sortOrder = 'asc'): Response
     {
         if (isset($_GET['page'])) {
             $page = $_GET['page'];
         }
-        $items = $this->getInventoryByStatus($page, 'All');
-        $itemLabels = $this->getItemsLabels($em, $items);
+        if (isset($_GET['sort'])) {
+            $sort = $_GET['sort'];
+        }
+        switch ($sort) :
+            case 'price' : $sortOrder = 'desc'; break;
+            case 'item' : case 'artist' : case 'label' : case 'catno' : $sortOrder = 'asc'; break;
+        endswitch;
+        $items = $this->getSortedInventoryByStatus($page, 'All', $sort, $sortOrder);
         $pagination = $this->getPagination($items, $page);
 
-        return $this->render('item/list.html.twig', ['items' => $items, 'itemLabels' => $itemLabels, 'pagination' => $pagination]);
+        return $this->render('item/list.html.twig', ['items' => $items, 'pagination' => $pagination]);
     }
 
     /**
      * all sold items
      * @Route("/item/sold", name = "item_sold")
      */
-    public function soldItems(EntityManagerInterface $em, int $page = 1): Response
+    public function soldItems(int $page = 1, string $sort = 'artist', string $sortOrder = 'asc'): Response
     {
         if (isset($_GET['page'])) {
             $page = $_GET['page'];
         }
-        $items = $this->getInventoryByStatus($page, 'Sold');
-        $itemLabels = $this->getItemsLabels($em, $items);
+        if (isset($_GET['sort'])) {
+            $sort = $_GET['sort'];
+        }
+        switch ($sort) :
+            case 'price' : $sortOrder = 'desc'; break;
+            case 'item' : case 'artist' : case 'label' : case 'catno' : $sortOrder = 'asc'; break;
+        endswitch;
+        $items = $this->getSortedInventoryByStatus($page, 'Sold', $sort, $sortOrder);
         $pagination = $this->getPagination($items, $page);
 
-        return $this->render('item/sold.html.twig', ['items' => $items, 'itemLabels' => $itemLabels, 'pagination' => $pagination]);
+        return $this->render('item/sold.html.twig', ['items' => $items, 'pagination' => $pagination]);
     }
 
     /**
      * all items for sale
      * @Route("/item/forsale", name = "item_for_sale")
      */
-    public function itemsForSale(EntityManagerInterface $em, int $page = 1): Response
+    public function itemsForSale(int $page = 1, string $sort = 'artist', string $sortOrder = 'asc'): Response
     {
         if (isset($_GET['page'])) {
             $page = $_GET['page'];
         }
-        $items = $this->getInventoryByStatus($page, 'For Sale');
-        $itemLabels = $this->getItemsLabels($em, $items);
+        if (isset($_GET['sort'])) {
+            $sort = $_GET['sort'];
+        }
+        switch ($sort) :
+            case 'price' : $sortOrder = 'desc'; break;
+            case 'item' : case 'artist' : case 'label' : case 'catno' : $sortOrder = 'asc'; break;
+        endswitch;
+        $items = $this->getSortedInventoryByStatus($page, 'For Sale', $sort, $sortOrder);
         $pagination = $this->getPagination($items, $page);
 
-        return $this->render('item/forsale.html.twig', ['items' => $items, 'itemLabels' => $itemLabels, 'pagination' => $pagination]);
+        return $this->render('item/forsale.html.twig', ['items' => $items, 'pagination' => $pagination]);
     }
 
 
@@ -86,57 +99,16 @@ class ItemController extends AbstractController
     }
 
 
-    //ranks////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * best selling artists
-     * @Route("/artists", name = "best_artists_list")
-     */
-    public function bestArtists(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
-    {
-        $bestArtists = $paginator->paginate(
-            $em->getRepository(OrderStatsObject::class)->findBestArtists(),
-            $request->query->getInt('page', 1),
-            15
-        );
-        return $this->render('best/artists.html.twig', ['bestArtists' => $bestArtists]);
-    }
-
-    /**
-     * best selling labels
-     * @Route("/labels", name = "best_labels_list")
-     */
-    public function bestLabels(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
-    {
-        $bestLabels = $paginator->paginate(
-            $em->getRepository(OrderStatsObject::class)->findBestLabels(),
-            $request->query->getInt('page', 1),
-            15
-        );
-        return $this->render('best/labels.html.twig', ['bestLabels' => $bestLabels]);
-    }
-
-
     //refactoring////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function getInventoryByStatus($page, $status)
+    public function getSortedInventoryByStatus($page, $status, $sort, $sortOrder)
     {
         $discogsAuth = new DiscogsAuth();
         $username = $discogsAuth->getUserName();
 
         $discogsClient = new DiscogsClient();
-        return $discogsClient->getMyDiscogsClient()->getInventoryItems($username, $page, 50, $status);
-    }
-
-    public function getItemsLabels($em, $items): array
-    {
-        $itemLabels = [];
-        foreach ($items->listings as $item) {
-            $releaseId = $item->release->id;
-            $itemLabel = $em->getRepository(ItemLabel::class)->findOneByReleaseId($releaseId);
-            $itemLabels[$releaseId] = $itemLabel;
-        }
-        return $itemLabels;
+        return $discogsClient->getMyDiscogsClient()->getInventoryItems(
+            $username, $page, 50, $status, $sort, $sortOrder);
     }
 
     public function getPagination($items, $page): array
@@ -144,4 +116,5 @@ class ItemController extends AbstractController
         $myPaginator = new MyPaginator();
         return $myPaginator->paginate($items, $page);
     }
+
 }

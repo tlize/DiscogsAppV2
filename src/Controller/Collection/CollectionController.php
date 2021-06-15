@@ -33,6 +33,7 @@ class CollectionController extends AbstractController
         $myPaginator = new MyPaginator();
         $pagination = $myPaginator->paginate($collection, $page);
 
-        return $this->render("collection/list.html.twig", ['collection' => $collection, 'pagination' => $pagination, 'collectionValue' => $collectionValue]);
+        return $this->render("collection/list.html.twig", ['collection' => $collection, 'pagination' => $pagination,
+            'collectionValue' => $collectionValue]);
     }
 }

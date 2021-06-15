@@ -11,11 +11,6 @@
                 {{ order.id }}
             </a>
             by {{ order.buyer.username }}
-            {% if orderCountries[order.id] != null %}
-                 ({{ orderCountries[order.id][0].country }})
-            {% else %}
-                <a href="{{ path('set_country', {'orderId' : order.id}) }}">(set country ?)</a>
-            {% endif %}
             on {{ order.created | date("d-m-Y") }} :
             {% if order.items | length == 1 %}
                 1 item

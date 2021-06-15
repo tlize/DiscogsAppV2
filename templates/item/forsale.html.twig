@@ -6,6 +6,13 @@
     <h4>
         {{ items.pagination.items }} Items For Sale
     </h4>
+    <h6>Order by
+        <a href="?sort=price">Price</a> /
+        <a href="?sort=item">Title</a> /
+        <a href="?sort=artist">Band - Artist</a> /
+        <a href="?sort=label">Label</a> /
+        <a href="?sort=catno">Catalog #</a>
+    </h6>
     <table class="table table-hover table-striped">
         <thead class="thead-dark">
         <tr>
@@ -19,13 +26,13 @@
                 Title
             </th>
             <th>
-                Label
-            </th>
-            <th>
                 Catalog #
             </th>
             <th>
                 Format
+            </th>
+            <th>
+                Year
             </th>
             <th>
                 Price
@@ -46,17 +53,13 @@
                     {{ item.release.title }}
                 </td>
                 <td>
-                    {% if itemLabels[item.release.id] != null %}
-                        {{ itemLabels[item.release.id][0].label }}
-                    {% else %}
-                        <a href="{{ path('set_label', {'releaseId' : item.release.id}) }}">(set label ?)</a>
-                    {% endif %}
-                </td>
-                <td>
                     {{ item.release.catalog_number }}
                 </td>
                 <td>
                     {{ item.release.format }}
+                </td>
+                <td>
+                    {{ item.release.year }}
                 </td>
                 <td>
                     €{{ item.price.value | number_format }}
