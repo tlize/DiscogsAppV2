@@ -9,13 +9,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/order", name = "order")
+ */
 class OrderController extends AbstractController
 {
     //list////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * all orders
-     * @Route("/order", name = "order_list")
+     * @Route("/", name = "_list")
      */
     public function list(int $page = 1): Response
     {
@@ -37,7 +40,7 @@ class OrderController extends AbstractController
 
     /**
      * order details
-     * @Route("/order/{id}", name = "order_detail",
+     * @Route("/{id}", name = "_detail",
      *     methods={"GET"})
      */
     public function detail($id): Response

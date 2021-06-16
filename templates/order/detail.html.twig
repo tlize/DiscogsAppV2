@@ -14,12 +14,12 @@
     </h6>
     {% if order.items | length == 1 %}
         {% set item = order.items[0] %}
-        {% include 'inc/itemdescription.html.twig' %}
+        {% include 'inc/orderitemdescription.html.twig' %}
     {% else %}
         <ul>
             {% for item in order.items %}
                 <li>
-                    {% include 'inc/itemdescription.html.twig' %}
+                    {% include 'inc/orderitemdescription.html.twig' %}
                 </li>
             {% endfor %}
         </ul>

@@ -5,8 +5,17 @@
 {% block body %}
     <h4>
         {{ collection.pagination.items }} Items in my Collection
+        <span class="collValue">
+            (median value : {{ collectionValue.median |replace({',': ''}) | split('.') | first }})
+        </span>
     </h4>
-    <h5>median value : {{ collectionValue.median |replace({',': ''}) | split('.') | first }}</h5>
+    <h6>Order by
+        <a href="?sort=artist">Band - Artist</a> /
+        <a href="?sort=title">Title</a> /
+        <a href="?sort=catno">Catalog #</a> /
+        <a href="?sort=label">Label</a> /
+        <a href="?sort=year">Year</a>
+    </h6>
     <table class="table table-hover table-striped">
         <thead class="thead-dark">
         <tr>
@@ -59,7 +68,11 @@
                     {{ basic.labels[0].catno }}
                 </td>
                 <td>
-                    {{ basic.year }}
+                    {% if basic.year == 0 %}
+                        unknown
+                    {% else %}
+                        {{ basic.year }}
+                    {% endif %}
                 </td>
                 <td>
                     {% for genre in basic.genres %}

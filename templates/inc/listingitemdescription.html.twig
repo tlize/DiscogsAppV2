@@ -1,0 +1,20 @@
+<details>
+    <summary title="item Info">{{ item.id }}</summary>
+    <div class="itemInfo">
+        <p>Media Condition : {{ item.condition }}</p>
+        {% if item.sleeve_condition != null %}
+            <p>
+                Sleeve Condition : {{ item.sleeve_condition }}
+            </p>
+        {% endif %}
+        {% if item.comments != null %}
+            <p>
+                {{ item.comments | raw }}
+            </p>
+        {% endif %}
+        {% set releasePage = ['https://www.discogs.com/', item.release.description |slug, '/release/', item.release.id] | join %}
+        <p>
+            release Id : <a href="{{ releasePage }}" title="Discogs Release Page" target="_blank">{{ item.release.id }}</a>
+        </p>
+    </div>
+</details>

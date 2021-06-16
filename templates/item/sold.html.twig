@@ -7,17 +7,17 @@
         {{ items.pagination.items }} Sold Items
     </h4>
     <h6>Order by
-        <a href="?sort=price">Price</a> /
-        <a href="?sort=item">Title</a> /
         <a href="?sort=artist">Band - Artist</a> /
+        <a href="?sort=item">Title</a> /
+        <a href="?sort=catno">Catalog #</a> /
         <a href="?sort=label">Label</a> /
-        <a href="?sort=catno">Catalog #</a>
+        <a href="?sort=price">Price</a>
     </h6>
     <table class="table table-hover table-striped">
         <thead class="thead-dark">
         <tr>
             <th>
-                Discogs Id
+                Listing Id
             </th>
             <th>
                 Band / Artist
@@ -43,8 +43,7 @@
         {% for item in items.listings %}
             <tr>
                 <td>
-                    {% set releasePage = ['https://www.discogs.com/', item.release.description |slug, '/release/', item.release.id] | join %}
-                    <a href="{{ releasePage }}" title="Discogs Release Page" target="_blank">{{ item.release.id }}</a>
+                    {% include 'inc/listingitemdescription.html.twig' %}
                 </td>
                 <td>
                     {{ item.release.artist }}

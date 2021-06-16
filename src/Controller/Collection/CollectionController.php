@@ -4,6 +4,7 @@
 namespace App\Controller\Collection;
 
 
+use App\Controller\MainController;
 use App\DiscogsApi\DiscogsClient;
 use App\DiscogsApiAuth\DiscogsAuth;
 use App\Pagination\MyPaginator;
@@ -17,16 +18,19 @@ class CollectionController extends AbstractController
     /**
      * @Route("/collection", name = "collection_list")
      */
-    public function collection(int $page = 1): Response
+    public function collection(): Response
     {
-        if (isset($_GET['page'])) {
-            $page = $_GET['page'];
-        }
+        $mc = new MainController();
+        $pgSt = $mc->getPageAndSort();
+        $page = $pgSt['page'];
+        $sort = $pgSt['sort'];
+        $sortOrder = $pgSt['sortOrder'];
+
         $discogsClient = new DiscogsClient();
 
         $discogsAuth = new DiscogsAuth();
         $collection = $discogsClient->getMyDiscogsClient()
-            ->getMyCollection($discogsAuth->getUserName(), $page);
+            ->getMyCollection($discogsAuth->getUserName(), $page, $sort, $sortOrder);
         $collectionValue = $discogsClient->getMyDiscogsClient()
             ->getCollectionValue($discogsAuth->getUserName());
 

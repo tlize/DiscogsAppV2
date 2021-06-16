@@ -55,8 +55,8 @@ input, footer input {
 }
 
 
-/* specificity : 0.1.0, 0.1.1*/
-.itemInfo, .orderInfo h5 {
+/* specificity : 0.1.0, 0.1.0, 0.1.1*/
+.itemInfo, .collValue, .orderInfo h5 {
     font-size: small;
 }
 

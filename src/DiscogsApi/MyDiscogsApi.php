@@ -9,7 +9,7 @@ use Jolita\DiscogsApi\DiscogsApi;
 class MyDiscogsApi extends DiscogsApi
 {
 
-    public function getMyCollection(string $username, int $page)
+    public function getMyCollection(string $username, int $page, string $sort, string $sortOrder)
     {
         $query = [
             'page' => $page ?? 1,
