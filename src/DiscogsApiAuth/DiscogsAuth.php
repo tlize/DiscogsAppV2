@@ -6,7 +6,7 @@ namespace App\DiscogsApiAuth;
 
 class DiscogsAuth
 {
-    private $token = 'gWxcxzNQYHIBmXsCuUZxtxKFJGKzcUncFYkOYuln';
+    private $token = 'UgixALuvDFFhigtJxSabfZsgfHviYcPCrSbSHnHF';
     private $userAgent = 'discogsInventory';
     private $userName = 'tlize';
 
