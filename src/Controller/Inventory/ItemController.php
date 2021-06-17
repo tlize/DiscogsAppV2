@@ -24,10 +24,9 @@ class ItemController extends AbstractController
     public function itemList(): Response
     {
         $mc = new MainController();
-        $pgSt = $mc->getPageAndSort();
-        $page = $pgSt['page'];
-        $sort = $pgSt['sort'];
-        $sortOrder = $pgSt['sortOrder'];
+        $page = $mc->getPage();
+        $sort = $mc->getSort();
+        $sortOrder = $mc->getSortOrder();
 
         $items = $mc->getSortedInventoryByStatus($page, 'All', $sort, $sortOrder);
         $pagination = $mc->getPagination($items, $page);
@@ -42,10 +41,9 @@ class ItemController extends AbstractController
     public function soldItems(): Response
     {
         $mc = new MainController();
-        $pgSt = $mc->getPageAndSort();
-        $page = $pgSt['page'];
-        $sort = $pgSt['sort'];
-        $sortOrder = $pgSt['sortOrder'];
+        $page = $mc->getPage();
+        $sort = $mc->getSort();
+        $sortOrder = $mc->getSortOrder();
 
         $items = $mc->getSortedInventoryByStatus($page, 'Sold', $sort, $sortOrder);
         $pagination = $mc->getPagination($items, $page);
@@ -60,10 +58,9 @@ class ItemController extends AbstractController
     public function itemsForSale(): Response
     {
         $mc = new MainController();
-        $pgSt = $mc->getPageAndSort();
-        $page = $pgSt['page'];
-        $sort = $pgSt['sort'];
-        $sortOrder = $pgSt['sortOrder'];
+        $page = $mc->getPage();
+        $sort = $mc->getSort();
+        $sortOrder = $mc->getSortOrder();
 
         $items = $mc->getSortedInventoryByStatus($page, 'For Sale', $sort, $sortOrder);
         $pagination = $mc->getPagination($items, $page);

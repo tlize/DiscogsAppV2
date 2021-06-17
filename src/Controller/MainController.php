@@ -85,4 +85,22 @@ class MainController extends AbstractController
         return $myPaginator->paginate($items, $page);
     }
 
+    public function getPage()
+    {
+        $pgSt = $this->getPageAndSort();
+        return $pgSt['page'];
+    }
+
+    public function getSort()
+    {
+        $pgSt = $this->getPageAndSort();
+        return $pgSt['sort'];
+    }
+
+    public function getSortOrder()
+    {
+        $pgSt = $this->getPageAndSort();
+        return $pgSt['sortOrder'];
+    }
+
 }

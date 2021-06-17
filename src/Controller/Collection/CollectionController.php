@@ -21,14 +21,13 @@ class CollectionController extends AbstractController
     public function collection(): Response
     {
         $mc = new MainController();
-        $pgSt = $mc->getPageAndSort();
-        $page = $pgSt['page'];
-        $sort = $pgSt['sort'];
-        $sortOrder = $pgSt['sortOrder'];
+        $page = $mc->getPage();
+        $sort = $mc->getSort();
+        $sortOrder = $mc->getSortOrder();
 
         $discogsClient = new DiscogsClient();
-
         $discogsAuth = new DiscogsAuth();
+
         $collection = $discogsClient->getMyDiscogsClient()
             ->getMyCollection($discogsAuth->getUserName(), $page, $sort, $sortOrder);
         $collectionValue = $discogsClient->getMyDiscogsClient()
