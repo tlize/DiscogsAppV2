@@ -54,17 +54,17 @@ class MainController extends AbstractController
         $page = 1;
         $sort = 'artist';
         $sortOrder = 'asc';
+        $sortLink = 'asc';
 
         if (isset($_GET['page'])) $page = $_GET['page'];
         if (isset($_GET['sort'])) $sort = $_GET['sort'];
-        switch ($sort) :
-            case 'price' : $sortOrder = 'desc'; break;
-            case 'item' : case 'artist' : case 'label' : case 'catno' : case 'title' : case 'year' : $sortOrder = 'asc'; break;
-        endswitch;
+        if (isset($_GET['sort_order'])) $sortOrder = $_GET['sort_order'];
+        if (strpos($_SERVER['QUERY_STRING'], '&sort_order=asc')) $sortLink = 'desc';
 
         $pgSt['page'] = $page;
         $pgSt['sort'] = $sort;
         $pgSt['sortOrder'] = $sortOrder;
+        $pgSt['sortLink'] = $sortLink;
 
         return $pgSt;
     }
@@ -101,6 +101,12 @@ class MainController extends AbstractController
     {
         $pgSt = $this->getPageAndSort();
         return $pgSt['sortOrder'];
+    }
+
+    public function getSortLink()
+    {
+        $pgSt = $this->getPageAndSort();
+        return $pgSt['sortLink'];
     }
 
 }

@@ -27,11 +27,12 @@ class ItemController extends AbstractController
         $page = $mc->getPage();
         $sort = $mc->getSort();
         $sortOrder = $mc->getSortOrder();
+        $sortLink = $mc->getSortLink();
 
         $items = $mc->getSortedInventoryByStatus($page, 'All', $sort, $sortOrder);
         $pagination = $mc->getPagination($items, $page);
 
-        return $this->render('item/list.html.twig', ['items' => $items, 'pagination' => $pagination]);
+        return $this->render('item/list.html.twig', ['items' => $items, 'sortLink' => $sortLink, 'pagination' => $pagination]);
     }
 
     /**
@@ -44,11 +45,12 @@ class ItemController extends AbstractController
         $page = $mc->getPage();
         $sort = $mc->getSort();
         $sortOrder = $mc->getSortOrder();
+        $sortLink = $mc->getSortLink();
 
         $items = $mc->getSortedInventoryByStatus($page, 'Sold', $sort, $sortOrder);
         $pagination = $mc->getPagination($items, $page);
 
-        return $this->render('item/sold.html.twig', ['items' => $items, 'pagination' => $pagination]);
+        return $this->render('item/sold.html.twig', ['items' => $items, 'sortLink' => $sortLink, 'pagination' => $pagination]);
     }
 
     /**
@@ -61,11 +63,13 @@ class ItemController extends AbstractController
         $page = $mc->getPage();
         $sort = $mc->getSort();
         $sortOrder = $mc->getSortOrder();
+        $sortLink = $mc->getSortLink();
+
 
         $items = $mc->getSortedInventoryByStatus($page, 'For Sale', $sort, $sortOrder);
         $pagination = $mc->getPagination($items, $page);
 
-        return $this->render('item/forsale.html.twig', ['items' => $items, 'pagination' => $pagination]);
+        return $this->render('item/forsale.html.twig', ['items' => $items, 'sortLink' => $sortLink, 'pagination' => $pagination]);
     }
 
 

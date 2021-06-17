@@ -24,6 +24,7 @@ class CollectionController extends AbstractController
         $page = $mc->getPage();
         $sort = $mc->getSort();
         $sortOrder = $mc->getSortOrder();
+        $sortLink = $mc->getSortLink();
 
         $discogsClient = new DiscogsClient();
         $discogsAuth = new DiscogsAuth();
@@ -37,6 +38,6 @@ class CollectionController extends AbstractController
         $pagination = $myPaginator->paginate($collection, $page);
 
         return $this->render("collection/list.html.twig", ['collection' => $collection, 'pagination' => $pagination,
-            'collectionValue' => $collectionValue]);
+            'sortLink' => $sortLink, 'collectionValue' => $collectionValue]);
     }
 }

@@ -7,11 +7,11 @@
         {{ items.pagination.items }} Items in Inventory
     </h4>
     <h6>Order by
-        <a href="?sort=artist">Band - Artist</a> /
-        <a href="?sort=item">Title</a> /
-        <a href="?sort=catno">Catalog #</a> /
-        <a href="?sort=label">Label</a> /
-        <a href="?sort=price">Price</a>
+        <a href="?sort=artist&sort_order={{ sortLink }}">Band - Artist</a> /
+        <a href="?sort=item&sort_order={{ sortLink }}">Title</a> /
+        <a href="?sort=catno&sort_order={{ sortLink }}">Catalog #</a> /
+        <a href="?sort=label&sort_order={{ sortLink }}">Label</a> /
+        <a href="?sort=price&sort_order={{ sortLink }}">Price</a>
     </h6>
     <table class="table table-hover table-striped">
         <thead class="thead-dark">
