@@ -87,26 +87,22 @@ class MainController extends AbstractController
 
     public function getPage()
     {
-        $pgSt = $this->getPageAndSort();
-        return $pgSt['page'];
+        return $this->getPageAndSort()['page'];
     }
 
     public function getSort()
     {
-        $pgSt = $this->getPageAndSort();
-        return $pgSt['sort'];
+        return $this->getPageAndSort()['sort'];
     }
 
     public function getSortOrder()
     {
-        $pgSt = $this->getPageAndSort();
-        return $pgSt['sortOrder'];
+        return $this->getPageAndSort()['sortOrder'];
     }
 
     public function getSortLink()
     {
-        $pgSt = $this->getPageAndSort();
-        return $pgSt['sortLink'];
+        return $this->getPageAndSort()['sortLink'];
     }
 
 }
