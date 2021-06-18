@@ -26,7 +26,7 @@ class OrderController extends AbstractController
         $mc = new MainController();
         $page = $mc->getPage();
         $sort = $mc->getSort('id');
-        $sortOrder = $mc->getSortOrder('asc');
+        $sortOrder = $mc->getSortOrder('desc');
         $sortLink = $mc->getSortLink();
 
         $discogsClient = new DiscogsClient();

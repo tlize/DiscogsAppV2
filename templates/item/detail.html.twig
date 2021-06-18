@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h4>
+        {{ item.release.artist }}
+        - {{ item.release.title }}
+    </h4>
+    <img src="{{ item.release.thumbnail }}" alt="{{ item.release.description }}">
+    <h6><a class="itemInfo" id="releasePage" href="{{ release.uri }}" target="_blank">Discogs Page</a></h6>
+    <h5>
+        {{ item.release.format }}
+    </h5>
+    <h5>
+        {{ release.labels[0].name }} - {{ item.release.catalog_number }}
+    </h5>
+    <h5>
+        {% if release.year != 0 %}
+            {{ release.year }},
+        {% else %}
+            year unknown,
+        {% endif %}
+        {% if release.country != 0 %}
+            {{ release.country }}
+        {% else %}
+            country unknown
+        {% endif %}
+    </h5>
+    {% if release.notes is defined and release.notes != '' %}
+        <p>
+            {{ release.notes }}
+        </p>
+    {% endif %}
+    <h4>My Listing Item</h4>
+    <p>
+        {{ item.condition | split('(') | last | trim (')') }} (sleeve : {{ item.sleeve_condition | split('(') | last }}
+        {% if item.comments != null %}
+            - {{ item.comments }}
+        {% endif %}
+    </p>
+    <p>
+        release Id : {{ item.release.id }}
+    </p>
+    <p>
+        listing Id : {{ item.id }}
+    </p>
+    <p>
+        {{ item.status }} : €{{ item.price.value | number_format }}
+    </p>
+
+{% endblock %}
+
+{% block title %}
+    {{ parent() }} | {{ item.release.title }}
+{% endblock %}
+

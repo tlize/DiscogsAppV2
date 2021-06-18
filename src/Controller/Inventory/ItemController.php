@@ -85,8 +85,9 @@ class ItemController extends AbstractController
     {
         $discogsClient = new DiscogsClient();
         $item = $discogsClient->getMyDiscogsClient()->getInventoryItem($id);
+        $release = $discogsClient->getDiscogsClient()->release($item->release->id);
 
-        return $this->render("inc/orderitemdescription.html.twig", ["item" => $item]);
+        return $this->render("item/detail.html.twig", ["item" => $item, 'release' => $release]);
     }
 
 
