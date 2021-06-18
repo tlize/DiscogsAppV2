@@ -24,11 +24,6 @@ h4 span, p span {
     font-weight: bold;
 }
 
-/* specificity : 0.0.2*/
-td img {
-    height: 5rem;
-}
-
 /* specificity : 0.0.1, 0.0.2*/
 input, footer input {
     font-size: large;

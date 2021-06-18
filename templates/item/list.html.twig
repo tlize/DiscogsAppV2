@@ -47,7 +47,7 @@
         {% for item in items.listings %}
             <tr>
                 <td>
-                    <a href="{{ path('item_detail', {'id': item.id}) }}"><img src="{{ item.release.thumbnail }}" alt="{{ item.release.description }}"></a>
+                    <a href="{{ path('item_detail', {'id': item.id}) }}" title="See Item Details"><img src="{{ item.release.thumbnail }}" alt="{{ item.release.description }}"></a>
                 </td>
                 <td>
                     {{ item.id }}
