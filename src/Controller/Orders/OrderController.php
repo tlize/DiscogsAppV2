@@ -3,6 +3,7 @@
 
 namespace App\Controller\Orders;
 
+use App\Controller\MainController;
 use App\DiscogsApi\DiscogsClient;
 use App\Pagination\MyPaginator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,19 +21,21 @@ class OrderController extends AbstractController
      * all orders
      * @Route("/", name = "_list")
      */
-    public function list(int $page = 1): Response
+    public function list(): Response
     {
-        if (isset($_GET['page'])) {
-            $page = $_GET['page'];
-        }
+        $mc = new MainController();
+        $page = $mc->getPage();
+        $sort = $mc->getSort('id');
+        $sortOrder = $mc->getSortOrder('asc');
+        $sortLink = $mc->getSortLink();
 
         $discogsClient = new DiscogsClient();
-        $orders = $discogsClient->getDiscogsClient()->getMyOrders($page);
+        $orders = $discogsClient->getDiscogsClient()->getMyOrders($page, 50, 'All', $sort, $sortOrder);
 
         $myPaginator = new MyPaginator();
         $pagination = $myPaginator->paginate($orders, $page);
 
-        return $this->render('order/list.html.twig', ['orders' => $orders, 'pagination' => $pagination]);
+        return $this->render('order/list.html.twig', ['orders' => $orders, 'sortLink' => $sortLink, 'pagination' => $pagination]);
     }
 
 
