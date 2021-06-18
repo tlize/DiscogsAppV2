@@ -25,8 +25,8 @@ class ItemController extends AbstractController
     {
         $mc = new MainController();
         $page = $mc->getPage();
-        $sort = $mc->getSort();
-        $sortOrder = $mc->getSortOrder();
+        $sort = $mc->getSort('artist');
+        $sortOrder = $mc->getSortOrder('asc');
         $sortLink = $mc->getSortLink();
 
         $items = $mc->getSortedInventoryByStatus($page, 'All', $sort, $sortOrder);
@@ -43,8 +43,8 @@ class ItemController extends AbstractController
     {
         $mc = new MainController();
         $page = $mc->getPage();
-        $sort = $mc->getSort();
-        $sortOrder = $mc->getSortOrder();
+        $sort = $mc->getSort('artist');
+        $sortOrder = $mc->getSortOrder('asc');
         $sortLink = $mc->getSortLink();
 
         $items = $mc->getSortedInventoryByStatus($page, 'Sold', $sort, $sortOrder);
@@ -61,8 +61,8 @@ class ItemController extends AbstractController
     {
         $mc = new MainController();
         $page = $mc->getPage();
-        $sort = $mc->getSort();
-        $sortOrder = $mc->getSortOrder();
+        $sort = $mc->getSort('artist');
+        $sortOrder = $mc->getSortOrder('asc');
         $sortLink = $mc->getSortLink();
 
 

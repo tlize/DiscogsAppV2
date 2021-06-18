@@ -45,29 +45,7 @@ class MainController extends AbstractController
     }
 
 
-
     //refactoring////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public function getPageAndSort(): array
-    {
-        $pgSt = [];
-        $page = 1;
-        $sort = 'artist';
-        $sortOrder = 'asc';
-        $sortLink = 'asc';
-
-        if (isset($_GET['page'])) $page = $_GET['page'];
-        if (isset($_GET['sort'])) $sort = $_GET['sort'];
-        if (isset($_GET['sort_order'])) $sortOrder = $_GET['sort_order'];
-        if (strpos($_SERVER['QUERY_STRING'], '&sort_order=asc')) $sortLink = 'desc';
-
-        $pgSt['page'] = $page;
-        $pgSt['sort'] = $sort;
-        $pgSt['sortOrder'] = $sortOrder;
-        $pgSt['sortLink'] = $sortLink;
-
-        return $pgSt;
-    }
 
     public function getSortedInventoryByStatus($page, $status, $sort, $sortOrder)
     {
@@ -87,22 +65,28 @@ class MainController extends AbstractController
 
     public function getPage()
     {
-        return $this->getPageAndSort()['page'];
+        $page = 1;
+        if (isset($_GET['page'])) $page = $_GET['page'];
+        return $page;
     }
 
-    public function getSort()
+    public function getSort($sort)
     {
-        return $this->getPageAndSort()['sort'];
+        if (isset($_GET['sort'])) $sort = $_GET['sort'];
+        return $sort;
     }
 
-    public function getSortOrder()
+    public function getSortOrder($sortOrder)
     {
-        return $this->getPageAndSort()['sortOrder'];
+        if (isset($_GET['sort_order'])) $sortOrder = $_GET['sort_order'];
+        return $sortOrder;
     }
 
-    public function getSortLink()
+    public function getSortLink(): string
     {
-        return $this->getPageAndSort()['sortLink'];
+        $sortLink = 'asc';
+        if (strpos($_SERVER['QUERY_STRING'], '&sort_order=asc')) $sortLink = 'desc';
+        return $sortLink;
     }
 
 }

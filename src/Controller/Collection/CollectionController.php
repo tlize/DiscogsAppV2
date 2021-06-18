@@ -22,8 +22,8 @@ class CollectionController extends AbstractController
     {
         $mc = new MainController();
         $page = $mc->getPage();
-        $sort = $mc->getSort();
-        $sortOrder = $mc->getSortOrder();
+        $sort = $mc->getSort('artist');
+        $sortOrder = $mc->getSortOrder('asc');
         $sortLink = $mc->getSortLink();
 
         $discogsClient = new DiscogsClient();
