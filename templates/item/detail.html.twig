@@ -45,6 +45,9 @@
     </p>
     <p>
         {{ item.status }} : €{{ item.price.value | number_format }}
+        {% if item.status == 'For Sale' %}
+             (suggested : €{{ priceSuggestion | number_format(2) }})
+        {% endif %}
     </p>
 
 {% endblock %}

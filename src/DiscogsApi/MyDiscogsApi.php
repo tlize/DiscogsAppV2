@@ -55,4 +55,9 @@ class MyDiscogsApi extends DiscogsApi
         return $this->get("/users/$username/collection/value", '', [], true);
     }
 
+    public function getPriceSuggestion(string $id)
+    {
+        return $this->get("marketplace/price_suggestions/$id", '', [], true);
+    }
+
 }
