@@ -21,19 +21,16 @@ class OrderController extends AbstractController
      * all orders
      * @Route("/", name = "_list")
      */
-    public function list(): Response
+    public function list(MainController $mc, DiscogsClient $dc, MyPaginator $paginator): Response
     {
-        $mc = new MainController();
         $page = $mc->getPage();
         $sort = $mc->getSort('id');
         $sortOrder = $mc->getSortOrder('desc');
         $sortLink = $mc->getSortLink();
 
-        $discogsClient = new DiscogsClient();
-        $orders = $discogsClient->getDiscogsClient()->getMyOrders($page, 50, 'All', $sort, $sortOrder);
+        $orders = $dc->getDiscogsClient()->getMyOrders($page, 50, 'All', $sort, $sortOrder);
 
-        $myPaginator = new MyPaginator();
-        $pagination = $myPaginator->paginate($orders, $page);
+        $pagination = $paginator->paginate($orders, $page);
 
         return $this->render('order/list.html.twig', ['orders' => $orders, 'sortLink' => $sortLink, 'pagination' => $pagination]);
     }
@@ -46,10 +43,9 @@ class OrderController extends AbstractController
      * @Route("/{id}", name = "_detail",
      *     methods={"GET"})
      */
-    public function detail($id): Response
+    public function detail(DiscogsClient $dc,$id): Response
     {
-        $discogsClient = new DiscogsClient();
-        $order = $discogsClient->getDiscogsClient()->orderWithId($id);
+        $order = $dc->getDiscogsClient()->orderWithId($id);
 
         if (empty($order)) {
             throw $this->createNotFoundException("Order not found !");

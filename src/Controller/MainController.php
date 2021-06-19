@@ -19,16 +19,14 @@ class MainController extends AbstractController
      * homepage
      * @Route("/", name = "home")
      */
-    public function home(): Response
+    public function home(DiscogsClient $dc, DiscogsAuth $auth): Response
     {
-        $discogsClient = new DiscogsClient();
-        $discogsAuth = new DiscogsAuth();
-        $username = $discogsAuth->getUserName();
+        $username = $auth->getUserName();
 
-        $orders = $discogsClient->getDiscogsClient()->getMyOrders(1, 10, 'All');
+        $orders = $dc->getDiscogsClient()->getMyOrders(1, 10, 'All');
 
-        $drafted = $discogsClient->getMyDiscogsClient()->getDraft($username);
-        $violation = $discogsClient->getMyDiscogsClient()->getViolation($username);
+        $drafted = $dc->getMyDiscogsClient()->getDraft($username);
+        $violation = $dc->getMyDiscogsClient()->getViolation($username);
 
         return $this->render("main/home.html.twig",
             ["orders" => $orders, "drafted" => $drafted, "violation" => $violation]);

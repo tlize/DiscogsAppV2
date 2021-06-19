@@ -18,9 +18,8 @@ class CollectionController extends AbstractController
     /**
      * @Route("/collection", name = "collection_list")
      */
-    public function collection(): Response
+    public function collection(MainController $mc): Response
     {
-        $mc = new MainController();
         $page = $mc->getPage();
         $sort = $mc->getSort('artist');
         $sortOrder = $mc->getSortOrder('asc');

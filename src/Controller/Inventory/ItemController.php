@@ -21,9 +21,8 @@ class ItemController extends AbstractController
      * all items
      * @Route("/", name = "_list")
      */
-    public function itemList(): Response
+    public function itemList(MainController $mc): Response
     {
-        $mc = new MainController();
         $page = $mc->getPage();
         $sort = $mc->getSort('artist');
         $sortOrder = $mc->getSortOrder('asc');
@@ -39,9 +38,8 @@ class ItemController extends AbstractController
      * all sold items
      * @Route("/sold", name = "_sold")
      */
-    public function soldItems(): Response
+    public function soldItems(MainController $mc): Response
     {
-        $mc = new MainController();
         $page = $mc->getPage();
         $sort = $mc->getSort('artist');
         $sortOrder = $mc->getSortOrder('asc');
@@ -57,9 +55,8 @@ class ItemController extends AbstractController
      * all items for sale
      * @Route("/forsale", name = "_for_sale")
      */
-    public function itemsForSale(): Response
+    public function itemsForSale(MainController $mc): Response
     {
-        $mc = new MainController();
         $page = $mc->getPage();
         $sort = $mc->getSort('artist');
         $sortOrder = $mc->getSortOrder('asc');
