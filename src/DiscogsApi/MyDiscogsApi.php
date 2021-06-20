@@ -4,6 +4,7 @@
 namespace App\DiscogsApi;
 
 
+use Carbon\Carbon;
 use Jolita\DiscogsApi\DiscogsApi;
 
 class MyDiscogsApi extends DiscogsApi
@@ -59,5 +60,18 @@ class MyDiscogsApi extends DiscogsApi
     {
         return $this->get("marketplace/price_suggestions/$id", '', [], true);
     }
+
+    public function getOrdersByMonth($createdAfter, $createdBefore, string $sort = null, string $sortOrder = null) {
+        $query = [
+            'page' => $page ?? 1,
+            'per_page' => $perPage ?? 50,
+            'created_after' => $createdAfter ?? Carbon::create('2019', '09', '22')->toIso8601ZuluString(),
+            'created_before' => $createdBefore ?? Carbon::now()->toIso8601ZuluString(),
+            'sort' => $sort ?? 'id',
+            'sort_order' => $sortOrder ?? 'asc',
+        ];
+        return $this->getAuthenticated("marketplace/orders", '', $query);
+    }
+
 
 }

@@ -35,6 +35,38 @@ class OrderController extends AbstractController
         return $this->render('order/list.html.twig', ['orders' => $orders, 'sortLink' => $sortLink, 'pagination' => $pagination]);
     }
 
+    /**
+     * orders by month
+     * @Route("/months", name = "_months")
+     */
+    public function Months(MainController $mc
+//        , MyPaginator $paginator
+    ): Response
+    {
+//        $page = $mc->getPage();
+        $months = $mc->getOrdersMonths();
+//        $pagination = $paginator->paginate($months, $page);
+
+        dump($months);
+        return $this->render('order/months.html.twig', ['months' => $months
+//            , 'pagination' => $pagination
+        ]);
+    }
+
+    /**
+     * orders for one month
+     * @Route("/month/{monthName}", name = "_month")
+     */
+    public function MonthOrders($monthName, DiscogsClient $dc, MainController $mc): Response
+    {
+        $months = $mc->getOrdersMonths();
+        $month = $months[$monthName];
+        $orders = $dc->getMyDiscogsClient()->getOrdersByMonth($month['created_after'], $month['created_before']);
+
+        dump($monthName, $orders);
+        return $this->render('order/month_detail.html.twig', ['name' => $monthName, 'orders' => $orders]);
+    }
+
 
     //details////////////////////////////////////////////////////////////////////////////////////////////////////////
 

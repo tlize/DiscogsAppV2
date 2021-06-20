@@ -6,6 +6,8 @@ namespace App\Controller;
 use App\DiscogsApi\DiscogsClient;
 use App\DiscogsApiAuth\DiscogsAuth;
 use App\Pagination\MyPaginator;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -85,6 +87,27 @@ class MainController extends AbstractController
         $sortLink = 'asc';
         if (strpos($_SERVER['QUERY_STRING'], '&sort_order=asc')) $sortLink = 'desc';
         return $sortLink;
+    }
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public function getOrdersMonths(): array
+    {
+        $period = CarbonPeriod::create(Carbon::create('2019', '09', '22'), Carbon::now());
+        $months = [];
+        foreach ($period as $date) {
+            $yearMonth = substr($date, 0, 7);
+            $year = explode('-', $yearMonth)[0];
+            $month = explode('-', $yearMonth)[1];
+            $current = Carbon::create($year, $month);
+            $months[$yearMonth]['name'] = $yearMonth;
+            $months[$yearMonth]['created_after'] = Carbon::create($year, $month, 1, 00, 00, 00)
+                    ->format('Y-m-d') . 'T00:00:00Z';
+            $months[$yearMonth]['created_before'] = $current->endOfMonth()
+                    ->format('Y-m-d') . 'T23:59:59Z';
+        }
+        return $months;
     }
 
 }
