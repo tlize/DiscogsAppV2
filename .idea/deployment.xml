@@ -9,21 +9,7 @@
           </mappings>
         </serverdata>
       </paths>
-      <paths name="mda_clod">
-        <serverdata>
-          <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
       <paths name="ovh">
-        <serverdata>
-          <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="zizik_clod">
         <serverdata>
           <mappings>
             <mapping local="$PROJECT_DIR$" web="/" />
