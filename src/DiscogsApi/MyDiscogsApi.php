@@ -6,6 +6,8 @@ namespace App\DiscogsApi;
 
 use Carbon\Carbon;
 use Jolita\DiscogsApi\DiscogsApi;
+use Jolita\DiscogsApi\Exceptions\DiscogsApiException;
+use Psr\Http\Message\ResponseInterface;
 
 class MyDiscogsApi extends DiscogsApi
 {
@@ -71,6 +73,26 @@ class MyDiscogsApi extends DiscogsApi
             'sort_order' => $sortOrder ?? 'asc',
         ];
         return $this->getAuthenticated("marketplace/orders", '', $query);
+    }
+
+    /**
+     * @throws DiscogsApiException
+     */
+    public function updatePrice($listingId, $releaseId, $condition, $newPrice): ResponseInterface
+    {
+        $resource = "marketplace/listings/";
+
+        return $this->client->post(
+            $this->url($this->path($resource, $listingId)),
+            ['query' => [
+                'release_id' => $releaseId,
+                'condition' => $condition,
+                'price' => $newPrice,
+                'status' => 'For Sale',
+                'token' => $this->token(),
+            ],
+            ]
+        );
     }
 
 

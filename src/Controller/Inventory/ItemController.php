@@ -5,7 +5,10 @@ namespace App\Controller\Inventory;
 
 use App\Controller\MainController;
 use App\DiscogsApi\DiscogsClient;
+use App\Form\PriceUpdateType;
+use Jolita\DiscogsApi\Exceptions\DiscogsApiException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -73,7 +76,7 @@ class ItemController extends AbstractController
     //details////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * order item details
+     * item details
      * @Route("/{id}", name = "_detail",
      * requirements={"id" : "\d+"},
      * methods={"GET"})
@@ -85,6 +88,34 @@ class ItemController extends AbstractController
         $priceSuggestion = $this->getPriceSuggestion($dc, $item);
 
         return $this->render("item/detail.html.twig", ["item" => $item, 'release' => $release, 'priceSuggestion' => $priceSuggestion]);
+    }
+
+    /**
+     * edit item price
+     * @Route("/{id}/price", name = "_price",
+     * requirements={"id" : "\d+"})
+     * @throws DiscogsApiException
+     */
+    public function editPrice(Request $request,DiscogsClient $dc, $id): Response
+    {
+        $item = $dc->getMyDiscogsClient()->getInventoryItem($id);
+        $release = $dc->getDiscogsClient()->release($item->release->id);
+        $priceSuggestion = $this->getPriceSuggestion($dc, $item);
+        $priceForm = $this->createForm(PriceUpdateType::class);
+
+        $priceForm->handleRequest($request);
+        if ($priceForm->isSubmitted() && $priceForm->isValid()) {
+            $newPrice = $priceForm->getData()['price'];
+
+            $dc->getMyDiscogsClient()->updatePrice($id, $item->release->id, $item->condition, $newPrice);
+            //$listingId, $releaseId, $condition, $newPrice
+
+            dump($newPrice);
+            $this->addFlash('success', 'Ok, price updated !');
+            return $this->render('item/detail.html.twig', ['id' => $item->id, 'item' => $item, 'release' => $release, 'priceSuggestion' => $priceSuggestion]);
+        }
+        return $this->render('item/price.html.twig', ['id' => $item->id, 'item' => $item, 'release' => $release,
+            'priceForm' => $priceForm->createView(), 'priceSuggestion' => $priceSuggestion]);
     }
 
 

@@ -18,23 +18,17 @@ class CollectionController extends AbstractController
     /**
      * @Route("/collection", name = "collection_list")
      */
-    public function collection(MainController $mc): Response
+    public function collection(MainController $mc, DiscogsClient $dc, DiscogsAuth $auth, MyPaginator $mp): Response
     {
         $page = $mc->getPage();
         $sort = $mc->getSort('artist');
         $sortOrder = $mc->getSortOrder('asc');
         $sortLink = $mc->getSortLink();
 
-        $discogsClient = new DiscogsClient();
-        $discogsAuth = new DiscogsAuth();
+        $collection = $dc->getMyDiscogsClient()->getMyCollection($auth->getUserName(), $page, $sort, $sortOrder);
+        $collectionValue = $dc->getMyDiscogsClient()->getCollectionValue($auth->getUserName());
 
-        $collection = $discogsClient->getMyDiscogsClient()
-            ->getMyCollection($discogsAuth->getUserName(), $page, $sort, $sortOrder);
-        $collectionValue = $discogsClient->getMyDiscogsClient()
-            ->getCollectionValue($discogsAuth->getUserName());
-
-        $myPaginator = new MyPaginator();
-        $pagination = $myPaginator->paginate($collection, $page);
+        $pagination = $mp->paginate($collection, $page);
 
         return $this->render("collection/list.html.twig", ['collection' => $collection, 'pagination' => $pagination,
             'sortLink' => $sortLink, 'collectionValue' => $collectionValue]);
