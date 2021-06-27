@@ -107,7 +107,7 @@ class ItemController extends AbstractController
         if ($priceForm->isSubmitted() && $priceForm->isValid()) {
             $newPrice = $priceForm->getData()['price'];
 
-            $dc->getMyDiscogsClient()->updatePrice($id, $item->release->id, $item->condition, $newPrice);
+            //$dc->getMyDiscogsClient()->updatePrice($id, $item->release->id, $item->condition, $newPrice);
             //$listingId, $releaseId, $condition, $newPrice
 
             dump($newPrice);

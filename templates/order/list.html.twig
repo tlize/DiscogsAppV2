@@ -28,6 +28,9 @@
                 Shipping Address
             </th>
             <th>
+                Country
+            </th>
+            <th>
                 Items
             </th>
             <th>
@@ -51,6 +54,13 @@
                 </td>
                 <td>
                     {{ order.shipping_address }}
+                </td>
+                <td>
+                    {% if dbOrders[order.id] != null %}
+                        {{ dbOrders[order.id][0].country }}
+                    {% else %}
+                        <a href="{{ path('order_db_create', {'id': order.id}) }}">set country ?</a>
+                    {% endif %}
                 </td>
                 <td>
                     {{ order.items | length }}

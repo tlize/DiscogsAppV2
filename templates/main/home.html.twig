@@ -11,6 +11,11 @@
                 {{ order.id }}
             </a>
             by {{ order.buyer.username }}
+            {% if dbOrders[order.id] != null %}
+                 ({{ dbOrders[order.id][0].country }})
+            {% else %}
+                 (<a href="{{ path('order_db_create', {'id': order.id}) }}">set country ?</a>)
+            {% endif %}
             on {{ order.created | date("d-m-Y") }} :
             {% if order.items | length == 1 %}
                 1 item
@@ -55,7 +60,8 @@
             {% for item in draftItems %}
                 <tr>
                     <td>
-                        {% set releasePage = ['https://www.discogs.com/', item.release.description |slug, '/release/', item.release.id] | join %}
+                        {% set releasePage = ['https://www.discogs.com/', item.release.description |slug,
+                            '/release/', item.release.id] | join %}
                         <a href="{{ releasePage }}" title="Discogs Release Page" target="_blank">{{ item.release.id }}</a>
                     </td>
                     <td>
@@ -81,7 +87,8 @@
             {% for item in violationItems %}
                 <tr>
                     <td>
-                        {% set releasePage = ['https://www.discogs.com/', item.release.description |slug, '/release/', item.release.id] | join %}
+                        {% set releasePage = ['https://www.discogs.com/', item.release.description |slug,
+                            '/release/', item.release.id] | join %}
                         <a href="{{ releasePage }}" title="Discogs Release Page" target="_blank">{{ item.release.id }}</a>
                     </td>
                     <td>
@@ -110,9 +117,9 @@
 {% endblock %}
 
 
-{# TODO order by month #}
+{# TODO for price update : SSL certificate in php.ini ? #}
+{# TODO orders by month / country #}
 {# TODO user rights : which parts ? #}
-{# TODO link collection to spotify playlist #}
 {# TODO cache for faster loading #}
 
 

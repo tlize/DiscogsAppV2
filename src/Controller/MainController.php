@@ -5,9 +5,11 @@ namespace App\Controller;
 
 use App\DiscogsApi\DiscogsClient;
 use App\DiscogsApiAuth\DiscogsAuth;
+use App\Entity\Order;
 use App\Pagination\MyPaginator;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,17 +23,24 @@ class MainController extends AbstractController
      * homepage
      * @Route("/", name = "home")
      */
-    public function home(DiscogsClient $dc, DiscogsAuth $auth): Response
+    public function home(DiscogsClient $dc,EntityManagerInterface $em, DiscogsAuth $auth): Response
     {
         $username = $auth->getUserName();
 
         $orders = $dc->getDiscogsClient()->getMyOrders(1, 10, 'All');
 
+        $dbOrders = [];
+        foreach ($orders->orders as $order) {
+            $orderNum = $order->id;
+            $dbOrder = $em->getRepository(Order::class)->findOneByOrderId($orderNum);
+            $dbOrders[$orderNum] = $dbOrder;
+        }
+
         $drafted = $dc->getMyDiscogsClient()->getDraft($username);
         $violation = $dc->getMyDiscogsClient()->getViolation($username);
 
         return $this->render("main/home.html.twig",
-            ["orders" => $orders, "drafted" => $drafted, "violation" => $violation]);
+            ["orders" => $orders, 'dbOrders' => $dbOrders, "drafted" => $drafted, "violation" => $violation]);
     }
 
     /**

@@ -5,7 +5,10 @@ namespace App\Controller\Orders;
 
 use App\Controller\MainController;
 use App\DiscogsApi\DiscogsClient;
+use App\Entity\Country;
+use App\Entity\Order;
 use App\Pagination\MyPaginator;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,7 +24,7 @@ class OrderController extends AbstractController
      * all orders
      * @Route("/", name = "_list")
      */
-    public function list(MainController $mc, DiscogsClient $dc, MyPaginator $paginator): Response
+    public function list(MainController $mc, DiscogsClient $dc, EntityManagerInterface $em, MyPaginator $paginator): Response
     {
         $page = $mc->getPage();
         $sort = $mc->getSort('id');
@@ -29,10 +32,18 @@ class OrderController extends AbstractController
         $sortLink = $mc->getSortLink();
 
         $orders = $dc->getDiscogsClient()->getMyOrders($page, 50, 'All', $sort, $sortOrder);
-
         $pagination = $paginator->paginate($orders, $page);
 
-        return $this->render('order/list.html.twig', ['orders' => $orders, 'sortLink' => $sortLink, 'pagination' => $pagination]);
+        $dbOrders = [];
+        foreach ($orders->orders as $order) {
+            $orderNum = $order->id;
+            $dbOrder = $em->getRepository(Order::class)->findOneByOrderId($orderNum);
+            $dbOrders[$orderNum] = $dbOrder;
+        }
+
+        dump($orders);
+        return $this->render('order/list.html.twig', ['orders' => $orders, 'dbOrders' => $dbOrders,
+            'sortLink' => $sortLink, 'pagination' => $pagination]);
     }
 
     /**
@@ -86,6 +97,36 @@ class OrderController extends AbstractController
         return $this->render('order/detail.html.twig', ['order' => $order]);
     }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * set country from shipping address
+     * using Country table
+     * @Route("/{id}/dbcreate", name = "_db_create")
+     */
+    public function createDbOrder(DiscogsClient $dc, EntityManagerInterface $em, $id): Response
+    {
+        $countries = $em->getRepository(Country::class)->findAll();
+
+        $order = $dc->getDiscogsClient()->orderWithId($id);
+        $address = $order->shipping_address;
+
+        $dbOrder = new Order();
+
+        foreach ($countries as $country) {
+            if (strpos($address, $country->getName()) != false) {
+                $buyerCountry = $country->getName();
+                $dbOrder->setCountry($buyerCountry);
+            }
+        }
+        $dbOrder->setOrderNum($id);
+        $dbOrder->setMonth(substr($order->created, 0, 7));
+        $em->persist($dbOrder);
+        $em->flush();
+        $this->addFlash('success', 'Cool, order ' . $id . ' is now in database with country 
+            (' . $dbOrder->getCountry() . ') and month (' . $dbOrder->getMonth() . ')');
+        dump($dbOrder);
+        return $this->render('order/detail.html.twig', ['order' => $order]);
+    }
 
 }
