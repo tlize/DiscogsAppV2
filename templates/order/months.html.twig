@@ -2,9 +2,18 @@
 
 {% block body %}
 
-    {% for month in months %}
+    {% for month in periodMonths %}
         <p>
-            {{ month.month }} : {{ month.Nb }} orders
+            <a href="{{ path('order_month', {'monthName' : month.name}) }}">{{ month.name }}</a> :
+        {% if nbOrdersByMonth[month.name] is defined %}
+            {% if nbOrdersByMonth[month.name] == 1 %}
+                1 order
+            {% else %}
+                {{ nbOrdersByMonth[month.name] }} orders
+            {% endif %}
+        {% else %}
+            none
+        {% endif %}
         </p>
     {% endfor %}
 

@@ -23,6 +23,9 @@
                 {{ order.items | length }} items
             {% endif %}
             , €{{ order.total.value }}
+            {% if 'Cancelled' in order.status %}
+                <span class="cancelled"> - {{ order.status }}</span>
+            {% endif %}
         </h5>
     {% endfor %}
     {% if drafted or violation %}
@@ -118,7 +121,8 @@
 
 
 {# TODO for price update : SSL certificate in php.ini ? #}
-{# TODO orders by month / country #}
+{# TODO orders by month : maybe with graph ? #}
+{# TODO orders by country #}
 {# TODO user rights : which parts ? #}
 {# TODO cache for faster loading #}
 

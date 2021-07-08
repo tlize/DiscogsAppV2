@@ -36,6 +36,9 @@
             <th>
                 Total
             </th>
+            <th>
+                Status
+            </th>
         </tr>
         </thead>
         <tbody>
@@ -68,6 +71,15 @@
                 <td>
                     €{{ order.total.value | number_format }}
                 </td>
+                {% if 'Cancelled' in order.status %}
+                    <td class="cancelled">
+                        {{ order.status }}
+                    </td>
+                {% else %}
+                    <td>
+                        {{ order.status }}
+                    </td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>

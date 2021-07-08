@@ -49,27 +49,40 @@ class OrderController extends AbstractController
      * orders by month
      * @Route("/months", name = "_months")
      */
-    public function Months(EntityManagerInterface $em): Response
+    public function Months(MainController $mc, EntityManagerInterface $em): Response
     {
-        //$months = $mc->getOrdersMonths();
-        $orderMonths = $em->getRepository(Order::class)->getMonthList();
+        $periodMonths = $mc->getOrdersMonths();
+        $dbMonths = $em->getRepository(Order::class)->getMonthList();
 
-        dump($orderMonths);
-        return $this->render('order/months.html.twig', ['months' => $orderMonths]);
+        $nbOrdersByMonth = [];
+
+        foreach ($dbMonths as $dbMonth) {
+            $name = $dbMonth['month'];
+            $nbOrders = $dbMonth['Nb'];
+            $nbOrdersByMonth[$name] = $nbOrders;
+        }
+
+        return $this->render('order/months.html.twig', ['periodMonths' => $periodMonths, 'nbOrdersByMonth' => $nbOrdersByMonth]);
     }
 
     /**
      * orders for one month
      * @Route("/month/{monthName}", name = "_month")
      */
-    public function MonthOrders($monthName, DiscogsClient $dc, MainController $mc): Response
+    public function MonthOrders(EntityManagerInterface $em, $monthName, DiscogsClient $dc, MainController $mc): Response
     {
         $months = $mc->getOrdersMonths();
         $month = $months[$monthName];
         $orders = $dc->getMyDiscogsClient()->getOrdersByMonth($month['created_after'], $month['created_before']);
 
-        dump($monthName, $orders);
-        return $this->render('order/month_detail.html.twig', ['name' => $monthName, 'orders' => $orders]);
+        $dbOrders = [];
+        foreach ($orders->orders as $order) {
+            $orderNum = $order->id;
+            $dbOrder = $em->getRepository(Order::class)->findOneByOrderId($orderNum);
+            $dbOrders[$orderNum] = $dbOrder;
+        }
+
+        return $this->render('order/month_detail.html.twig', ['name' => $monthName, 'orders' => $orders, 'dbOrders' => $dbOrders]);
     }
 
 
@@ -105,22 +118,28 @@ class OrderController extends AbstractController
         $order = $dc->getDiscogsClient()->orderWithId($id);
         $address = $order->shipping_address;
 
-        $dbOrder = new Order();
-
-        foreach ($countries as $country) {
-            if (strpos($address, $country->getName()) != false) {
-                $buyerCountry = $country->getName();
-                $dbOrder->setCountry($buyerCountry);
-            }
+        if (substr($order->status, 0, 9) == 'Cancelled') {
+            $this->addFlash('warning', 'No country can be set if order is cancelled !');
         }
-        $dbOrder->setOrderNum($id);
-        $dbOrder->setMonth(substr($order->created, 0, 7));
-        $em->persist($dbOrder);
-        $em->flush();
-        $this->addFlash('success', 'Cool, order ' . $id . ' is now in database with country 
+
+        else {
+            $dbOrder = new Order();
+            foreach ($countries as $country) {
+                if (strpos($address, $country->getName()) != false) {
+                    $buyerCountry = $country->getName();
+                    $dbOrder->setCountry($buyerCountry);
+                }
+            }
+            $dbOrder->setOrderNum($id);
+            $dbOrder->setMonth(substr($order->created, 0, 7));
+            $em->persist($dbOrder);
+            $em->flush();
+            $this->addFlash('success', 'Cool, order ' . $id . ' is now in database with country 
             (' . $dbOrder->getCountry() . ') and month (' . $dbOrder->getMonth() . ')');
-        dump($dbOrder);
+        }
+
         return $this->render('order/detail.html.twig', ['order' => $order]);
+
     }
 
 }

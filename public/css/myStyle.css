@@ -50,10 +50,19 @@ input, footer input {
 }
 
 /* specificity : 0.1.0*/
+.flash-warning {
+    background-color: #ff6700;
+}
+
+/* specificity : 0.1.0*/
 .flash-error {
     background-color: #AA3333;
 }
 
+/* specificity : 0.1.0*/
+.cancelled {
+    color: #AA3333;
+}
 
 /* specificity : 0.1.0, 0.1.0, 0.1.0, 0.1.1*/
 .itemInfo, .collValue, .editPrice, .orderInfo h5 {

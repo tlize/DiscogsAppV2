@@ -2,6 +2,34 @@
 
 {% block body %}
 
+    <h4>
+        Orders on {{ name }}
+    </h4>
+
+    {% for order in orders.orders %}
+        <h5>
+            <a href="{{ path('order_detail', {'id' : order.id}) }}">
+                {{ order.id }}
+            </a>
+            by {{ order.buyer.username }}
+            {% if dbOrders[order.id] != null %}
+                ({{ dbOrders[order.id][0].country }})
+            {% else %}
+                (<a href="{{ path('order_db_create', {'id': order.id}) }}">set country ?</a>)
+            {% endif %}
+            on {{ order.created | date("d-m-Y") }} :
+            {% if order.items | length == 1 %}
+                1 item
+            {% else %}
+                {{ order.items | length }} items
+            {% endif %}
+            , €{{ order.total.value }}
+            {% if 'Cancelled' in order.status %}
+                <span class="cancelled"> - {{ order.status }}</span>
+            {% endif %}
+        </h5>
+    {% endfor %}
+
 {% endblock %}
 
 {% block title %}
