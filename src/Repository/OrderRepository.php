@@ -19,9 +19,6 @@ class OrderRepository extends ServiceEntityRepository
         parent::__construct($registry, Order::class);
     }
 
-    // /**
-    //  * @return Order[] Returns an array of Order objects
-    //  */
 
     public function findOneByOrderId($orderNum)
     {
@@ -44,4 +41,15 @@ class OrderRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function getMonthList()
+    {
+        return $this->createQueryBuilder('o')
+            ->addSelect('o.month')
+            ->addSelect('COUNT(o.id) AS Nb')
+            ->addGroupBy('o.month')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

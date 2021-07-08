@@ -41,7 +41,6 @@ class OrderController extends AbstractController
             $dbOrders[$orderNum] = $dbOrder;
         }
 
-        dump($orders);
         return $this->render('order/list.html.twig', ['orders' => $orders, 'dbOrders' => $dbOrders,
             'sortLink' => $sortLink, 'pagination' => $pagination]);
     }
@@ -50,18 +49,13 @@ class OrderController extends AbstractController
      * orders by month
      * @Route("/months", name = "_months")
      */
-    public function Months(MainController $mc
-//        , MyPaginator $paginator
-    ): Response
+    public function Months(EntityManagerInterface $em): Response
     {
-//        $page = $mc->getPage();
-        $months = $mc->getOrdersMonths();
-//        $pagination = $paginator->paginate($months, $page);
+        //$months = $mc->getOrdersMonths();
+        $orderMonths = $em->getRepository(Order::class)->getMonthList();
 
-        dump($months);
-        return $this->render('order/months.html.twig', ['months' => $months
-//            , 'pagination' => $pagination
-        ]);
+        dump($orderMonths);
+        return $this->render('order/months.html.twig', ['months' => $orderMonths]);
     }
 
     /**

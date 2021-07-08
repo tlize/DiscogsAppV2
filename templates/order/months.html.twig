@@ -4,11 +4,8 @@
 
     {% for month in months %}
         <p>
-            <a href="{{ path('order_month', {'monthName': month.name}) }}">
-                {{ month.name }}
-            </a>
+            {{ month.month }} : {{ month.Nb }} orders
         </p>
-
     {% endfor %}
 
 {% endblock %}
