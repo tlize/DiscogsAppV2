@@ -12,10 +12,14 @@
                 {{ order.id }}
             </a>
             by {{ order.buyer.username }}
-            {% if dbOrders[order.id] != null %}
-                ({{ dbOrders[order.id][0].country }})
+            {% if orderCountries[order.id] is defined %}
+                ({{ orderCountries[order.id] }})
             {% else %}
-                (<a href="{{ path('order_db_create', {'id': order.id}) }}">set country ?</a>)
+                {% if 'Cancelled' in order.status %}
+                    (not in DB)
+                {% else %}
+                    <a href="{{ path('order_db_create', {'id': order.id}) }}">set country ?</a>
+                {% endif %}
             {% endif %}
             on {{ order.created | date("d-m-Y") }} :
             {% if order.items | length == 1 %}

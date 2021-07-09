@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class OrderController extends AbstractController
 {
-    //list////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //lists////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * all orders
@@ -33,15 +33,9 @@ class OrderController extends AbstractController
 
         $orders = $dc->getDiscogsClient()->getMyOrders($page, 50, 'All', $sort, $sortOrder);
         $pagination = $paginator->paginate($orders, $page);
+        $orderCountries = $this->getOrdersCountries($em, $orders);
 
-        $dbOrders = [];
-        foreach ($orders->orders as $order) {
-            $orderNum = $order->id;
-            $dbOrder = $em->getRepository(Order::class)->findOneByOrderId($orderNum);
-            $dbOrders[$orderNum] = $dbOrder;
-        }
-
-        return $this->render('order/list.html.twig', ['orders' => $orders, 'dbOrders' => $dbOrders,
+        return $this->render('order/list.html.twig', ['orders' => $orders, 'orderCountries' => $orderCountries,
             'sortLink' => $sortLink, 'pagination' => $pagination]);
     }
 
@@ -55,7 +49,6 @@ class OrderController extends AbstractController
         $dbMonths = $em->getRepository(Order::class)->getMonthList();
 
         $nbOrdersByMonth = [];
-
         foreach ($dbMonths as $dbMonth) {
             $name = $dbMonth['month'];
             $nbOrders = $dbMonth['Nb'];
@@ -74,15 +67,9 @@ class OrderController extends AbstractController
         $months = $mc->getOrdersMonths();
         $month = $months[$monthName];
         $orders = $dc->getMyDiscogsClient()->getOrdersByMonth($month['created_after'], $month['created_before']);
+        $orderCountries = $this->getOrdersCountries($em, $orders);
 
-        $dbOrders = [];
-        foreach ($orders->orders as $order) {
-            $orderNum = $order->id;
-            $dbOrder = $em->getRepository(Order::class)->findOneByOrderId($orderNum);
-            $dbOrders[$orderNum] = $dbOrder;
-        }
-
-        return $this->render('order/month_detail.html.twig', ['name' => $monthName, 'orders' => $orders, 'dbOrders' => $dbOrders]);
+        return $this->render('order/month_detail.html.twig', ['name' => $monthName, 'orders' => $orders, 'orderCountries' => $orderCountries]);
     }
 
 
@@ -140,6 +127,26 @@ class OrderController extends AbstractController
 
         return $this->render('order/detail.html.twig', ['order' => $order]);
 
+    }
+
+    /**
+     * get country from db for all orders in $orders
+     */
+    public function getOrdersCountries(EntityManagerInterface $em, $orders): array
+    {
+        $orderNums = [];
+        foreach ($orders->orders as $order) {
+            $orderNum = $order->id;
+            $orderNums[] = $orderNum;
+        }
+
+        $dbOrders = $em->getRepository(Order::class)->getOrderList($orderNums);
+        $orderCountries = [];
+        foreach ($dbOrders as $dbOrder) {
+            $orderCountries[$dbOrder->getOrderNum()] = $dbOrder->getCountry();
+        }
+
+        return $orderCountries;
     }
 
 }

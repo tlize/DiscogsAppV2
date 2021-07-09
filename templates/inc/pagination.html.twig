@@ -3,7 +3,12 @@
         <ul class="pagination">
             <li class="page-item">
                 <a class="page-link" href="{{ path(app.request.get('_route'), app.request.query.all|merge({'page':1})) }}" aria-label="Previous">
-                    <span>First</span>
+                    <span>&laquo;&laquo;</span>
+                </a>
+            </li>
+            <li>
+                <a class="page-link" href="{{ path(app.request.get('_route'), app.request.query.all|merge({'page':pagination.page-1})) }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
             {% for i in 1..pagination.pages %}
@@ -21,9 +26,14 @@
                     {% endif %}
                 {% endif %}
             {% endfor %}
+            <li>
+                <a class="page-link" href="{{ path(app.request.get('_route') , app.request.query.all|merge({'page':pagination.page+1})) }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
             <li class="page-item">
                 <a class="page-link" href="{{ path(app.request.get('_route') , app.request.query.all|merge({'page':pagination.pages})) }}" aria-label="Next">
-                    <span>Last</span>
+                    <span>&raquo;&raquo;</span>
                 </a>
             </li>
         </ul>
