@@ -5,14 +5,14 @@
 {% block body %}
     <h4>Latest Orders</h4>
     {% set latestOrders = orders.orders %}
-    {% for order in latestOrders %}
+    {% for i ,order in latestOrders %}
         <h5>
             <a href="{{ path('order_detail', {'id' : order.id}) }}">
                 {{ order.id }}
             </a>
             by {{ order.buyer.username }}
-            {% if dbOrders[order.id] != null %}
-                 ({{ dbOrders[order.id][0].country }})
+            {% if dbOrders[i] != null %}
+                 ({{ dbOrders[i].country }})
             {% else %}
                  (<a href="{{ path('order_db_create', {'id': order.id}) }}">set country ?</a>)
             {% endif %}
@@ -120,6 +120,7 @@
 {% endblock %}
 
 
+{# TODO SQL queries : 10 in homepage, 50 in order list ! #}
 {# TODO for price update : SSL certificate in php.ini ? #}
 {# TODO orders by month : maybe with graph ? #}
 {# TODO orders by country #}

@@ -28,14 +28,14 @@ class MainController extends AbstractController
         $username = $auth->getUserName();
 
         $orders = $dc->getDiscogsClient()->getMyOrders(1, 10, 'All');
+        $orderNums = [];
 
-        $dbOrders = [];
         foreach ($orders->orders as $order) {
             $orderNum = $order->id;
-            $dbOrder = $em->getRepository(Order::class)->findOneByOrderId($orderNum);
-            $dbOrders[$orderNum] = $dbOrder;
+            $orderNums[] = $orderNum;
         }
 
+        $dbOrders = $em->getRepository(Order::class)->getOrderList($orderNums);
         $drafted = $dc->getMyDiscogsClient()->getDraft($username);
         $violation = $dc->getMyDiscogsClient()->getViolation($username);
 

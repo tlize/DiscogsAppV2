@@ -30,17 +30,16 @@ class OrderRepository extends ServiceEntityRepository
         ;
     }
 
-    /*
-    public function findOneBySomeField($value): ?Order
+    public function getOrderList($orderNums)
     {
         return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('o.orderNum in (:orderNums)')
+            ->setParameter('orderNums', $orderNums)
+            ->addOrderBy('o.orderNum', 'desc')
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getResult()
+            ;
     }
-    */
 
     public function getMonthList()
     {
