@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    {% if orderNums | length == 1 %}
+        <h4>
+            1 Order from {{ country }}
+        </h4>
+        <h5>
+            <a href="{{ path('order_detail', {'id' : orderNums[0]}) }}">
+                {{ orderNums[0] }}
+            </a>
+        </h5>
+    {% else %}
+        <h4>
+            {{ orderNums | length }} Orders from {{ country }}
+        </h4>
+        <ul>
+            {% for orderNum in orderNums %}
+                <li>
+                    <h5>
+                        <a href="{{ path('order_detail', {'id' : orderNum}) }}">
+                            {{ orderNum }}
+                        </a>
+                    </h5>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+{% endblock %}
+
+{% block title %}
+    {{ parent() }} | Orders from {{ country }}
+{% endblock %}
+

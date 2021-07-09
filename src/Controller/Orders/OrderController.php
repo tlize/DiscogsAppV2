@@ -59,6 +59,18 @@ class OrderController extends AbstractController
     }
 
     /**
+     * orders by country
+     * @Route("/countries", name = "_countries")
+     */
+    public function Countries(EntityManagerInterface $em): Response
+    {
+        $countries = $em->getRepository(Order::class)->getCountryList();
+
+        dump($countries);
+        return $this->render('order/countries.html.twig', ['countries' => $countries]);
+    }
+
+    /**
      * orders for one month
      * @Route("/month/{monthName}", name = "_month")
      */
@@ -70,6 +82,23 @@ class OrderController extends AbstractController
         $orderCountries = $this->getOrdersCountries($em, $orders);
 
         return $this->render('order/month_detail.html.twig', ['name' => $monthName, 'orders' => $orders, 'orderCountries' => $orderCountries]);
+    }
+
+    /**
+     * orders for one country
+     * @Route("/country/{country}", name = "_country")
+     */
+    public function CountryOrders(EntityManagerInterface $em, $country): Response
+    {
+        $countryOrders = $em->getRepository(Order::class)->getOneCountryOrders($country);
+
+        $orderNums = [];
+        foreach ($countryOrders as $order) {
+            $orderNum = $order->getorderNum();
+            $orderNums[] = $orderNum;
+        }
+
+        return $this->render('order/country_detail.html.twig', ['orderNums' => $orderNums, 'country' => $country]);
     }
 
 

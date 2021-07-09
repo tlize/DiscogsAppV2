@@ -2,24 +2,31 @@
 
 {% block body %}
 
-    {% for month in periodMonths %}
-        <p>
-            <a href="{{ path('order_month', {'monthName' : month.name}) }}">{{ month.name }}</a> :
-        {% if nbOrdersByMonth[month.name] is defined %}
-            {% if nbOrdersByMonth[month.name] == 1 %}
-                1 order
-            {% else %}
-                {{ nbOrdersByMonth[month.name] }} orders
-            {% endif %}
-        {% else %}
-            none
-        {% endif %}
-        </p>
-    {% endfor %}
+    <h4>Orders by Month</h4>
+
+    <ul>
+        {% for month in periodMonths %}
+            <li>
+                <p>
+                    <a href="{{ path('order_month', {'monthName' : month.name}) }}">{{ month.name }}</a> :
+                    {% if nbOrdersByMonth[month.name] is defined %}
+                        {% if nbOrdersByMonth[month.name] == 1 %}
+                            1 order
+                        {% else %}
+                            {{ nbOrdersByMonth[month.name] }} orders
+                        {% endif %}
+                    {% else %}
+                        none
+                    {% endif %}
+                </p>
+            </li>
+        {% endfor %}
+    </ul>
+
 
 {% endblock %}
 
 {% block title %}
-
+    {{ parent() }} | Months
 {% endblock %}
 

@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h4>Best Buying Countries</h4>
+
+    {% for country in countries %}
+        <p>
+            <span>
+                <a href="{{ path('order_country', {'country' : country.country}) }}">{{ country.country }}</a>
+            </span>
+            :
+            {% if country.Nb == 1 %}
+                1 order
+            {% else %}
+                {{ country.Nb }} orders
+            {% endif %}
+
+        </p>
+    {% endfor %}
+
+{% endblock %}
+
+{% block title %}
+    {{ parent() }} | Countries
+{% endblock %}
+

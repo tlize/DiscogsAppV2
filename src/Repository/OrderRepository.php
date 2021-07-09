@@ -20,16 +20,6 @@ class OrderRepository extends ServiceEntityRepository
     }
 
 
-    public function findOneByOrderId($orderNum)
-    {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.orderNum = :orderNum')
-            ->setParameter('orderNum', $orderNum)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
     public function getOrderList($orderNums)
     {
         return $this->createQueryBuilder('o')
@@ -51,4 +41,27 @@ class OrderRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+
+    public function getCountryList()
+    {
+        return $this->createQueryBuilder('o')
+            ->addSelect('o.country')
+            ->addSelect('COUNT(o.id) AS Nb')
+            ->addGroupBy('o.country')
+            ->addOrderBy('Nb', 'desc')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function getOneCountryOrders($country)
+    {
+        return $this->createQueryBuilder('o')
+            ->andWhere('o.country = :country')
+            ->setParameter('country', $country)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 }
