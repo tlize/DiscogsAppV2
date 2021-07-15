@@ -8,6 +8,7 @@ use App\DiscogsApi\DiscogsClient;
 use App\Entity\Country;
 use App\Entity\Order;
 use App\Pagination\MyPaginator;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,6 +35,8 @@ class OrderController extends AbstractController
         $orders = $dc->getDiscogsClient()->getMyOrders($page, 50, 'All', $sort, $sortOrder);
         $pagination = $paginator->paginate($orders, $page);
         $orderCountries = $this->getOrdersCountries($em, $orders);
+
+
 
         return $this->render('order/list.html.twig', ['orders' => $orders, 'orderCountries' => $orderCountries,
             'sortLink' => $sortLink, 'pagination' => $pagination]);
@@ -66,8 +69,10 @@ class OrderController extends AbstractController
     {
         $countries = $em->getRepository(Order::class)->getCountryList();
 
-        dump($countries);
-        return $this->render('order/countries.html.twig', ['countries' => $countries]);
+        $piechart = $this->indexAction($em);
+
+        dump($countries, $piechart);
+        return $this->render('order/countries.html.twig', ['countries' => $countries, 'piechart' => $piechart]);
     }
 
     /**
@@ -176,6 +181,47 @@ class OrderController extends AbstractController
         }
 
         return $orderCountries;
+    }
+
+    public function indexAction(EntityManagerInterface  $em): PieChart
+    {
+        $countries = $em->getRepository(Order::class)->getBestCountries();
+
+//        $besties = [];
+//        foreach ($countries as $country) {
+//            $besties[] = [$country[]['country'], $country[]['Nb']];
+//        }
+
+
+        $pieChart = new PieChart();
+        $pieChart->getData()->setArrayToDataTable(
+            [
+                ['Country', 'Nb of orders'],
+                [$countries[0]['country'], $countries[0]['Nb']],
+                [$countries[1]['country'], $countries[1]['Nb']],
+                [$countries[2]['country'], $countries[2]['Nb']],
+                [$countries[3]['country'], $countries[3]['Nb']],
+                [$countries[4]['country'], $countries[4]['Nb']],
+                [$countries[5]['country'], $countries[5]['Nb']],
+                [$countries[6]['country'], $countries[6]['Nb']],
+                [$countries[7]['country'], $countries[7]['Nb']],
+                [$countries[8]['country'], $countries[8]['Nb']],
+                [$countries[9]['country'], $countries[9]['Nb']]
+
+//                $besties
+            ]
+
+        );
+//        $pieChart->getOptions()->setTitle('Best Buying Countries');
+        $pieChart->getOptions()->setHeight(500);
+        $pieChart->getOptions()->setWidth(900);
+        $pieChart->getOptions()->getTitleTextStyle()->setBold(true);
+        $pieChart->getOptions()->getTitleTextStyle()->setColor('#0069d9');
+        $pieChart->getOptions()->getTitleTextStyle()->setItalic(true);
+        $pieChart->getOptions()->getTitleTextStyle()->setFontName('Arial');
+        $pieChart->getOptions()->getTitleTextStyle()->setFontSize(20);
+
+        return $pieChart;
     }
 
 }

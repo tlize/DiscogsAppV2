@@ -64,4 +64,17 @@ class OrderRepository extends ServiceEntityRepository
             ;
     }
 
+    public function getBestCountries()
+    {
+        return $this->createQueryBuilder('o')
+            ->addSelect('o.country')
+            ->addSelect('COUNT(o.id) AS Nb')
+            ->addGroupBy('o.country')
+            ->addOrderBy('Nb', 'desc')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 }
