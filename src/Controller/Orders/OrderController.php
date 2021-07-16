@@ -212,13 +212,13 @@ class OrderController extends AbstractController
             ]
 
         );
-//        $pieChart->getOptions()->setTitle('Best Buying Countries');
+        $pieChart->getOptions()->setTitle('Top 10');
         $pieChart->getOptions()->setHeight(500);
         $pieChart->getOptions()->setWidth(900);
-        $pieChart->getOptions()->getTitleTextStyle()->setBold(true);
+//        $pieChart->getOptions()->getTitleTextStyle()->setBold(true);
         $pieChart->getOptions()->getTitleTextStyle()->setColor('#0069d9');
         $pieChart->getOptions()->getTitleTextStyle()->setItalic(true);
-        $pieChart->getOptions()->getTitleTextStyle()->setFontName('Arial');
+//        $pieChart->getOptions()->getTitleTextStyle()->setFontName('Arial');
         $pieChart->getOptions()->getTitleTextStyle()->setFontSize(20);
 
         return $pieChart;
