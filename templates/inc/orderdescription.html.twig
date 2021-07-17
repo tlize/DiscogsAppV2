@@ -14,9 +14,11 @@
                     </li>
                 {% endfor %}
             </ul>
-            <h5>
-                Total : €{{ order.total.value | number_format }}
-            </h5>
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                <h5>
+                    Total : €{{ order.total.value | number_format }}
+                </h5>
+            {% endif %}
         {% endif %}
     </div>
 </details>

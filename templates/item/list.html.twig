@@ -38,9 +38,11 @@
             <th>
                 Status
             </th>
-            <th>
-                Price
-            </th>
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                <th>
+                    Price
+                </th>
+            {% endif %}
         </tr>
         </thead>
         <tbody>
@@ -74,9 +76,11 @@
                 <td>
                     {{ item.status }}
                 </td>
-                <td>
-                    €{{ item.price.value | number_format }}
-                </td>
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    <td>
+                        €{{ item.price.value | number_format }}
+                    </td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>

@@ -5,9 +5,11 @@
 {% block body %}
     <h4>
         {{ collection.pagination.items }} Items in my Collection
-        <span class="collValue">
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+            <span class="collValue">
             (median value : {{ collectionValue.median |replace({',': ''}) | split('.') | first }})
         </span>
+        {% endif %}
     </h4>
     <h6>Order by
         <a href="?sort=artist&sort_order={{ sortLink }}">Band - Artist</a> /

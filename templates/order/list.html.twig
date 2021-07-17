@@ -24,18 +24,22 @@
             <th>
                 Buyer
             </th>
-            <th>
-                Shipping Address
-            </th>
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                <th>
+                    Shipping Address
+                </th>
+            {% endif %}
             <th>
                 Country
             </th>
             <th>
                 Items
             </th>
-            <th>
-                Total
-            </th>
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                <th>
+                    Total
+                </th>
+            {% endif %}
             <th>
                 Status
             </th>
@@ -55,9 +59,11 @@
                 <td>
                     {{ order.buyer.username }}
                 </td>
-                <td>
-                    {{ order.shipping_address }}
-                </td>
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    <td>
+                        {{ order.shipping_address }}
+                    </td>
+                {% endif %}
                 <td>
                     {% if orderCountries[order.id] is defined %}
                         {{ orderCountries[order.id] }}
@@ -72,9 +78,11 @@
                 <td>
                     {{ order.items | length }}
                 </td>
-                <td>
-                    €{{ order.total.value | number_format }}
-                </td>
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    <td>
+                        €{{ order.total.value | number_format }}
+                    </td>
+                {% endif %}
                 {% if 'Cancelled' in order.status %}
                     <td class="cancelled">
                         {{ order.status }}

@@ -43,13 +43,26 @@
     <p>
         listing Id : {{ item.id }}
     </p>
-    <p>
-        {{ item.status }} : €{{ item.price.value | number_format }}
-        {% if item.status == 'For Sale' %}
-             (suggested : €{{ priceSuggestion | number_format(2) }})
-        {% endif %}
-    </p>
-    {% if item.status == 'For Sale' %}
+    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+        <p>
+            {{ item.status }} : €{{ item.price.value | number_format }}
+            {% if item.status == 'For Sale' %}
+                (suggested : €{{ priceSuggestion | number_format(2) }})
+            {% endif %}
+        </p>
+    {% else %}
+            {% if item.status == 'For Sale' %}
+                <p>
+                    {% set buyLink = ['https://www.discogs.com/sell/item/', item.id, '?ev=bp_img'] | join %}
+                    €{{ item.price.value | number_format }} <a class="buyLink" href="{{ buyLink }}" target="_blank">Buy It Now !</a>
+                </p>
+            {% else %}
+                <p>
+                    {{ item.status }}
+                </p>
+            {% endif %}
+    {% endif %}
+    {% if item.status == 'For Sale' and is_granted('IS_AUTHENTICATED_REMEMBERED') %}
         <a class="editPrice" href="{{ path('item_price', {'id': item.id}) }}" title="See Item Details">Edit Price</a>
     {% endif %}
 {% endblock %}

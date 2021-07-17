@@ -69,6 +69,11 @@ input, footer input {
     color: #0069d9;
 }
 
+/* specificity : 0.1.0*/
+.buyLink {
+    color: #6b9311;
+}
+
 /* specificity : 0.1.0, 0.1.0, 0.1.0, 0.1.1*/
 .itemInfo, .collValue, .editPrice, .orderInfo h5 {
     font-size: small;

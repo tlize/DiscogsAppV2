@@ -27,7 +27,9 @@
             {% else %}
                 {{ order.items | length }} items
             {% endif %}
-            , €{{ order.total.value }}
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                , €{{ order.total.value }}
+            {% endif %}
             {% if 'Cancelled' in order.status %}
                 <span class="cancelled"> - {{ order.status }}</span>
             {% endif %}

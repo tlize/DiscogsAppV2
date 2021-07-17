@@ -1,6 +1,10 @@
 <h5>
     <details>
-        <summary>{{ item.release.description }} : €{{ item.price.value | number_format }}</summary>
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+            <summary>{{ item.release.description }} : €{{ item.price.value | number_format }}</summary>
+        {% else %}
+            <summary>{{ item.release.description }}</summary>
+        {% endif %}
         <div class="itemInfo">
             <p>Media Condition : {{ item.media_condition }}</p>
             {% if item.sleeve_condition != null %}

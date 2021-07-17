@@ -6,9 +6,11 @@
     <h6>
         By {{ order.buyer.username }}
     </h6>
-    <h6>
-        {{ order.shipping_address }}
-    </h6>
+    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+        <h6>
+            {{ order.shipping_address }}
+        </h6>
+    {% endif %}
     <h6>
         on {{ order.created | date("d-m-Y") }}
     </h6>
@@ -23,9 +25,11 @@
                 </li>
             {% endfor %}
         </ul>
-        <h5>
-            Total : €{{ order.total.value | number_format }}
-        </h5>
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+            <h5>
+                Total : €{{ order.total.value | number_format }}
+            </h5>
+        {% endif %}
     {% endif %}
 
 {% endblock %}
