@@ -197,7 +197,7 @@ class OrderController extends AbstractController
     /**
      * get country graph
      */
-    public function indexCountry(EntityManagerInterface  $em): PieChart
+    public function indexCountry(EntityManagerInterface  $em): GeoChart
     {
         $countries = $em->getRepository(Order::class)->getCountryList();
 
@@ -206,8 +206,8 @@ class OrderController extends AbstractController
 //            $besties[] = [$country[]['country'], $country[]['Nb']];
 //        }
 
-        $pieChart = new PieChart();
-//        $pieChart = new GeoChart();
+//        $pieChart = new PieChart();
+        $pieChart = new GeoChart();
         $pieChart->getData()->setArrayToDataTable(
             [
                 ['Country', 'Nb of orders'],
@@ -241,7 +241,7 @@ class OrderController extends AbstractController
             ]
 
         );
-//        $pieChart->getOptions()->getColorAxis()->setColors(['blue']);
+        $pieChart->getOptions()->getColorAxis()->setColors(['blue']);
         $pieChart->getOptions()->setWidth(900)->setHeight(500);
 
         return $pieChart;
