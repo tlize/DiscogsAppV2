@@ -8,6 +8,8 @@ use App\DiscogsApi\DiscogsClient;
 use App\Entity\Country;
 use App\Entity\Order;
 use App\Pagination\MyPaginator;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\GeoChart;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\Material\ColumnChart;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -58,7 +60,10 @@ class OrderController extends AbstractController
             $nbOrdersByMonth[$name] = $nbOrders;
         }
 
-        return $this->render('order/months.html.twig', ['periodMonths' => $periodMonths, 'nbOrdersByMonth' => $nbOrdersByMonth]);
+        $monthchart = $this->indexMonth($em);
+
+        dump($monthchart, $dbMonths);
+        return $this->render('order/months.html.twig', ['periodMonths' => $periodMonths, 'nbOrdersByMonth' => $nbOrdersByMonth, 'monthchart' => $monthchart]);
     }
 
     /**
@@ -69,7 +74,7 @@ class OrderController extends AbstractController
     {
         $countries = $em->getRepository(Order::class)->getCountryList();
 
-        $piechart = $this->indexAction($em);
+        $piechart = $this->indexCountry($em);
 
         dump($countries, $piechart);
         return $this->render('order/countries.html.twig', ['countries' => $countries, 'piechart' => $piechart]);
@@ -163,6 +168,10 @@ class OrderController extends AbstractController
 
     }
 
+
+    //no route////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
     /**
      * get country from db for all orders in $orders
      */
@@ -183,17 +192,22 @@ class OrderController extends AbstractController
         return $orderCountries;
     }
 
-    public function indexAction(EntityManagerInterface  $em): PieChart
+
+
+    /**
+     * get country graph
+     */
+    public function indexCountry(EntityManagerInterface  $em): PieChart
     {
-        $countries = $em->getRepository(Order::class)->getBestCountries();
+        $countries = $em->getRepository(Order::class)->getCountryList();
 
 //        $besties = [];
 //        foreach ($countries as $country) {
 //            $besties[] = [$country[]['country'], $country[]['Nb']];
 //        }
 
-
         $pieChart = new PieChart();
+//        $pieChart = new GeoChart();
         $pieChart->getData()->setArrayToDataTable(
             [
                 ['Country', 'Nb of orders'],
@@ -206,22 +220,87 @@ class OrderController extends AbstractController
                 [$countries[6]['country'], $countries[6]['Nb']],
                 [$countries[7]['country'], $countries[7]['Nb']],
                 [$countries[8]['country'], $countries[8]['Nb']],
-                [$countries[9]['country'], $countries[9]['Nb']]
-
+                [$countries[9]['country'], $countries[9]['Nb']],
+                [$countries[10]['country'], $countries[10]['Nb']],
+                [$countries[11]['country'], $countries[11]['Nb']],
+                [$countries[12]['country'], $countries[12]['Nb']],
+                [$countries[13]['country'], $countries[13]['Nb']],
+                [$countries[14]['country'], $countries[14]['Nb']],
+                [$countries[15]['country'], $countries[15]['Nb']],
+                [$countries[16]['country'], $countries[16]['Nb']],
+                [$countries[17]['country'], $countries[17]['Nb']],
+                [$countries[18]['country'], $countries[18]['Nb']],
+                [$countries[19]['country'], $countries[19]['Nb']],
+                [$countries[20]['country'], $countries[20]['Nb']],
+                [$countries[21]['country'], $countries[21]['Nb']],
+                [$countries[22]['country'], $countries[22]['Nb']],
+                [$countries[23]['country'], $countries[23]['Nb']],
+                [$countries[24]['country'], $countries[24]['Nb']],
+                [$countries[25]['country'], $countries[25]['Nb']]
 //                $besties
             ]
 
         );
-        $pieChart->getOptions()->setTitle('Top 10');
-        $pieChart->getOptions()->setHeight(500);
-        $pieChart->getOptions()->setWidth(900);
-//        $pieChart->getOptions()->getTitleTextStyle()->setBold(true);
-        $pieChart->getOptions()->getTitleTextStyle()->setColor('#0069d9');
-        $pieChart->getOptions()->getTitleTextStyle()->setItalic(true);
-//        $pieChart->getOptions()->getTitleTextStyle()->setFontName('Arial');
-        $pieChart->getOptions()->getTitleTextStyle()->setFontSize(20);
+//        $pieChart->getOptions()->getColorAxis()->setColors(['blue']);
+        $pieChart->getOptions()->setWidth(900)->setHeight(500);
 
         return $pieChart;
+    }
+
+
+
+
+
+    /**
+     * get month graph
+     */
+    public function indexMonth(EntityManagerInterface $em): ColumnChart
+    {
+
+        $months = $em->getRepository(Order::class)->getMonthList();
+
+        $monthChart = new ColumnChart();
+
+//        $monthChart->getData()->setArrayToDataTable(['Month', 'Orders']);
+//        foreach ($months as  $month) {
+//            $monthChart->getData()->setArrayToDataTable([$month['month'], $month['Nb']]);
+//        }
+
+        $monthChart->getData()->setArrayToDataTable([
+            ['', 'Orders'],
+            [$months[0]['month'], $months[0]['Nb']],
+            [$months[1]['month'], $months[1]['Nb']],
+            [$months[2]['month'], $months[2]['Nb']],
+            [$months[3]['month'], $months[3]['Nb']],
+            [$months[4]['month'], $months[4]['Nb']],
+            [$months[5]['month'], $months[5]['Nb']],
+            [$months[6]['month'], $months[6]['Nb']],
+            [$months[7]['month'], $months[7]['Nb']],
+            [$months[8]['month'], $months[8]['Nb']],
+            [$months[9]['month'], $months[9]['Nb']],
+            [$months[10]['month'], $months[10]['Nb']],
+            [$months[11]['month'], $months[11]['Nb']],
+            [$months[12]['month'], $months[12]['Nb']],
+            [$months[13]['month'], $months[13]['Nb']],
+            [$months[14]['month'], $months[14]['Nb']],
+            [$months[15]['month'], $months[15]['Nb']],
+            [$months[16]['month'], $months[16]['Nb']],
+            [$months[17]['month'], $months[17]['Nb']],
+            [$months[18]['month'], $months[18]['Nb']],
+            [$months[19]['month'], $months[19]['Nb']],
+            [$months[20]['month'], $months[20]['Nb']],
+            [$months[21]['month'], $months[21]['Nb']]
+//            ,[$months[22]['month'], $months[22]['Nb']]
+//            $months
+        ]);
+        $monthChart->getOptions()
+            ->setBars('vertical')
+//            ->setHeight(400)
+//            ->setWidth(900)
+            ->setColors(['#0069d9'])
+            ->getVAxis();
+
+        return $monthChart;
     }
 
 }
