@@ -11,24 +11,36 @@
                 {{ order.id }}
             </a>
             by {{ order.buyer.username }}
+
             {% if dbOrders[i] != null %}
                  ({{ dbOrders[i].country }})
             {% else %}
-                 (<a href="{{ path('order_db_create', {'id': order.id}) }}">set country ?</a>)
+
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    (<a href="{{ path('order_db_create', {'id': order.id}) }}">set country ?</a>)
+                {% endif %}
+
             {% endif %}
+
             on {{ order.created | date("d-m-Y") }} :
+
             {% if order.items | length == 1 %}
                 1 item
             {% else %}
                 {{ order.items | length }} items
             {% endif %}
-            , €{{ order.total.value }}
+
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                , €{{ order.total.value }}
+            {% endif %}
+
             {% if 'Cancelled' in order.status %}
                 <span class="cancelled"> - {{ order.status }}</span>
             {% endif %}
+
         </h5>
     {% endfor %}
-    {% if drafted or violation %}
+    {% if (drafted or violation) and is_granted('IS_AUTHENTICATED_REMEMBERED') %}
         {% set draftItems = drafted.listings %}
         {% set violationItems = violation.listings %}
         <br>
