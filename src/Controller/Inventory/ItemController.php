@@ -3,10 +3,10 @@
 
 namespace App\Controller\Inventory;
 
-use App\Controller\MainController;
+use App\Controller\Refactor\InventoryFunctionsController;
+use App\Controller\Refactor\MainFunctionsController;
 use App\DiscogsApi\DiscogsClient;
 use App\Form\PriceUpdateType;
-use Jolita\DiscogsApi\Exceptions\DiscogsApiException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +24,7 @@ class ItemController extends AbstractController
      * all items
      * @Route("/", name = "_list")
      */
-    public function itemList(MainController $mc): Response
+    public function itemList(MainFunctionsController $mc): Response
     {
         $page = $mc->getPage();
         $sort = $mc->getSort('artist');
@@ -41,7 +41,7 @@ class ItemController extends AbstractController
      * all sold items
      * @Route("/sold", name = "_sold")
      */
-    public function soldItems(MainController $mc): Response
+    public function soldItems(MainFunctionsController $mc): Response
     {
         $page = $mc->getPage();
         $sort = $mc->getSort('artist');
@@ -58,7 +58,7 @@ class ItemController extends AbstractController
      * all items for sale
      * @Route("/forsale", name = "_for_sale")
      */
-    public function itemsForSale(MainController $mc): Response
+    public function itemsForSale(MainFunctionsController $mc): Response
     {
         $page = $mc->getPage();
         $sort = $mc->getSort('artist');
@@ -81,26 +81,27 @@ class ItemController extends AbstractController
      * requirements={"id" : "\d+"},
      * methods={"GET"})
      */
-    public function detail(DiscogsClient $dc, $id): Response
+    public function detail(InventoryFunctionsController $ic, DiscogsClient $dc, $id): Response
     {
         $item = $dc->getMyDiscogsClient()->getInventoryItem($id);
         $release = $dc->getDiscogsClient()->release($item->release->id);
-        $priceSuggestion = $this->getPriceSuggestion($dc, $item);
+        $priceSuggestion = $ic->getPriceSuggestion($dc, $item);
 
         return $this->render("item/detail.html.twig", ["item" => $item, 'release' => $release, 'priceSuggestion' => $priceSuggestion]);
     }
+
+    //edit price////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * edit item price
      * @Route("/{id}/price", name = "_price",
      * requirements={"id" : "\d+"})
-     * @throws DiscogsApiException
      */
-    public function editPrice(Request $request,DiscogsClient $dc, $id): Response
+    public function editPrice(InventoryFunctionsController $ic, Request $request,DiscogsClient $dc, $id): Response
     {
         $item = $dc->getMyDiscogsClient()->getInventoryItem($id);
         $release = $dc->getDiscogsClient()->release($item->release->id);
-        $priceSuggestion = $this->getPriceSuggestion($dc, $item);
+        $priceSuggestion = $ic->getPriceSuggestion($dc, $item);
         $priceForm = $this->createForm(PriceUpdateType::class);
 
         $priceForm->handleRequest($request);
@@ -118,28 +119,6 @@ class ItemController extends AbstractController
             'priceForm' => $priceForm->createView(), 'priceSuggestion' => $priceSuggestion]);
     }
 
-
-    public function getPriceSuggestion(DiscogsClient $dc, $item) {
-        $suggestedPrices = [];
-        $suggestions = $dc->getMyDiscogsClient()->getPriceSuggestion($item->release->id);
-        foreach ($suggestions as $suggestion) {
-            $suggestedPrices[] = $suggestion;
-        }
-        $condition = $item->condition;
-        $suggested = 0;
-        switch ($condition) :
-            case 'Mint (M)' : $suggested = $suggestedPrices[0]->value; break;
-            case 'Near Mint (NM or M-)' : $suggested = $suggestedPrices[1]->value; break;
-            case 'Very Good Plus (VG+)' : $suggested = $suggestedPrices[2]->value; break;
-            case 'Very Good (VG)' : $suggested = $suggestedPrices[3]->value; break;
-            case 'Good Plus (G+)' : $suggested = $suggestedPrices[4]->value; break;
-            case 'Good (G)' : $suggested = $suggestedPrices[5]->value; break;
-            case 'Fair (F)' : $suggested = $suggestedPrices[6]->value; break;
-            case 'Poor (P)' : $suggested = $suggestedPrices[7]->value; break;
-        endswitch;
-
-        return $suggested;
-    }
 
 
 }

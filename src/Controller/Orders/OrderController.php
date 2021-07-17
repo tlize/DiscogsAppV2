@@ -3,13 +3,12 @@
 
 namespace App\Controller\Orders;
 
-use App\Controller\MainController;
+use App\Controller\Refactor\MainFunctionsController;
+use App\Controller\Refactor\OrderFunctionsController;
 use App\DiscogsApi\DiscogsClient;
 use App\Entity\Country;
 use App\Entity\Order;
 use App\Pagination\MyPaginator;
-use CMEN\GoogleChartsBundle\GoogleCharts\Charts\GeoChart;
-use CMEN\GoogleChartsBundle\GoogleCharts\Charts\Material\ColumnChart;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +25,7 @@ class OrderController extends AbstractController
      * all orders
      * @Route("/", name = "_list")
      */
-    public function list(MainController $mc, DiscogsClient $dc, EntityManagerInterface $em, MyPaginator $paginator): Response
+    public function list(MainFunctionsController $mc,OrderFunctionsController $oc, DiscogsClient $dc, EntityManagerInterface $em, MyPaginator $paginator): Response
     {
         $page = $mc->getPage();
         $sort = $mc->getSort('id');
@@ -35,7 +34,7 @@ class OrderController extends AbstractController
 
         $orders = $dc->getDiscogsClient()->getMyOrders($page, 50, 'All', $sort, $sortOrder);
         $pagination = $paginator->paginate($orders, $page);
-        $orderCountries = $this->getOrdersCountries($em, $orders);
+        $orderCountries = $oc->getOrdersCountries($em, $orders);
 
         return $this->render('order/list.html.twig', ['orders' => $orders, 'orderCountries' => $orderCountries,
             'sortLink' => $sortLink, 'pagination' => $pagination]);
@@ -45,9 +44,9 @@ class OrderController extends AbstractController
      * orders by month
      * @Route("/months", name = "_months")
      */
-    public function Months(MainController $mc, EntityManagerInterface $em): Response
+    public function Months(OrderFunctionsController $oc, EntityManagerInterface $em): Response
     {
-        $periodMonths = $mc->getOrdersMonths();
+        $periodMonths = $oc->getOrdersMonths();
         $dbMonths = $em->getRepository(Order::class)->getMonthList();
 
         $nbOrdersByMonth = [];
@@ -57,7 +56,7 @@ class OrderController extends AbstractController
             $nbOrdersByMonth[$name] = $nbOrders;
         }
 
-        $monthchart = $this->indexMonth($em);
+        $monthchart = $oc->indexMonth($em);
 
         return $this->render('order/months.html.twig', ['periodMonths' => $periodMonths, 'nbOrdersByMonth' => $nbOrdersByMonth, 'monthchart' => $monthchart]);
     }
@@ -66,10 +65,10 @@ class OrderController extends AbstractController
      * orders by country
      * @Route("/countries", name = "_countries")
      */
-    public function Countries(EntityManagerInterface $em): Response
+    public function Countries(OrderFunctionsController $oc, EntityManagerInterface $em): Response
     {
         $countries = $em->getRepository(Order::class)->getCountryList();
-        $countrychart = $this->indexCountry($em);
+        $countrychart = $oc->indexCountry($em);
 
         return $this->render('order/countries.html.twig', ['countries' => $countries, 'countrychart' => $countrychart]);
     }
@@ -78,12 +77,12 @@ class OrderController extends AbstractController
      * orders for one month
      * @Route("/month/{monthName}", name = "_month")
      */
-    public function MonthOrders(EntityManagerInterface $em, $monthName, DiscogsClient $dc, MainController $mc): Response
+    public function MonthOrders(EntityManagerInterface $em, $monthName, DiscogsClient $dc, OrderFunctionsController $oc): Response
     {
-        $months = $mc->getOrdersMonths();
+        $months = $oc->getOrdersMonths();
         $month = $months[$monthName];
         $orders = $dc->getMyDiscogsClient()->getOrdersByMonth($month['created_after'], $month['created_before']);
-        $orderCountries = $this->getOrdersCountries($em, $orders);
+        $orderCountries = $oc->getOrdersCountries($em, $orders);
 
         return $this->render('order/month_detail.html.twig', ['name' => $monthName, 'orders' => $orders, 'orderCountries' => $orderCountries]);
     }
@@ -124,7 +123,7 @@ class OrderController extends AbstractController
         return $this->render('order/detail.html.twig', ['order' => $order]);
     }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////click on 'set Country'///////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * set country from shipping address
@@ -164,74 +163,6 @@ class OrderController extends AbstractController
     }
 
 
-    //no route////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-    /**
-     * get country from db for all orders in $orders
-     */
-    public function getOrdersCountries(EntityManagerInterface $em, $orders): array
-    {
-        $orderNums = [];
-        foreach ($orders->orders as $order) {
-            $orderNum = $order->id;
-            $orderNums[] = $orderNum;
-        }
-        $dbOrders = $em->getRepository(Order::class)->getOrderList($orderNums);
-        $orderCountries = [];
-        foreach ($dbOrders as $dbOrder) {
-            $orderCountries[$dbOrder->getOrderNum()] = $dbOrder->getCountry();
-        }
-        return $orderCountries;
-    }
-
-
-
-    /**
-     * get country graph
-     */
-    public function indexCountry(EntityManagerInterface  $em): GeoChart
-    {
-        $countries = $em->getRepository(Order::class)->getCountryList();
-        $bestCountries = [];
-//        $bestCountries[] = ['Country', 'Nb of orders'];
-        foreach ($countries as $country) {
-            $bestCountries[] = [$country['country'], $country['Nb']];
-        }
-        $countryChart = new GeoChart();
-        $countryChart->getData()->setArrayToDataTable($bestCountries
-            , true
-        );
-        $countryChart->getOptions()
-            ->setWidth(900)
-            ->setHeight(500)
-            ->setRegion(150)
-            ->getColorAxis()->setColors(['#0069d9']);
-
-        return $countryChart;
-    }
-
-
-
-
-
-    /**
-     * get month graph
-     */
-    public function indexMonth(EntityManagerInterface $em): ColumnChart
-    {
-        $months = $em->getRepository(Order::class)->getMonthList();
-        $monthsForGraph = [];
-        foreach ($months as  $month) {
-            $monthsForGraph[] = [$month['month'], $month['Nb']];
-        }
-        $monthChart = new ColumnChart();
-        $monthChart->getData()->setArrayToDataTable($monthsForGraph, true);
-        $monthChart->getOptions()
-            ->setBars('vertical')
-            ->setColors(['#0069d9']);
-
-        return $monthChart;
-    }
 
 }

@@ -4,7 +4,7 @@
 namespace App\Controller\Collection;
 
 
-use App\Controller\MainController;
+use App\Controller\Refactor\MainFunctionsController;
 use App\DiscogsApi\DiscogsClient;
 use App\DiscogsApiAuth\DiscogsAuth;
 use App\Pagination\MyPaginator;
@@ -12,13 +12,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/collection", name="collection")
+ */
 class CollectionController extends AbstractController
 {
 
     /**
-     * @Route("/collection", name = "collection_list")
+     * @Route("/", name = "_list")
      */
-    public function collection(MainController $mc, DiscogsClient $dc, DiscogsAuth $auth, MyPaginator $mp): Response
+    public function collection(MainFunctionsController $mc, DiscogsClient $dc, DiscogsAuth $auth, MyPaginator $mp): Response
     {
         $page = $mc->getPage();
         $sort = $mc->getSort('artist');
