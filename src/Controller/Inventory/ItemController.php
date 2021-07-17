@@ -116,7 +116,7 @@ class ItemController extends AbstractController
 
             dump($newPrice);
 //            $this->addFlash('success', 'Ok, price updated !');
-            $this->addFlash('warning', 'still work to do !');
+            $this->addFlash('warning', 'Still work to do !');
             return $this->render('item/detail.html.twig', ['id' => $item->id, 'item' => $item, 'release' => $release, 'priceSuggestion' => $priceSuggestion]);
         }
         return $this->render('item/price.html.twig', ['id' => $item->id, 'item' => $item, 'release' => $release,

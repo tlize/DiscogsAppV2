@@ -52,9 +52,12 @@
         </p>
     {% else %}
             {% if item.status == 'For Sale' %}
+                {% set buyLink = ['https://www.discogs.com/sell/item/', item.id, '?ev=bp_img'] | join %}
                 <p>
-                    {% set buyLink = ['https://www.discogs.com/sell/item/', item.id, '?ev=bp_img'] | join %}
-                    €{{ item.price.value | number_format }} <a class="buyLink" href="{{ buyLink }}" target="_blank">Buy It Now !</a>
+                    €{{ item.price.value | number_format }}
+                </p>
+                <p>
+                     <a class="buyLink" href="{{ buyLink }}" target="_blank">Buy It Now !</a>
                 </p>
             {% else %}
                 <p>
