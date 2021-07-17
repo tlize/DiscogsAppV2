@@ -99,6 +99,8 @@ class ItemController extends AbstractController
      */
     public function editPrice(InventoryFunctionsController $ic, Request $request,DiscogsClient $dc, $id): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
+
         $item = $dc->getMyDiscogsClient()->getInventoryItem($id);
         $release = $dc->getDiscogsClient()->release($item->release->id);
         $priceSuggestion = $ic->getPriceSuggestion($dc, $item);

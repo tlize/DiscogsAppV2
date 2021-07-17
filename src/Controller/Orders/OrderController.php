@@ -132,6 +132,8 @@ class OrderController extends AbstractController
      */
     public function createDbOrder(DiscogsClient $dc, EntityManagerInterface $em, $id): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
+
         $countries = $em->getRepository(Country::class)->findAll();
 
         $order = $dc->getDiscogsClient()->orderWithId($id);

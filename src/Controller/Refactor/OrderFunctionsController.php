@@ -87,11 +87,14 @@ class OrderFunctionsController extends AbstractController
     {
         $months = $em->getRepository(Order::class)->getMonthList();
         $monthsForGraph = [];
+        $monthsForGraph[] = ['', 'Nb of Orders'];
         foreach ($months as  $month) {
             $monthsForGraph[] = [$month['month'], $month['Nb']];
         }
         $monthChart = new ColumnChart();
-        $monthChart->getData()->setArrayToDataTable($monthsForGraph, true);
+        $monthChart->getData()->setArrayToDataTable($monthsForGraph
+//            , true
+        );
         $monthChart->getOptions()
             ->setBars('vertical')
             ->setColors(['#0069d9']);
