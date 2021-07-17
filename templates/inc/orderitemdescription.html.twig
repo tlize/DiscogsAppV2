@@ -18,7 +18,8 @@
                 </p>
             {% endif %}
             <p>
-                listing Id : {{ item.id }}
+                listing Id : <a href="{{ path('item_detail', {'id': item.id}) }}" title="Item Details">{{ item.id }}</a>
+
             </p>
             {% set releasePage = ['https://www.discogs.com/', item.release.description |slug, '/release/', item.release.id] | join %}
             <p>

@@ -7,6 +7,7 @@ use App\Controller\Refactor\InventoryFunctionsController;
 use App\Controller\Refactor\MainFunctionsController;
 use App\DiscogsApi\DiscogsClient;
 use App\Form\PriceUpdateType;
+use Jolita\DiscogsApi\Exceptions\DiscogsApiException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -96,6 +97,7 @@ class ItemController extends AbstractController
      * edit item price
      * @Route("/{id}/price", name = "_price",
      * requirements={"id" : "\d+"})
+     * @throws DiscogsApiException
      */
     public function editPrice(InventoryFunctionsController $ic, Request $request,DiscogsClient $dc, $id): Response
     {
@@ -110,11 +112,11 @@ class ItemController extends AbstractController
         if ($priceForm->isSubmitted() && $priceForm->isValid()) {
             $newPrice = $priceForm->getData()['price'];
 
-            //$dc->getMyDiscogsClient()->updatePrice($id, $item->release->id, $item->condition, $newPrice);
-            //$listingId, $releaseId, $condition, $newPrice
+            $dc->getMyDiscogsClient()->updatePrice($id, $item->release->id, $item->condition, $newPrice);
 
             dump($newPrice);
-            $this->addFlash('success', 'Ok, price updated !');
+//            $this->addFlash('success', 'Ok, price updated !');
+            $this->addFlash('warning', 'still work to do !');
             return $this->render('item/detail.html.twig', ['id' => $item->id, 'item' => $item, 'release' => $release, 'priceSuggestion' => $priceSuggestion]);
         }
         return $this->render('item/price.html.twig', ['id' => $item->id, 'item' => $item, 'release' => $release,

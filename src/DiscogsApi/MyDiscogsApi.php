@@ -82,7 +82,7 @@ class MyDiscogsApi extends DiscogsApi
     {
         $resource = "marketplace/listings/";
 
-        return $this->client->post(
+        return $this->client->get(
             $this->url($this->path($resource, $listingId)),
             ['query' => [
                 'release_id' => $releaseId,
@@ -90,7 +90,7 @@ class MyDiscogsApi extends DiscogsApi
                 'price' => $newPrice,
                 'status' => 'For Sale',
                 'token' => $this->token(),
-            ],
+                ],
             ]
         );
     }
