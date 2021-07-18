@@ -58,7 +58,7 @@ class MainFunctionsController extends AbstractController
 
     public function getRegionMap()
     {
-        $region = '';
+        $region = '150';
         if (isset($_GET['region'])) {
             $region = $_GET['region'];
             switch ($region) :
@@ -70,7 +70,6 @@ class MainFunctionsController extends AbstractController
                 case 'wo' : $region = ''; break;
             endswitch;
         }
-
         return $region;
     }
 

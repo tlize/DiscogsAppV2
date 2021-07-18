@@ -74,7 +74,8 @@ class OrderFunctionsController extends AbstractController
         $countryChart->getOptions()
             ->setWidth(900)
             ->setHeight(500)
-            ->getColorAxis()->setColors(['#0069d9']);
+            ->getColorAxis()->setColors(['#AA3333'])
+        ;
 
         if ($region != '') {
             $countryChart->getOptions()->setRegion($region);
@@ -98,9 +99,7 @@ class OrderFunctionsController extends AbstractController
         $monthChart->getData()->setArrayToDataTable($monthsForGraph
 //            , true
         );
-        $monthChart->getOptions()
-            ->setBars('vertical')
-            ->setColors(['#0069d9']);
+        $monthChart->getOptions()->setColors(['#AA3333']);
 
         return $monthChart;
     }

@@ -31,11 +31,6 @@ input, footer input {
 
 
 /* specificity : 0.1.0*/
-.bg-dark {
-    background-color: #343a40 !important;
-}
-
-/* specificity : 0.1.0*/
 .flash {
     padding: 20px;
     display: block;
@@ -74,6 +69,7 @@ input, footer input {
     color: #6b9311;
     font-size: x-large;
 }
+
 
 /* specificity : 0.1.0, 0.1.0, 0.1.0, 0.1.0, 0.1.1*/
 .itemInfo, .collValue, .editPrice, .mapChoice, .orderInfo h5 {
@@ -139,7 +135,6 @@ a.dropdown-item:hover {
 nav .d-flex a:hover {
     color: #ffffff;
 }
-
 
 /* specificity : 0.2.2*/
 .table-hover tr:hover td {
