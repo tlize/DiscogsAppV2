@@ -45,11 +45,13 @@
                     Collection
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{ path('test') }}">
-                    Tests
-                </a>
-            </li>
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ path('test') }}">
+                        Tests
+                    </a>
+                </li>
+            {% endif %}
         </ul>
         <div class="nav-item d-flex">
             {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}

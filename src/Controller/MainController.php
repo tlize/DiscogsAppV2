@@ -46,6 +46,7 @@ class MainController extends AbstractController
      */
     public function test(): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         dump($_SERVER);
         return $this->render("main/test.html.twig");
     }
