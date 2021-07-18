@@ -3,9 +3,7 @@ symfony app to browse my Discogs collection, and seller inventory
 
 now towards V3 :
 
-discogs-api package by JolitaGrazyte made it easier for me to reach Discogs API breakpoints
-
-https://github.com/JolitaGrazyte/discogs-api
+https://github.com/JolitaGrazyte/discogs-api made it easier for me to reach Discogs API breakpoints
 
 currently browsing through my Inventory, Orders, Collection... in order to implement these into the GUI
 
