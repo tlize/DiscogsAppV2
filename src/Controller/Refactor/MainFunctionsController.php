@@ -56,6 +56,23 @@ class MainFunctionsController extends AbstractController
         return $sortLink;
     }
 
+    public function getRegionMap()
+    {
+        $region = '150';
+        if (isset($_GET['region'])) {
+            $region = $_GET['region'];
+            switch ($region) :
+                case 'af' : $region = '002'; break;
+                case 'am' : $region = '019'; break;
+                case 'as' : $region = '142'; break;
+                case 'eu' : $region = '150'; break;
+                case 'oc' : $region = '009'; break;
+                case 'wo' : $region = ''; break;
+            endswitch;
+        }
+
+        return $region;
+    }
 
 
 }

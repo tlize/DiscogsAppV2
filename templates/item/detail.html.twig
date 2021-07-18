@@ -66,7 +66,9 @@
             {% endif %}
     {% endif %}
     {% if item.status == 'For Sale' and is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-        <a class="editPrice" href="{{ path('item_price', {'id': item.id}) }}" title="See Item Details">Edit Price</a>
+        {% set editLink = ['https://www.discogs.com/sell/manage_edit?ids=', item.id, '&return_to=%2Fsell%2Fitem%2F', item.id] | join %}
+        <a class="editPrice" href="{{ editLink }}" title="Edit Price on Discogs" target="_blank">Edit Price</a>
+{#        <a class="editPrice" href="{{ path('item_price', {'id': item.id}) }}">Edit Price</a>#}
     {% endif %}
 {% endblock %}
 

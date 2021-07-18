@@ -80,10 +80,9 @@ class MyDiscogsApi extends DiscogsApi
      */
     public function updatePrice($listingId, $releaseId, $condition, $newPrice): ResponseInterface
     {
-        $resource = "marketplace/listings/";
-
-        return $this->client->get(
-            $this->url($this->path($resource, $listingId)),
+        $resource = "marketplace/listings/$listingId";
+        return $this->client->post(
+            $this->url($this->path($resource)),
             ['query' => [
                 'release_id' => $releaseId,
                 'condition' => $condition,

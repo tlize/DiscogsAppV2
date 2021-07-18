@@ -65,10 +65,11 @@ class OrderController extends AbstractController
      * orders by country
      * @Route("/countries", name = "_countries")
      */
-    public function Countries(OrderFunctionsController $oc, EntityManagerInterface $em): Response
+    public function Countries(MainFunctionsController $mc, OrderFunctionsController $oc, EntityManagerInterface $em): Response
     {
+        $region = $mc->getRegionMap();
         $countries = $em->getRepository(Order::class)->getCountryList();
-        $countrychart = $oc->indexCountry($em);
+        $countrychart = $oc->indexCountry($em, $region);
 
         return $this->render('order/countries.html.twig', ['countries' => $countries, 'countrychart' => $countrychart]);
     }

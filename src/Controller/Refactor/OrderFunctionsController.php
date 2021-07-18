@@ -59,7 +59,7 @@ class OrderFunctionsController extends AbstractController
     /**
      * get country graph
      */
-    public function indexCountry(EntityManagerInterface  $em): GeoChart
+    public function indexCountry(EntityManagerInterface  $em, $region): GeoChart
     {
         $countries = $em->getRepository(Order::class)->getCountryList();
         $bestCountries = [];
@@ -74,8 +74,11 @@ class OrderFunctionsController extends AbstractController
         $countryChart->getOptions()
             ->setWidth(900)
             ->setHeight(500)
-            ->setRegion(150)
             ->getColorAxis()->setColors(['#0069d9']);
+
+        if ($region != '') {
+            $countryChart->getOptions()->setRegion($region);
+        }
 
         return $countryChart;
     }

@@ -5,6 +5,13 @@
     <h4>Orders by Country</h4>
 
     {% include 'inc/countrychart.html.twig' %}
+    <p class="mapChoice">Map :
+        <a href="?region=af">Africa</a> /
+        <a href="?region=am">America</a> /
+        <a href="?region=as">Asia</a> /
+        <a href="?region=eu">Europe</a> /
+        <a href="?region=oc">Oceania</a> /
+        <a href="?region=wo">Worldwide</a></p>
 
     {% for country in countries %}
         <p>

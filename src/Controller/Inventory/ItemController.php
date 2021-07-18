@@ -103,7 +103,10 @@ class ItemController extends AbstractController
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
 
+        $listingId = intval($id);
         $item = $dc->getMyDiscogsClient()->getInventoryItem($id);
+        $releaseId  = intval($item->release->id);
+        $condition = $item->condition;
         $release = $dc->getDiscogsClient()->release($item->release->id);
         $priceSuggestion = $ic->getPriceSuggestion($dc, $item);
         $priceForm = $this->createForm(PriceUpdateType::class);
@@ -112,12 +115,13 @@ class ItemController extends AbstractController
         if ($priceForm->isSubmitted() && $priceForm->isValid()) {
             $newPrice = $priceForm->getData()['price'];
 
-            $dc->getMyDiscogsClient()->updatePrice($id, $item->release->id, $item->condition, $newPrice);
+            $dc->getMyDiscogsClient()->updatePrice($listingId, $releaseId, $condition, $newPrice);
 
-            dump($newPrice);
+            dump($listingId, $releaseId, $condition, $newPrice, $item);
 //            $this->addFlash('success', 'Ok, price updated !');
             $this->addFlash('warning', 'Still work to do !');
-            return $this->render('item/detail.html.twig', ['id' => $item->id, 'item' => $item, 'release' => $release, 'priceSuggestion' => $priceSuggestion]);
+            return $this->render('item/detail.html.twig', ['id' => $item->id, 'item' => $item,
+                'release' => $release, 'priceSuggestion' => $priceSuggestion]);
         }
         return $this->render('item/price.html.twig', ['id' => $item->id, 'item' => $item, 'release' => $release,
             'priceForm' => $priceForm->createView(), 'priceSuggestion' => $priceSuggestion]);
