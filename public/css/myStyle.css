@@ -71,8 +71,8 @@ input, footer input {
 }
 
 
-/* specificity : 0.1.0, 0.1.0, 0.1.0, 0.1.0, 0.1.1*/
-.itemInfo, .collValue, .editPrice, .mapChoice, .orderInfo h5 {
+/* specificity : 0.1.0, 0.1.1*/
+.t_small, .t_small h5 {
     font-size: small;
 }
 

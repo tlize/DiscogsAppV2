@@ -6,7 +6,7 @@
         - {{ item.release.title }}
     </h4>
     <img src="{{ item.release.thumbnail }}" alt="{{ item.release.description }}">
-    <h6><a class="itemInfo" id="releasePage" href="{{ release.uri }}" target="_blank">Discogs Page</a></h6>
+    <h6><a class="t_small" id="releasePage" href="{{ release.uri }}" target="_blank">Discogs Page</a></h6>
     <h5>
         {{ item.release.format }}
     </h5>
@@ -63,8 +63,8 @@
     {% endif %}
     {% if item.status == 'For Sale' and is_granted('IS_AUTHENTICATED_REMEMBERED') %}
         {% set editLink = ['https://www.discogs.com/sell/manage_edit?ids=', item.id, '&return_to=%2Fsell%2Fitem%2F', item.id] | join %}
-        <a class="editPrice" href="{{ editLink }}" title="Edit Price on Discogs" target="_blank">Edit Price</a>
-{#        <a class="editPrice" href="{{ path('item_price', {'id': item.id}) }}">Edit Price</a>#}
+        <a class="t_small" href="{{ editLink }}" title="Edit Price on Discogs" target="_blank">Edit Price</a>
+{#        <a class="t_small" href="{{ path('item_price', {'id': item.id}) }}">Edit Price</a>#}
     {% endif %}
 {% endblock %}
 

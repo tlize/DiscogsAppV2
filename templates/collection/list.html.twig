@@ -3,22 +3,32 @@
 {% block title %}{{ parent() }} | Collection{% endblock %}
 
 {% block body %}
-    <h4>
-        {{ collection.pagination.items }} Items in my Collection
-        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-            <span class="collValue">
-            (median value : {{ collectionValue.median |replace({',': ''}) | split('.') | first }})
-        </span>
-        {% endif %}
-    </h4>
-    <h6>Order by
-        <a href="?sort=artist&sort_order={{ sortLink }}">Band - Artist</a> /
-        <a href="?sort=title&sort_order={{ sortLink }}">Title</a> /
-        <a href="?sort=catno&sort_order={{ sortLink }}">Catalog #</a> /
-        <a href="?sort=label&sort_order={{ sortLink }}">Label</a> /
-        <a href="?sort=year&sort_order={{ sortLink }}">Year</a> /
-        <a href="?sort=added&sort_order={{ sortLink }}">Date Added</a>
-    </h6>
+    <div class="row">
+        <div class="col-lg-10">
+            <h4>
+                {{ collection.pagination.items }} Items in my Collection
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    <span class="t_small">
+                        (median value : {{ collectionValue.median |replace({',': ''}) | split('.') | first }})
+                    </span>
+                {% endif %}
+            </h4>
+            <h6>Order by
+                <a href="?sort=artist&sort_order={{ sortLink }}">Band - Artist</a> /
+                <a href="?sort=title&sort_order={{ sortLink }}">Title</a> /
+                <a href="?sort=catno&sort_order={{ sortLink }}">Catalog #</a> /
+                <a href="?sort=label&sort_order={{ sortLink }}">Label</a> /
+                <a href="?sort=year&sort_order={{ sortLink }}">Year</a> /
+                <a href="?sort=added&sort_order={{ sortLink }}">Date Added</a>
+            </h6>
+        </div>
+        <div class="col-lg-2 t_small">
+            {% if collection.pagination.pages > 1 %}
+                {% include 'inc/pagination.html.twig' with {'pagination' : pagination}  %}
+            {% endif %}
+        </div>
+    </div>
+
     <table class="table table-hover table-striped">
         <thead class="thead-dark">
         <tr>

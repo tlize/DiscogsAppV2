@@ -2,7 +2,7 @@
     <summary>
         {{ order.id }}
     </summary>
-    <div class="orderInfo">
+    <div class="t_small">
         {% if order.items | length == 1 %}
             {% set item = order.items[0] %}
             {% include 'inc/orderitemdescription.html.twig' %}
