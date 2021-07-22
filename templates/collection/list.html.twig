@@ -77,21 +77,27 @@
                 </td>
                 <td>
                     {% if basic.year == 0 %}
-                        unknown
+                        N/A
                     {% else %}
                         {{ basic.year }}
                     {% endif %}
                 </td>
                 <td>
-                    {% for genre in basic.genres %}
-                        {{ genre }}
-                    {% endfor %}
+                    {% if basic.genres != null %}
+                        {% for genre in basic.genres %}
+                            {{ genre }}
+                        {% endfor %}
+                    {% else %}
+                        N/A
+                    {% endif %}
                 </td>
                 <td>
                     {% if basic.styles != null %}
                         {% for style in basic.styles %}
                             {{ style }}
                         {% endfor %}
+                    {% else %}
+                        N/A
                     {% endif %}
                 </td>
             </tr>
