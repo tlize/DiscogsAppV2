@@ -12,8 +12,8 @@
             </a>
             by {{ order.buyer.username }}
 
-            {% if dbOrders[i] != null %}
-                 ({{ dbOrders[i].country }})
+            {% if dbOrders[order.id] is defined %}
+                 ({{ dbOrders[order.id] }})
             {% else %}
 
                 {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}

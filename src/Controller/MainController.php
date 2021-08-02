@@ -3,9 +3,9 @@
 
 namespace App\Controller;
 
+use App\Controller\Refactor\OrderFunctionsController;
 use App\DiscogsApi\DiscogsClient;
 use App\DiscogsApiAuth\DiscogsAuth;
-use App\Entity\Order;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,19 +20,12 @@ class MainController extends AbstractController
      * homepage
      * @Route("/", name = "home")
      */
-    public function home(DiscogsClient $dc,EntityManagerInterface $em, DiscogsAuth $auth): Response
+    public function home(DiscogsClient $dc,OrderFunctionsController $oc,EntityManagerInterface $em, DiscogsAuth $auth): Response
     {
         $username = $auth->getUserName();
 
         $orders = $dc->getDiscogsClient()->getMyOrders(1, 10, 'All');
-        $orderNums = [];
-
-        foreach ($orders->orders as $order) {
-            $orderNum = $order->id;
-            $orderNums[] = $orderNum;
-        }
-
-        $dbOrders = $em->getRepository(Order::class)->getOrderList($orderNums);
+        $dbOrders = $oc->getOrdersCountries($em, $orders);
         $drafted = $dc->getMyDiscogsClient()->getDraft($username);
         $violation = $dc->getMyDiscogsClient()->getViolation($username);
 
