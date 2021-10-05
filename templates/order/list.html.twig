@@ -4,8 +4,14 @@
 
 {% block body %}
     <h4>
-        All Orders
+        {{ orders.pagination.items }} Orders
     </h4>
+    <h6>Order by
+        <a href="?sort=id&sort_order={{ sortLink }}">Order Id</a> /
+        <a href="?sort=buyer&sort_order={{ sortLink }}">Buyer</a> /
+        <a href="?sort=created&sort_order={{ sortLink }}">Order Date</a> /
+        <a href="?sort=last_activity&sort_order={{ sortLink }}">Last Activity</a> /
+    </h6>
     <table class="table table-hover table-striped">
         <thead class="thead-dark">
         <tr>
@@ -13,62 +19,86 @@
                 Order #
             </th>
             <th>
-                {{ knp_pagination_sortable(orders, 'Date', 'o.orderDate') }}
+                Date
             </th>
             <th>
-                {{ knp_pagination_sortable(orders, 'Buyer', 'o.buyer') }}
+                Buyer
+            </th>
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                <th>
+                    Shipping Address
+                </th>
+            {% endif %}
+            <th>
+                Country
             </th>
             <th>
-                Shipping Address
+                Items
             </th>
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                <th>
+                    Total
+                </th>
+            {% endif %}
             <th>
-                {{ knp_pagination_sortable(orders, 'Country', 'o.country') }}
-            </th>
-            <th>
-                {{ knp_pagination_sortable(orders, 'Nb of Items', 'o.nbItems') }}
-            </th>
-            <th>
-                {{ knp_pagination_sortable(orders, 'Total', 'o.total') }}
+                Status
             </th>
         </tr>
         </thead>
         <tbody>
-        {% for order in orders %}
+        {% for order in orders.orders %}
             <tr>
                 <td>
                     <a href="{{ path('order_detail', {'id': order.id}) }}">
-                        {{ order.orderNum }}
+                        {{ order.id }}
                     </a>
                 </td>
                 <td>
-                    {{ order.orderDate | date("d-m-Y") }}
+                    {{ order.created | date("d-m-Y") }}
                 </td>
                 <td>
-                    {{ order.buyer }}
+                    {{ order.buyer.username }}
                 </td>
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    <td>
+                        {{ order.shipping_address }}
+                    </td>
+                {% endif %}
                 <td>
-                    {% if order.shippingAddress | length > 100 %}
-                        {{ [order.shippingAddress | slice(0,100), '...'] | join }}
+                    {% if orderCountries[order.id] is defined %}
+                        {{ orderCountries[order.id] }}
                     {% else %}
-                        {{ order.shippingAddress }}
+                        {% if 'Cancelled' in order.status %}
+                            not in DB
+                        {% else %}
+                            <a href="{{ path('order_db_create', {'id': order.id}) }}">set country ?</a>
+                        {% endif %}
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{{ path('country_detail', {'country': order.country}) }}">
-                        {{ order.country }}
-                    </a>
+                    {{ order.items | length }}
                 </td>
-                <td>
-                    {{ order.nbItems }}
-                </td>
-                <td>
-                    €{{ order.total | number_format }}
-                </td>
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    <td>
+                        €{{ order.total.value | number_format }}
+                    </td>
+                {% endif %}
+                {% if 'Cancelled' in order.status %}
+                    <td class="cancelled">
+                        {{ order.status }}
+                    </td>
+                {% else %}
+                    <td>
+                        {{ order.status }}
+                    </td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>
     </table>
-    <div class="pagination">
-        {{ knp_pagination_render(orders) }}
-    </div>
+
+    {% if orders.pagination.pages > 1 %}
+        {% include 'inc/pagination.html.twig' with {'pagination' : pagination}  %}
+    {% endif %}
+
 {% endblock %}

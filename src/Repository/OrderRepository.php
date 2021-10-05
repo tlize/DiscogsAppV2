@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Entity\Order;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -20,40 +19,50 @@ class OrderRepository extends ServiceEntityRepository
         parent::__construct($registry, Order::class);
     }
 
-    //lists///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function findAllWithDetails(): QueryBuilder
+    public function getOrderList($orderNums)
     {
         return $this->createQueryBuilder('o')
-            ->orderBy('o.orderDate', 'DESC')
-            ->join('o.orderItems', 'oi')
-            ->addSelect('oi');
+            ->andWhere('o.orderNum in (:orderNums)')
+            ->setParameter('orderNums', $orderNums)
+            ->addOrderBy('o.orderNum', 'desc')
+            ->getQuery()
+            ->getResult()
+            ;
     }
 
-    public function findBestCountries()
+    public function getMonthList()
+    {
+        return $this->createQueryBuilder('o')
+            ->addSelect('o.month')
+            ->addSelect('COUNT(o.id) AS Nb')
+            ->addGroupBy('o.month')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function getCountryList()
     {
         return $this->createQueryBuilder('o')
             ->addSelect('o.country')
-            ->addSelect('COUNT(o.orderNum) AS nbOrders')
-            ->addSelect('SUM(o.total) AS totalAmount')
-            ->addSelect('AVG(o.total) AS avgAmount')
-            ->groupBy('o.country')
-            ->orderBy('nbOrders', 'DESC')
-            ->addOrderBy('totalAmount', 'DESC')
+            ->addSelect('COUNT(o.id) AS Nb')
+            ->addGroupBy('o.country')
+            ->addOrderBy('Nb', 'desc')
+//            ->setMaxResults(10)
             ->getQuery()
-            ->getResult();
+            ->getResult()
+            ;
     }
 
-    //details///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public function findCountryDetail($country)
+    public function getOneCountryOrders($country)
     {
         return $this->createQueryBuilder('o')
-            ->andWhere('o.country LIKE :country')
+            ->andWhere('o.country = :country')
             ->setParameter('country', $country)
-            ->orderBy('o.orderDate', 'DESC')
             ->getQuery()
-            ->getResult();
+            ->getResult()
+            ;
     }
 
 }

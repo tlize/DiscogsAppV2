@@ -18,40 +18,23 @@ class Country
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=2)
-     */
-    private $Code;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Name;
+    private $name;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getCode(): ?string
-    {
-        return $this->Code;
-    }
-
-    public function setCode(string $Code): self
-    {
-        $this->Code = $Code;
-
-        return $this;
-    }
-
     public function getName(): ?string
     {
-        return $this->Name;
+        return $this->name;
     }
 
-    public function setName(string $Name): self
+    public function setName(string $name): self
     {
-        $this->Name = $Name;
+        $this->name = $name;
 
         return $this;
     }

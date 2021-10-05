@@ -4,25 +4,47 @@
 
 {% block body %}
     <h4>Latest Orders</h4>
-    {% for order in orders %}
+    {% set latestOrders = orders.orders %}
+    {% for i ,order in latestOrders %}
         <h5>
             <a href="{{ path('order_detail', {'id' : order.id}) }}">
-                {{ order.orderNum }}
+                {{ order.id }}
             </a>
-            by {{ order.buyer }}
-            (<a href="{{ path('country_detail', {'country' : order.country}) }}">{{ order.country }}</a>)
-            on {{ order.orderDate | date("d-m-Y") }} :
-            {% if order.nbItems == 1 %}
+            by {{ order.buyer.username }}
+
+            {% if dbOrders[order.id] is defined %}
+                 ({{ dbOrders[order.id] }})
+            {% else %}
+
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    (<a href="{{ path('order_db_create', {'id': order.id}) }}">set country ?</a>)
+                {% endif %}
+
+            {% endif %}
+
+            on {{ order.created | date("d-m-Y") }} :
+
+            {% if order.items | length == 1 %}
                 1 item
             {% else %}
-                {{ order.nbItems }} items
+                {{ order.items | length }} items
             {% endif %}
-            , €{{ order.total | number_format }}
+
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                , €{{ order.total.value }}
+            {% endif %}
+
+            {% if 'Cancelled' in order.status %}
+                <span class="cancelled"> - {{ order.status }}</span>
+            {% endif %}
+
         </h5>
     {% endfor %}
-    {% if drafted %}
+    {% if (drafted or violation) and is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+        {% set draftItems = drafted.listings %}
+        {% set violationItems = violation.listings %}
         <br>
-        <h4>Draft or Violation</h4>
+        <h4>Out of Shop</h4>
         <table class="table table-sm table-hover table-striped">
             <thead class="thead-dark">
             <tr>
@@ -39,9 +61,6 @@
                     Title
                 </th>
                 <th>
-                    Label
-                </th>
-                <th>
                     Format
                 </th>
                 <th>
@@ -53,35 +72,57 @@
             </tr>
             </thead>
             <tbody>
-            {% for draft in drafted %}
+            {% for item in draftItems %}
                 <tr>
                     <td>
-                        {{ draft.listingId }}
+                        {% set releasePage = ['https://www.discogs.com/', item.release.description |slug,
+                            '/release/', item.release.id] | join %}
+                        <a href="{{ releasePage }}" title="Discogs Release Page" target="_blank">{{ item.release.id }}</a>
                     </td>
                     <td>
-                        {{ draft.catno }}
+                        {{ item.release.catalog_number }}
                     </td>
                     <td>
-                        <a href="{{ path('artist_detail', {'artist': draft.artist}) }}">
-                            {{ draft.artist }}
-                        </a>
+                            {{ item.release.artist }}
                     </td>
                     <td>
-                        {{ draft.title }}
+                        {{ item.release.title }}
                     </td>
                     <td>
-                        <a href="{{ path('label_detail', {'label': draft.label}) }}">
-                            {{ draft.label }}
-                        </a>
+                        {{ item.release.format }}
                     </td>
                     <td>
-                        {{ draft.format }}
+                        €{{ item.price.value | number_format }}
                     </td>
                     <td>
-                        €{{ draft.price | number_format }}
+                        {{ item.status }}
+                    </td>
+                </tr>
+            {% endfor %}
+            {% for item in violationItems %}
+                <tr>
+                    <td>
+                        {% set releasePage = ['https://www.discogs.com/', item.release.description |slug,
+                            '/release/', item.release.id] | join %}
+                        <a href="{{ releasePage }}" title="Discogs Release Page" target="_blank">{{ item.release.id }}</a>
                     </td>
                     <td>
-                        {{ draft.status }}
+                        {{ item.release.catalog_number }}
+                    </td>
+                    <td>
+                        {{ item.release.artist }}
+                    </td>
+                    <td>
+                        {{ item.release.title }}
+                    </td>
+                    <td>
+                        {{ item.release.format }}
+                    </td>
+                    <td>
+                        €{{ item.price.value | number_format }}
+                    </td>
+                    <td>
+                        {{ item.status }}
                     </td>
                 </tr>
             {% endfor %}
@@ -89,4 +130,10 @@
         </table>
     {% endif %}
 {% endblock %}
+
+
+{# TODO graphs : on click #}
+{# TODO price update #}
+{# TODO cache for faster loading #}
+
 

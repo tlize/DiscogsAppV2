@@ -4,61 +4,83 @@
 
 {% block body %}
     <h4>
-        Sold items
+        {{ items.pagination.items }} Sold Items
     </h4>
+    <h6>Order by
+        <a href="?sort=artist&sort_order={{ sortLink }}">Band - Artist</a> /
+        <a href="?sort=item&sort_order={{ sortLink }}">Title</a> /
+        <a href="?sort=catno&sort_order={{ sortLink }}">Catalog #</a> /
+        <a href="?sort=label&sort_order={{ sortLink }}">Label</a> /
+        <a href="?sort=price&sort_order={{ sortLink }}">Price</a>
+    </h6>
     <table class="table table-hover table-striped">
         <thead class="thead-dark">
         <tr>
+            <th></th>
             <th>
-                {{ knp_pagination_sortable(items, 'Listing Id', 'i.listingId') }}
+                Listing Id
             </th>
             <th>
-                {{ knp_pagination_sortable(items, 'Band / Artist', 'i.artist') }}
+                Band / Artist
             </th>
             <th>
-                {{ knp_pagination_sortable(items, 'Title', 'i.title') }}
+                Title
             </th>
             <th>
-                {{ knp_pagination_sortable(items, 'Label', 'i.label') }}
+                Catalog #
             </th>
             <th>
-                {{ knp_pagination_sortable(items, 'Format', 'i.format') }}
+                Format
             </th>
             <th>
-                {{ knp_pagination_sortable(items, 'Price', 'i.price') }}
+                Year
             </th>
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                <th>
+                    Price
+                </th>
+            {% endif %}
         </tr>
         </thead>
         <tbody>
-        {% for item in items %}
+        {% for item in items.listings %}
             <tr>
                 <td>
-                    <a href="{{ path('item_detail', {'id': item.id}) }}">
-                        {{ item.listingId }}
-                    </a>
+                    <a href="{{ path('item_detail', {'id': item.id}) }}" title="See Item Details"><img src="{{ item.release.thumbnail }}" alt="{{ item.release.description }}"></a>
                 </td>
                 <td>
-                    <a href="{{ path('artist_detail', {'artist': item.artist}) }}">
-                        {{ item.artist }}
-                    </a>
+                    {{ item.id }}
                 </td>
                 <td>
-                    {{ item.title }}
+                    {{ item.release.artist }}
                 </td>
                 <td>
-                    <a href="{{ path('label_detail', {'label': item.label}) }}">
-                        {{ item.label }}
-                    </a>
+                    {{ item.release.title }}
                 </td>
                 <td>
-                    {{ item.format }}</td>
+                    {{ item.release.catalog_number }}
+                </td>
                 <td>
-                    €{{ item.price | number_format }}</td>
+                    {{ item.release.format }}
+                </td>
+                <td>
+                    {% if item.release.year == 0 %}
+                        N/A
+                    {% else %}
+                        {{ item.release.year }}
+                    {% endif %}
+                </td>
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    <td>
+                        €{{ item.price.value | number_format }}
+                    </td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>
     </table>
-    <div class="pagination">
-        {{ knp_pagination_render(items) }}
-    </div>
+    {% if items.pagination.pages > 1 %}
+        {% include 'inc/pagination.html.twig' with {'pagination' : pagination}  %}
+    {% endif %}
 {% endblock %}
+

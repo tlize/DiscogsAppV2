@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h4>Orders by Country</h4>
+
+    {% include 'inc/countrychart.html.twig' %}
+    <p class="t_small">Map :
+        <a href="?region=af">Africa</a> /
+        <a href="?region=am">America</a> /
+        <a href="?region=as">Asia</a> /
+        <a href="?region=eu">Europe</a> /
+        <a href="?region=oc">Oceania</a> /
+        <a href="?region=wo">Worldwide</a></p>
+
+    {% for country in countries %}
+        <p>
+            <span>
+                <a href="{{ path('order_country', {'country' : country.country}) }}">{{ country.country }}</a>
+            </span>
+            :
+            {% if country.Nb == 1 %}
+                1 order
+            {% else %}
+                {{ country.Nb }} orders
+            {% endif %}
+
+        </p>
+    {% endfor %}
+
+{% endblock %}
+
+{% block title %}
+    {{ parent() }} | Countries
+{% endblock %}
+

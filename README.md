@@ -1,10 +1,10 @@
 # DiscogsAppV2
 symfony app to browse my Discogs collection, and seller inventory
 
-new version of myDiscogsSellerInventory, which was entirely built on vanilla php
+now towards V3 :
 
-still based on CSV files from my Discogs seller profile
+https://github.com/JolitaGrazyte/discogs-api made it easier for me to reach Discogs API breakpoints
 
-using Symfony php framework allowed me to focus on some particular requests in my DB, and add some features
+currently browsing through my Inventory, Orders, Collection... in order to implement these into the GUI
 
-Bootstrap css framework helped me to stay close to the GUI I liked in the old version
+next step : Symfony authentication + Discogs API => allow any seller to browse his own stats and ranks

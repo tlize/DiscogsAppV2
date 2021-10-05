@@ -2,42 +2,38 @@
 
 {% block body %}
 
-    <h4>Order # {{ order.orderNum }}</h4>
-    {% if order.nbItems == 1 %}
-        <h5>
-            <a href="{{ path('artist_detail', {'artist': items[0][0].artist}) }}">
-                {{ items[0][0].artist }}
-            </a>
-            - {{ items[0][0].title }} ({{ items[0][0].format }}),
-            <a href="{{ path('label_detail', {'label': items[0][0].label}) }}">
-                {{ items[0][0].label }}
-            </a>
-            : €{{ order.orderItems[0].itemPrice | number_format }}
-        </h5>
+    <h4>Order # {{ order.id }}</h4>
+    <h6>
+        By {{ order.buyer.username }}
+    </h6>
+    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+        <h6>
+            {{ order.shipping_address }}
+        </h6>
+    {% endif %}
+    <h6>
+        on {{ order.created | date("d-m-Y") }}
+    </h6>
+    {% if order.items | length == 1 %}
+        {% set item = order.items[0] %}
+        {% include 'inc/orderitemdescription.html.twig' %}
     {% else %}
         <ul>
-            {% for item in items %}
-               <li>
-                    <h5>
-                        <a href="{{ path('artist_detail', {'artist': item[0].artist}) }}">
-                            {{ item[0].artist }}
-                        </a>
-                        - {{ item[0].title }} ({{ item[0].format }}),
-                        <a href="{{ path('label_detail', {'label': item[0].label}) }}">
-                            {{ item[0].label }}
-                        </a>
-                        : €{{ item[0].price | number_format }}
-                    </h5>
+            {% for item in order.items %}
+                <li>
+                    {% include 'inc/orderitemdescription.html.twig' %}
                 </li>
             {% endfor %}
         </ul>
-        <h5>
-            Total : €{{ order.total | number_format }}
-        </h5>
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+            <h5>
+                Total : €{{ order.total.value | number_format }}
+            </h5>
+        {% endif %}
     {% endif %}
 
 {% endblock %}
 
 {% block title %}
-    {{ parent() }} | Order {{ order.orderNum }}
+    {{ parent() }} | Order {{ order.id }}
 {% endblock %}

@@ -1,15 +1,16 @@
 {
   "ExpandedNodes": [
     "",
-    "\\public",
     "\\src",
     "\\src\\Controller",
-    "\\src\\Controller\\Item",
-    "\\src\\Entity",
+    "\\src\\Controller\\Admin",
+    "\\src\\Controller\\Order",
+    "\\src\\discogs_api",
     "\\templates",
+    "\\templates\\inc",
     "\\templates\\item",
     "\\templates\\main"
   ],
-  "SelectedNode": "\\templates\\item\\add.html.twig",
+  "SelectedNode": "\\src\\Controller\\Item\\ItemController.php",
   "PreviewInSolutionExplorer": false
 }

@@ -2,43 +2,73 @@
 
 {% block body %}
     <h4>
-        <a href="{{ path('artist_detail', {'artist': item.artist}) }}">
-            {{ item.artist }}
-        </a>
-        - {{ item.title }}
+        {{ item.release.artist }}
+        - {{ item.release.title }}
     </h4>
+    <img src="{{ item.release.thumbnail }}" alt="{{ item.release.description }}">
+    <h6><a class="t_small" id="releasePage" href="{{ release.uri }}" target="_blank">Discogs Page</a></h6>
     <h5>
-        {{ item.format }} -
-        <a href="{{ path('label_detail', {'label': item.label}) }}">
-            {{ item.label }}
-        </a>
-        - {{ item.catno }}
+        {{ item.release.format }}
     </h5>
+    <h5>
+        {{ release.labels[0].name }} - {{ item.release.catalog_number }}
+    </h5>
+    <h5>
+        {% if release.year != 0 %}
+            {{ release.year }}
+        {% endif %}
+        {% if release.country != 0 %}
+            ({{ release.country }})
+        {% endif %}
+    </h5>
+    {% if release.notes is defined and release.notes != '' %}
+        <p>
+            {{ release.notes }}
+        </p>
+    {% endif %}
+    <h4>My Listing Item</h4>
     <p>
-        {{ item.mediaCondition | split('(') | last | trim (')') }} (sleeve : {{ item.sleeveCondition | split('(') | last }}
+        {{ item.condition | split('(') | last | trim (')') }} (sleeve : {{ item.sleeve_condition | split('(') | last }}
         {% if item.comments != null %}
             - {{ item.comments }}
         {% endif %}
     </p>
     <p>
-        release Id : {{ item.releaseId }}
+        release Id : {{ item.release.id }}
     </p>
     <p>
-        listing Id : {{ item.listingId }}
+        listing Id : {{ item.id }}
     </p>
-    <p>
-        {{ item.status }} : €{{ item.price | number_format }}
-        {% if item.status == 'For Sale' %}
-            <span id="editPrice">
-                (<a href="{{ path('item_price', {'id': item.id}) }}">edit price</a>)
-            </span>
-        {% endif %}
-    </p>
-    {% set releasePage = ['https://www.discogs.com/', item.artist | slug, '-', item.title |slug, '/release/', item.releaseId] | join %}
-    <a id="releasePage" href="{{ releasePage }}" target="_blank">Discogs Release Page</a>
+    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+        <p>
+            {{ item.status }} : €{{ item.price.value | number_format }}
+            {% if item.status == 'For Sale' %}
+                (suggested : €{{ priceSuggestion | number_format(2) }})
+            {% endif %}
+        </p>
+    {% else %}
+            {% if item.status == 'For Sale' %}
+                {% set buyLink = ['https://www.discogs.com/sell/item/', item.id, '?ev=bp_img'] | join %}
+                <p>
+                    €{{ item.price.value | number_format }}
+                </p>
+                <p>
+                     <a class="buyLink" href="{{ buyLink }}" target="_blank">Buy It Now !</a>
+                </p>
+            {% else %}
+                <p>
+                    {{ item.status }}
+                </p>
+            {% endif %}
+    {% endif %}
+    {% if item.status == 'For Sale' and is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+        {# {% set editLink = ['https://www.discogs.com/sell/manage_edit?ids=', item.id, '&return_to=%2Fsell%2Fitem%2F', item.id] | join %}
+        <a class="t_small" href="{{ editLink }}" title="Edit Price on Discogs" target="_blank">Edit Price</a> #}
+       <a class="t_small" href="{{ path('item_price', {'id': item.id}) }}">Edit Price</a>
+    {% endif %}
 {% endblock %}
 
 {% block title %}
-    {{ parent() }} | {{ item.title }}
+    {{ parent() }} | {{ item.release.title }}
 {% endblock %}
 

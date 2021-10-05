@@ -1,0 +1,24 @@
+<details>
+    <summary>
+        {{ order.id }}
+    </summary>
+    <div class="t_small">
+        {% if order.items | length == 1 %}
+            {% set item = order.items[0] %}
+            {% include 'inc/orderitemdescription.html.twig' %}
+        {% else %}
+            <ul>
+                {% for item in order.items %}
+                    <li>
+                        {% include 'inc/orderitemdescription.html.twig' %}
+                    </li>
+                {% endfor %}
+            </ul>
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                <h5>
+                    Total : €{{ order.total.value | number_format }}
+                </h5>
+            {% endif %}
+        {% endif %}
+    </div>
+</details>

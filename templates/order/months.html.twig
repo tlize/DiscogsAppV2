@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h4>Orders by Month</h4>
+
+    {% include 'inc/monthchart.html.twig' %}
+
+    <ul>
+        {% for month in periodMonths %}
+            <li>
+                <p>
+                    <a href="{{ path('order_month', {'monthName' : month.name}) }}">{{ month.name }}</a> :
+                    {% if nbOrdersByMonth[month.name] is defined %}
+                        {% if nbOrdersByMonth[month.name] == 1 %}
+                            1 order
+                        {% else %}
+                            {{ nbOrdersByMonth[month.name] }} orders
+                        {% endif %}
+                    {% else %}
+                        none
+                    {% endif %}
+                </p>
+            </li>
+        {% endfor %}
+    </ul>
+
+
+{% endblock %}
+
+{% block title %}
+    {{ parent() }} | Months
+{% endblock %}
+
