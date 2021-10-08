@@ -6,7 +6,6 @@ namespace App\Controller\Orders;
 use App\Controller\Refactor\MainFunctionsController;
 use App\Controller\Refactor\OrderFunctionsController;
 use App\DiscogsApi\DiscogsClient;
-use App\Entity\Country;
 use App\Entity\Order;
 use App\Pagination\MyPaginator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -131,12 +130,11 @@ class OrderController extends AbstractController
      * using Country table
      * @Route("/{id}/dbcreate", name = "_db_create")
      */
-    public function createDbOrder(DiscogsClient $dc, EntityManagerInterface $em, $id): Response
+    public function createDbOrder(OrderFunctionsController $ofc,DiscogsClient $dc, EntityManagerInterface $em, $id): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
 
-        $countries = $em->getRepository(Country::class)->findAll();
-
+        $countries = $ofc->getCountriesList();
         $order = $dc->getDiscogsClient()->orderWithId($id);
         $address = $order->shipping_address;
 
@@ -145,9 +143,10 @@ class OrderController extends AbstractController
         }
         else {
             $dbOrder = new Order();
-            foreach ($countries as $country) {
-                if (strpos($address, $country->getName()) != false) {
-                    $buyerCountry = $country->getName();
+            $i = 0;
+            for (; $dbOrder->getCountry() == null; $i++){
+                if (strpos($address, $countries[$i]) != false) {
+                    $buyerCountry = $countries[$i];
                     if ($buyerCountry == 'Russian Federation') {
                         $buyerCountry = 'Russia';
                     }
@@ -161,7 +160,6 @@ class OrderController extends AbstractController
             $this->addFlash('success', 'Cool, order ' . $id . ' is now in database with country 
             (' . $dbOrder->getCountry() . ') and month (' . $dbOrder->getMonth() . ')');
         }
-
         return $this->render('order/detail.html.twig', ['order' => $order]);
     }
 
