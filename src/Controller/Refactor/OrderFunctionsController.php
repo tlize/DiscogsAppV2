@@ -33,7 +33,7 @@ class OrderFunctionsController extends AbstractController
             $months[$yearMonth]['created_before'] = $current->endOfMonth()
                     ->format('Y-m-d') . 'T23:59:59Z';
         }
-        return $months;
+        return array_reverse($months);
     }
 
     /**
