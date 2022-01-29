@@ -3,14 +3,11 @@
     "",
     "\\src",
     "\\src\\Controller",
-    "\\src\\Controller\\Admin",
-    "\\src\\Controller\\Order",
-    "\\src\\discogs_api",
     "\\templates",
     "\\templates\\inc",
     "\\templates\\item",
     "\\templates\\main"
   ],
-  "SelectedNode": "\\src\\Controller\\Item\\ItemController.php",
+  "SelectedNode": "\\templates\\item\\list.html.twig",
   "PreviewInSolutionExplorer": false
 }
